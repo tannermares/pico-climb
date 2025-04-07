@@ -1,5 +1,14 @@
+
+body {
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: black;
+    /* background-color: black; */
   }
 }

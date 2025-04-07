@@ -1,4 +1,4 @@
-import { Color, DisplayMode, Engine, FadeInOut } from 'excalibur'
+import { Color, DisplayMode, Engine, FadeInOut, vec } from 'excalibur'
 import { loader } from './resources'
 import { MyLevel } from './level'
 
@@ -9,6 +9,7 @@ const game = new Engine({
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
   scenes: { start: MyLevel },
+  physics: { gravity: vec(0, 800) },
 })
 
 game

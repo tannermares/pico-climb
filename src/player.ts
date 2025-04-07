@@ -1,12 +1,17 @@
 import {
   Actor,
   clamp,
+  Collider,
+  CollisionContact,
+  CollisionStartEvent,
   CollisionType,
   Color,
   Engine,
   Keys,
+  Side,
   vec,
 } from 'excalibur'
+import { Girder } from './girder'
 
 export class Player extends Actor {
   jumping = false
@@ -23,20 +28,34 @@ export class Player extends Actor {
   }
 
   public onPostUpdate(engine: Engine): void {
-    if (!this.jumping && engine.input.keyboard.isHeld(Keys.X)) {
-      this.vel.y -= 100
-      this.jumping = true
-    } else {
-      this.acc.y = 300
-      if (this.vel.y === 0) this.jumping = false
-    }
+    const input = engine.input.keyboard
 
-    if (engine.input.keyboard.isHeld(Keys.Right)) {
-      this.acc.x = 100
-    } else if (engine.input.keyboard.isHeld(Keys.Left)) {
-      this.acc.x = -100
+    const speed = 50
+    const jumpStrength = 200
+
+    if (input.isHeld(Keys.Right)) {
+      this.vel.x = speed
+    } else if (input.isHeld(Keys.Left)) {
+      this.vel.x = -speed
     } else {
       this.vel.x = 0
+    }
+
+    if (!this.jumping && input.wasPressed(Keys.X)) {
+      this.vel.y = -jumpStrength
+      this.jumping = true
+    }
+  }
+
+  override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
+    const otherActor = other.owner
+
+    if (
+      otherActor instanceof Girder &&
+      this.vel.y >= 0 &&
+      this.pos.y < otherActor.pos.y
+    ) {
+      this.jumping = false
     }
   }
 }

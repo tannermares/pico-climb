@@ -36,9 +36,7 @@ export class Player extends Actor {
     } else if (engine.input.keyboard.isHeld(Keys.Left)) {
       this.acc.x = -100
     } else {
-      this.acc.x = 0
+      this.vel.x = 0
     }
-
-    this.pos.x = clamp(this.pos.x, 8, 216)
   }
 }

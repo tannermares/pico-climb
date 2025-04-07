@@ -8,7 +8,6 @@ export class MyLevel extends Scene {
     const player = new Player()
     this.add(player)
 
-    // Add girders in all locations
     Config.girders.forEach(([girderX, girderY]) => {
       this.add(new Girder(vec(girderX, girderY)))
     })

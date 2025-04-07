@@ -7,7 +7,6 @@ import {
   Keys,
   vec,
 } from 'excalibur'
-import { Girder } from './girder'
 
 export class Player extends Actor {
   jumping = false
@@ -23,7 +22,7 @@ export class Player extends Actor {
     })
   }
 
-  public update(engine: Engine): void {
+  public onPostUpdate(engine: Engine): void {
     if (!this.jumping && engine.input.keyboard.isHeld(Keys.X)) {
       this.vel.y -= 100
       this.jumping = true
@@ -39,5 +38,7 @@ export class Player extends Actor {
     } else {
       this.acc.x = 0
     }
+
+    this.pos.x = clamp(this.pos.x, 8, 216)
   }
 }

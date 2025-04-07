@@ -50,11 +50,7 @@ export class Player extends Actor {
   override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
     const otherActor = other.owner
 
-    if (
-      otherActor instanceof Girder &&
-      this.vel.y >= 0 &&
-      this.pos.y < otherActor.pos.y
-    ) {
+    if (this.vel.y >= 0 && this.pos.y < otherActor.pos.y) {
       this.jumping = false
     }
   }

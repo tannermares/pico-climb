@@ -1,12 +1,5 @@
-import {
-  Actor,
-  CollisionGroupManager,
-  CollisionType,
-  Color,
-  Vector,
-} from 'excalibur'
-
-export const LadderCollisionGroup = CollisionGroupManager.create('ladder')
+import { Actor, Collider, CollisionType, Color, Side, Vector } from 'excalibur'
+import { Player } from './player'
 
 export class Ladder extends Actor {
   constructor(pos: Vector, height: number) {
@@ -17,7 +10,12 @@ export class Ladder extends Actor {
       height,
       color: Color.Azure,
       collisionType: CollisionType.Passive,
-      collisionGroup: LadderCollisionGroup,
     })
+  }
+
+  override onCollisionEnd(self: Collider, other: Collider): void {
+    if (other.owner instanceof Player && other.owner.climbing) {
+      other.owner.stopClimbing()
+    }
   }
 }

@@ -1,25 +1,7 @@
-import {
-  Actor,
-  CollisionGroup,
-  CollisionGroupManager,
-  CollisionType,
-  Color,
-  Engine,
-  Keys,
-  Side,
-  vec,
-} from 'excalibur'
-import { Girder, GirderCollisionGroup } from './girder'
-import { Ladder, LadderCollisionGroup } from './ladder'
-
-export const playerCollisionGroup = CollisionGroupManager.create('player')
-const feetCanCollideWith = CollisionGroup.collidesWith([GirderCollisionGroup])
-const laddersCanCollideWith = CollisionGroup.collidesWith([
-  LadderCollisionGroup,
-])
+import { Actor, CollisionType, Color, Engine, Keys, vec } from 'excalibur'
+import { Ladder } from './ladder'
 
 export class Player extends Actor {
-  canClimb = false
   climbing = false
   jumping = false
 
@@ -31,65 +13,8 @@ export class Player extends Actor {
       height: 16,
       color: Color.White,
       collisionType: CollisionType.Active,
-      collisionGroup: playerCollisionGroup,
       z: 2,
     })
-  }
-
-  override onInitialize(engine: ex.Engine): void {
-    const footSensor = new Actor({
-      name: 'FootSensor',
-      width: 12,
-      height: 2,
-      pos: vec(0, this.height / 2 - 1),
-      collisionType: CollisionType.Passive,
-      collisionGroup: feetCanCollideWith,
-      color: Color.Blue,
-      z: this.z,
-    })
-
-    footSensor.on('collisionstart', ({ self, other, side }) => {
-      if (other.owner instanceof Girder) {
-        // if (this.vel.y === 0) {
-        this.jumping = false
-        this.stopClimbing()
-        // }
-
-        const otherIsAbove = self.bounds.bottom > other.bounds.top
-        const isSideCollision = side === Side.Right || side === Side.Left
-        if (
-          otherIsAbove &&
-          isSideCollision &&
-          !this.jumping &&
-          !this.climbing
-        ) {
-          this.pos.y -= 1
-        }
-      }
-    })
-
-    this.addChild(footSensor)
-
-    const ladderSensor = new Actor({
-      name: 'LadderSensor',
-      width: 4,
-      height: 12,
-      pos: vec(0, 0),
-      collisionType: CollisionType.Passive,
-      collisionGroup: laddersCanCollideWith,
-      color: Color.Yellow,
-      z: this.z,
-    })
-
-    ladderSensor.on('collisionstart', (evt) => {
-      if (evt.other instanceof Ladder) this.canClimb = true
-    })
-
-    ladderSensor.on('collisionend', (evt) => {
-      if (evt.other instanceof Ladder) this.canClimb = false
-    })
-
-    this.addChild(ladderSensor)
   }
 
   override onPreUpdate(engine: Engine): void {
@@ -124,15 +49,52 @@ export class Player extends Actor {
         this.jumping = true
       }
 
-      // Try to climb
-      if (
-        !this.jumping &&
-        this.canClimb &&
-        (keys.wasPressed(Keys.Up) || keys.wasPressed(Keys.Down))
-      ) {
-        this.startClimbing()
+      // Try to climb up
+      if (!this.jumping && keys.wasPressed(Keys.Up)) {
+        if (this.canClimb(engine)) this.startClimbing()
+      }
+
+      // Try to climb down
+      if (!this.jumping && keys.wasPressed(Keys.Down)) {
+        if (this.canClimb(engine, true)) this.startClimbing()
       }
     }
+  }
+
+  canClimb(engine: Engine, requireTop = false): Ladder | null {
+    const playerBounds = this.collider.bounds
+    const margin = 2
+
+    const ladders = engine.currentScene.actors.filter(
+      (actor): actor is Ladder => actor instanceof Ladder
+    )
+
+    return (
+      ladders.find((ladder) => {
+        const ladderBounds = ladder.collider.bounds
+
+        const horizontallyAligned =
+          playerBounds.center.x > ladderBounds.left + margin &&
+          playerBounds.center.x < ladderBounds.right - margin
+
+        if (!horizontallyAligned) return false
+
+        const verticallyOverlapping =
+          playerBounds.bottom >= ladderBounds.top &&
+          playerBounds.top <= ladderBounds.bottom
+
+        if (!verticallyOverlapping) return false
+
+        if (requireTop) {
+          console.log('-'.repeat(50))
+          console.log(Math.abs(playerBounds.bottom - ladderBounds.top) <= 2)
+          console.log('-'.repeat(50))
+          return Math.abs(playerBounds.bottom - ladderBounds.top) <= 2
+        }
+
+        return true
+      }) ?? null
+    )
   }
 
   startClimbing() {

@@ -10,27 +10,19 @@ import {
 import { Player } from './player'
 import { Girder } from './girder'
 import { Config } from './config'
+import { Wall } from './wall'
 
 export class MyLevel extends Scene {
   override onInitialize(engine: Engine): void {
     const player = new Player()
     this.add(player)
 
-    const wallActor1 = new Actor({
-      collider: new EdgeCollider({ begin: vec(0, 0), end: vec(0, 256) }),
-      collisionType: CollisionType.Fixed,
+    Config.walls.forEach(([begin, end]) => {
+      this.add(new Wall(begin, end))
     })
 
-    const wallActor2 = new Actor({
-      collider: new EdgeCollider({ begin: vec(224, 0), end: vec(224, 256) }),
-      collisionType: CollisionType.Fixed,
-    })
-
-    this.add(wallActor1)
-    this.add(wallActor2)
-
-    Config.girders.forEach(([girderX, girderY]) => {
-      this.add(new Girder(vec(girderX, girderY)))
+    Config.girders.forEach((pos) => {
+      this.add(new Girder(pos))
     })
   }
 }

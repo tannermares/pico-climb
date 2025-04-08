@@ -1,4 +1,12 @@
-import { Actor, CollisionType, Color, Vector } from 'excalibur'
+import {
+  Actor,
+  CollisionGroupManager,
+  CollisionType,
+  Color,
+  Vector,
+} from 'excalibur'
+
+export const LadderCollisionGroup = CollisionGroupManager.create('ladder')
 
 export class Ladder extends Actor {
   constructor(pos: Vector, height: number) {
@@ -9,6 +17,7 @@ export class Ladder extends Actor {
       height,
       color: Color.Azure,
       collisionType: CollisionType.Passive,
+      collisionGroup: LadderCollisionGroup,
     })
   }
 }

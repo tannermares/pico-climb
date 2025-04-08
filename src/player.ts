@@ -1,7 +1,26 @@
-import { Actor, CollisionType, Color, Engine, Keys, vec } from 'excalibur'
-import { Girder } from './girder'
+import {
+  Actor,
+  CollisionGroup,
+  CollisionGroupManager,
+  CollisionType,
+  Color,
+  Engine,
+  Keys,
+  Side,
+  vec,
+} from 'excalibur'
+import { Girder, GirderCollisionGroup } from './girder'
+import { Ladder, LadderCollisionGroup } from './ladder'
+
+export const playerCollisionGroup = CollisionGroupManager.create('player')
+const feetCanCollideWith = CollisionGroup.collidesWith([GirderCollisionGroup])
+const laddersCanCollideWith = CollisionGroup.collidesWith([
+  LadderCollisionGroup,
+])
 
 export class Player extends Actor {
+  canClimb = false
+  climbing = false
   jumping = false
 
   constructor() {
@@ -12,54 +31,117 @@ export class Player extends Actor {
       height: 16,
       color: Color.White,
       collisionType: CollisionType.Active,
-      z: 1,
+      collisionGroup: playerCollisionGroup,
+      z: 2,
     })
   }
 
-  public onPostUpdate(engine: Engine): void {
-    const input = engine.input.keyboard
+  override onInitialize(engine: ex.Engine): void {
+    const footSensor = new Actor({
+      name: 'FootSensor',
+      width: 12,
+      height: 2,
+      pos: vec(0, this.height / 2 - 1),
+      collisionType: CollisionType.Passive,
+      collisionGroup: feetCanCollideWith,
+      color: Color.Blue,
+      z: this.z,
+    })
+
+    footSensor.on('collisionstart', ({ self, other, side }) => {
+      if (other.owner instanceof Girder) {
+        // if (this.vel.y === 0) {
+        this.jumping = false
+        this.stopClimbing()
+        // }
+
+        const otherIsAbove = self.bounds.bottom > other.bounds.top
+        const isSideCollision = side === Side.Right || side === Side.Left
+        if (
+          otherIsAbove &&
+          isSideCollision &&
+          !this.jumping &&
+          !this.climbing
+        ) {
+          this.pos.y -= 1
+        }
+      }
+    })
+
+    this.addChild(footSensor)
+
+    const ladderSensor = new Actor({
+      name: 'LadderSensor',
+      width: 4,
+      height: 12,
+      pos: vec(0, 0),
+      collisionType: CollisionType.Passive,
+      collisionGroup: laddersCanCollideWith,
+      color: Color.Yellow,
+      z: this.z,
+    })
+
+    ladderSensor.on('collisionstart', (evt) => {
+      if (evt.other instanceof Ladder) this.canClimb = true
+    })
+
+    ladderSensor.on('collisionend', (evt) => {
+      if (evt.other instanceof Ladder) this.canClimb = false
+    })
+
+    this.addChild(ladderSensor)
+  }
+
+  override onPreUpdate(engine: Engine): void {
+    const keys = engine.input.keyboard
 
     const speed = 50
     const jumpStrength = 200
 
-    if (input.isHeld(Keys.Right)) {
-      this.vel.x = speed
-    } else if (input.isHeld(Keys.Left)) {
-      this.vel.x = -speed
-    } else {
+    if (this.climbing) {
       this.vel.x = 0
-    }
 
-    if (!this.jumping && input.wasPressed(Keys.X)) {
-      this.vel.y = -jumpStrength
-      this.jumping = true
+      if (keys.isHeld(Keys.Up)) {
+        this.vel.y = -speed
+      } else if (keys.isHeld(Keys.Down)) {
+        this.vel.y = speed
+      } else {
+        this.vel.y = 0
+      }
+    } else {
+      // Normal Movement
+      if (keys.isHeld(Keys.Right)) {
+        this.vel.x = speed
+      } else if (keys.isHeld(Keys.Left)) {
+        this.vel.x = -speed
+      } else {
+        this.vel.x = 0
+      }
+
+      // Jump
+      if (!this.climbing && !this.jumping && keys.wasPressed(Keys.X)) {
+        this.vel.y = -jumpStrength
+        this.jumping = true
+      }
+
+      // Try to climb
+      if (
+        !this.jumping &&
+        this.canClimb &&
+        (keys.wasPressed(Keys.Up) || keys.wasPressed(Keys.Down))
+      ) {
+        this.startClimbing()
+      }
     }
   }
 
-  override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
-    const otherActor = other.owner
+  startClimbing() {
+    this.climbing = true
+    this.body.useGravity = false
+  }
 
-    if (otherActor instanceof Girder) {
-      // Resets jump when hitting floor & stops sticky ceiling
-      if (this.vel.y >= 0 && this.pos.y < otherActor.pos.y) {
-        this.jumping = false
-      }
-
-      // Check if we're walking into the side of a girder
-      const playerBounds = this.collider.bounds
-      const girderBounds = otherActor.collider.bounds
-
-      const playerIsToLeft = playerBounds.right <= girderBounds.left + 2
-      const playerIsToRight = playerBounds.left >= girderBounds.right - 2
-
-      const above = this.pos.y + 8 > otherActor.pos.y - 4
-
-      const isSideCollision =
-        (playerIsToLeft || playerIsToRight) && !this.jumping && above
-
-      if (isSideCollision) {
-        this.pos.y -= 1 // Bump up a pixel
-      }
-    }
+  stopClimbing() {
+    this.climbing = false
+    this.body.useGravity = true
   }
 }

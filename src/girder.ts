@@ -8,7 +8,7 @@ export class Girder extends Actor {
       width: 16,
       height: 8,
       color: Color.Red,
-      collisionType: CollisionType.PreventCollision,
+      collisionType: CollisionType.Fixed,
     })
   }
 }

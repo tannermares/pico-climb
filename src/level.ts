@@ -29,20 +29,6 @@ export class MyLevel extends Scene {
     this.add(wallActor1)
     this.add(wallActor2)
 
-    // Collision Layers
-    const startingPlatform = new Actor({
-      collider: new EdgeCollider({ begin: vec(0, 248), end: vec(112, 248) }),
-      collisionType: CollisionType.Fixed,
-    })
-    const startingSlope = new Actor({
-      collider: new EdgeCollider({ begin: vec(112, 249), end: vec(224, 241) }),
-      collisionType: CollisionType.Fixed,
-    })
-
-    this.add(startingPlatform)
-    this.add(startingSlope)
-
-    // Visual Girders
     Config.girders.forEach(([girderX, girderY]) => {
       this.add(new Girder(vec(girderX, girderY)))
     })

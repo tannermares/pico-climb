@@ -24,6 +24,7 @@ export class Player extends Actor {
       height: 16,
       color: Color.ExcaliburBlue,
       collisionType: CollisionType.Active,
+      z: 1,
     })
   }
 
@@ -50,8 +51,27 @@ export class Player extends Actor {
   override onCollisionStart(_self: ex.Collider, other: ex.Collider): void {
     const otherActor = other.owner
 
-    if (this.vel.y >= 0 && this.pos.y < otherActor.pos.y) {
-      this.jumping = false
+    if (otherActor instanceof Girder) {
+      // Resets jump when hitting floor & stops sticky ceiling
+      if (this.vel.y >= 0 && this.pos.y < otherActor.pos.y) {
+        this.jumping = false
+      }
+
+      // Check if we're walking into the side of a girder
+      const playerBounds = this.collider.bounds
+      const girderBounds = otherActor.collider.bounds
+
+      const playerIsToLeft = playerBounds.right <= girderBounds.left + 2
+      const playerIsToRight = playerBounds.left >= girderBounds.right - 2
+
+      const above = this.pos.y + 8 > otherActor.pos.y - 4
+
+      const isSideCollision =
+        (playerIsToLeft || playerIsToRight) && !this.jumping && above
+
+      if (isSideCollision) {
+        this.pos.y -= 1 // Bump up a pixel
+      }
     }
   }
 }

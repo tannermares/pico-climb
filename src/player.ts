@@ -1,16 +1,4 @@
-import {
-  Actor,
-  clamp,
-  Collider,
-  CollisionContact,
-  CollisionStartEvent,
-  CollisionType,
-  Color,
-  Engine,
-  Keys,
-  Side,
-  vec,
-} from 'excalibur'
+import { Actor, CollisionType, Color, Engine, Keys, vec } from 'excalibur'
 import { Girder } from './girder'
 
 export class Player extends Actor {
@@ -22,7 +10,7 @@ export class Player extends Actor {
       pos: vec(16, 240),
       width: 16,
       height: 16,
-      color: Color.ExcaliburBlue,
+      color: Color.White,
       collisionType: CollisionType.Active,
       z: 1,
     })

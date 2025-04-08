@@ -94,6 +94,26 @@ export const Config = {
     vec(136, 56),
     vec(152, 56),
   ],
+  ladders: [
+    { pos: vec(84, 235), height: 26 },
+    { pos: vec(188, 235), height: 16 },
+
+    { pos: vec(36, 202), height: 16 },
+    { pos: vec(100, 202), height: 24 },
+
+    { pos: vec(68, 169), height: 30 },
+    { pos: vec(116, 169), height: 24 },
+    { pos: vec(188, 169), height: 16 },
+
+    { pos: vec(36, 136), height: 16 },
+    { pos: vec(76, 136), height: 20 },
+    { pos: vec(172, 136), height: 32 },
+
+    { pos: vec(92, 105), height: 24 },
+    { pos: vec(188, 103), height: 16 },
+
+    { pos: vec(132, 72), height: 24 },
+  ],
   walls: [
     [vec(0, 0), vec(0, 256)],
     [vec(224, 0), vec(224, 256)],

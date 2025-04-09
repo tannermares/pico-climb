@@ -27,8 +27,8 @@ export class MyLevel extends Scene {
       this.add(new Girder(pos))
     })
 
-    Config.ladders.forEach(({ pos, height, broken }) => {
-      this.add(new Ladder(pos, height, broken))
+    Config.ladders.forEach(({ pos, height }) => {
+      this.add(new Ladder(pos, height))
     })
 
     Config.barrels.forEach((pos) => {

@@ -2,7 +2,7 @@ import { Actor, Collider, CollisionType, Color, Side, Vector } from 'excalibur'
 import { Player } from './player'
 
 export class Ladder extends Actor {
-  constructor(pos: Vector, height: number, broken: boolean) {
+  constructor(pos: Vector, height: number) {
     super({
       name: 'Ladder',
       pos,

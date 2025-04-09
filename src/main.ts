@@ -8,7 +8,6 @@ const game = new Engine({
   backgroundColor: Color.Black,
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
-  // pixelRatio: 2,
   scenes: { start: MyLevel },
   physics: { gravity: vec(0, 400) },
 })

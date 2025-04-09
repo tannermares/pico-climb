@@ -112,8 +112,11 @@ export const Config = {
     { pos: vec(92, 100), height: 32 },
     { pos: vec(188, 99), height: 24 },
 
+    { pos: vec(44, 56), height: 56 },
+    { pos: vec(60, 56), height: 56 },
     { pos: vec(132, 68), height: 32 },
   ],
+  barrels: [vec(4, 60), vec(12, 60), vec(4, 76), vec(12, 76)],
   walls: [
     [vec(0, 0), vec(0, 256)],
     [vec(224, 0), vec(224, 256)],

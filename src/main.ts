@@ -8,13 +8,14 @@ const game = new Engine({
   backgroundColor: Color.Black,
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
+  // pixelRatio: 2,
   scenes: { start: MyLevel },
   physics: { gravity: vec(0, 800) },
 })
 
 game
   .start('start', {
-    // loader,
+    loader,
     // inTransition: new FadeInOut({
     //   duration: 1000,
     //   direction: 'in',

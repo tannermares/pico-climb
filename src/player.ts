@@ -17,6 +17,20 @@ export class Player extends Actor {
     })
   }
 
+  // override onInitialize(engine: Engine): void {
+  //   const footSensor = new Actor({
+  //     name: 'FootSensor',
+  //     width: 16,
+  //     height: 2,
+  //     pos: vec(0, this.height / 2 - 1),
+  //     collisionType: CollisionType.Passive,
+  //     collisionGroup: feetCanCollideWith,
+  //     color: Color.Brown,
+  //   })
+
+  //   this.addChild(footSensor)
+  // }
+
   override onPreUpdate(engine: Engine): void {
     const keys = engine.input.keyboard
 
@@ -61,7 +75,7 @@ export class Player extends Actor {
     }
   }
 
-  canClimb(engine: Engine, requireTop = false): Ladder | null {
+  canClimb(engine: Engine, requireTop = false): boolean {
     const playerBounds = this.collider.bounds
     const margin = 2
 
@@ -70,7 +84,7 @@ export class Player extends Actor {
     )
 
     return (
-      ladders.find((ladder) => {
+      ladders.some((ladder) => {
         const ladderBounds = ladder.collider.bounds
 
         const horizontallyAligned =
@@ -86,9 +100,6 @@ export class Player extends Actor {
         if (!verticallyOverlapping) return false
 
         if (requireTop) {
-          console.log('-'.repeat(50))
-          console.log(Math.abs(playerBounds.bottom - ladderBounds.top) <= 2)
-          console.log('-'.repeat(50))
           return Math.abs(playerBounds.bottom - ladderBounds.top) <= 2
         }
 

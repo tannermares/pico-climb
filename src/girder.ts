@@ -42,17 +42,20 @@ export class Girder extends Actor {
         !other.owner.climbing
       ) {
         other.owner.pos.y -= 1
-        return
       }
 
-      if (side !== Side.Top || !otherWasAbovePlatform) {
+      if (side !== Side.Top || !otherWasAbovePlatform || other.owner.climbing) {
         contact.cancel()
         return
       }
     }
   }
 
-  override onCollisionStart(self: Collider, other: Collider, side: Side): void {
+  override onCollisionStart(
+    _self: Collider,
+    other: Collider,
+    _side: Side
+  ): void {
     if (other.owner instanceof Player) {
       other.owner.jumping = false
       other.owner.stopClimbing()

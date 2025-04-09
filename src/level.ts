@@ -1,13 +1,4 @@
-import {
-  Actor,
-  Color,
-  Engine,
-  Font,
-  FontUnit,
-  Label,
-  Scene,
-  vec,
-} from 'excalibur'
+import { Actor, Color, Engine, Font, Label, Scene, vec } from 'excalibur'
 import { Player } from './player'
 import { Girder } from './girder'
 import { Config } from './config'
@@ -50,7 +41,6 @@ export class MyLevel extends Scene {
         color: Color.Brown,
       })
     )
-
     this.add(
       new Actor({
         height: 24,

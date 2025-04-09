@@ -1,4 +1,16 @@
-import { vec } from 'excalibur'
+import { CollisionGroup, CollisionGroupManager, vec } from 'excalibur'
+
+const FootGroup = CollisionGroupManager.create('foot')
+const GirderGroup = CollisionGroupManager.create('girder')
+const LadderGroup = CollisionGroupManager.create('ladder')
+const LadderSensorGroup = CollisionGroupManager.create('ladderSensor')
+const PlayerGroup = CollisionGroupManager.create('player')
+
+const FeetCanCollideWith = CollisionGroup.collidesWith([GirderGroup])
+const GirdersCanCollideWith = CollisionGroup.collidesWith([FootGroup])
+const LaddersCanCollideWith = CollisionGroup.collidesWith([FootGroup])
+const LaddersSensorCanCollideWith = CollisionGroup.collidesWith([LadderGroup])
+const PlayersCanCollideWith = CollisionGroup.collidesWith([PlayerGroup])
 
 export const Config = {
   girders: [
@@ -125,4 +137,16 @@ export const Config = {
     [vec(0, 0), vec(0, 256)],
     [vec(224, 0), vec(224, 256)],
   ],
+  colliders: {
+    FeetCanCollideWith,
+    FootGroup,
+    GirderGroup,
+    GirdersCanCollideWith,
+    LadderGroup,
+    LaddersCanCollideWith,
+    LadderSensorGroup,
+    LaddersSensorCanCollideWith,
+    PlayerGroup,
+    PlayersCanCollideWith,
+  },
 } as const

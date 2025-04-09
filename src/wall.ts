@@ -1,4 +1,4 @@
-import { Actor, CollisionType, EdgeCollider, Vector } from 'excalibur'
+import { Actor, CollisionType, Color, EdgeCollider, Vector } from 'excalibur'
 
 export class Wall extends Actor {
   constructor(begin: Vector, end: Vector) {

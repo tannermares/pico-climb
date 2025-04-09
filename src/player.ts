@@ -1,36 +1,60 @@
-import { Actor, CollisionType, Color, Engine, Keys, vec } from 'excalibur'
-import { Ladder } from './ladder'
+import {
+  Actor,
+  CollisionType,
+  Color,
+  Engine,
+  Keys,
+  vec,
+  Vector,
+} from 'excalibur'
+import { Config } from './config'
 
 export class Player extends Actor {
   lives = 3
+  canClimbUp = false
+  canClimbDown = false
   climbing = false
   jumping = false
 
   constructor() {
     super({
-      name: 'Player',
-      pos: vec(16, 240),
-      width: 16,
-      height: 16,
-      color: Color.White,
+      name: 'PlayerFeet',
+      pos: vec(16, 248),
+      width: 8,
+      height: 1,
+      color: Color.Brown,
       collisionType: CollisionType.Active,
+      collisionGroup: Config.colliders.FeetCanCollideWith,
       z: 2,
     })
   }
 
-  // override onInitialize(engine: Engine): void {
-  //   const footSensor = new Actor({
-  //     name: 'FootSensor',
-  //     width: 16,
-  //     height: 2,
-  //     pos: vec(0, this.height / 2 - 1),
-  //     collisionType: CollisionType.Passive,
-  //     collisionGroup: feetCanCollideWith,
-  //     color: Color.Brown,
-  //   })
+  override onInitialize(engine: Engine): void {
+    const bodySensor = new Actor({
+      name: 'BodySensor',
+      width: 8,
+      height: 16,
+      pos: vec(0, -16 / 2),
+      collisionType: CollisionType.Passive,
+      collisionGroup: Config.colliders.PlayersCanCollideWith,
+      color: Color.White,
+      z: -1,
+    })
 
-  //   this.addChild(footSensor)
-  // }
+    this.addChild(bodySensor)
+
+    const ladderSensor = new Actor({
+      name: 'ladderSensor',
+      width: 3,
+      height: 1,
+      collisionType: CollisionType.Passive,
+      collisionGroup: Config.colliders.LaddersSensorCanCollideWith,
+      color: Color.Yellow,
+      z: 1,
+    })
+
+    this.addChild(ladderSensor)
+  }
 
   override onPreUpdate(engine: Engine): void {
     const keys = engine.input.keyboard
@@ -70,57 +94,27 @@ export class Player extends Actor {
       }
 
       // Try to climb up
-      if (!this.jumping && keys.wasPressed(Keys.Up)) {
-        if (this.canClimb(engine)) this.startClimbing()
+      if (!this.jumping && this.canClimbUp && keys.wasPressed(Keys.Up)) {
+        this.startClimbing()
       }
 
       // Try to climb down
-      if (!this.jumping && keys.wasPressed(Keys.Down)) {
-        if (this.canClimb(engine, true)) this.startClimbing()
+      if (!this.jumping && this.canClimbDown && keys.wasPressed(Keys.Down)) {
+        this.startClimbing()
       }
     }
-  }
-
-  canClimb(engine: Engine, requireTop = false): boolean {
-    const playerBounds = this.collider.bounds
-    const margin = 2
-
-    const ladders = engine.currentScene.actors.filter(
-      (actor): actor is Ladder => actor instanceof Ladder
-    )
-
-    return (
-      ladders.some((ladder) => {
-        const ladderBounds = ladder.collider.bounds
-
-        const horizontallyAligned =
-          playerBounds.center.x > ladderBounds.left + margin &&
-          playerBounds.center.x < ladderBounds.right - margin
-
-        if (!horizontallyAligned) return false
-
-        const verticallyOverlapping =
-          playerBounds.bottom >= ladderBounds.top &&
-          playerBounds.top <= ladderBounds.bottom
-
-        if (!verticallyOverlapping) return false
-
-        if (requireTop) {
-          return Math.abs(playerBounds.bottom - ladderBounds.top) <= 2
-        }
-
-        return true
-      }) ?? null
-    )
   }
 
   startClimbing() {
     this.climbing = true
     this.body.useGravity = false
+    this.body.collisionType = CollisionType.PreventCollision
   }
 
   stopClimbing() {
     this.climbing = false
+    this.vel = Vector.Zero
     this.body.useGravity = true
+    this.body.collisionType = CollisionType.Active
   }
 }

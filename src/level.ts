@@ -99,5 +99,16 @@ export class MyLevel extends Scene {
         color: Color.Blue,
       })
     )
+
+    new Array(player.lives).fill(0).forEach((n, i) => {
+      this.add(
+        new Actor({
+          height: 8,
+          width: 8,
+          pos: vec(10 * (i + 1) + 2, 24),
+          color: Color.White,
+        })
+      )
+    })
   }
 }

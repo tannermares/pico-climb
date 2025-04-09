@@ -2,6 +2,7 @@ import { Actor, CollisionType, Color, Engine, Keys, vec } from 'excalibur'
 import { Ladder } from './ladder'
 
 export class Player extends Actor {
+  lives = 3
   climbing = false
   jumping = false
 

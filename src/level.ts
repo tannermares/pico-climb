@@ -27,8 +27,8 @@ export class MyLevel extends Scene {
       this.add(new Girder(pos))
     })
 
-    Config.ladders.forEach(({ pos, height }) => {
-      this.add(new Ladder(pos, height))
+    Config.ladders.forEach(({ pos, height, broken }) => {
+      this.add(new Ladder(pos, height, broken))
     })
 
     Config.barrels.forEach((pos) => {
@@ -67,7 +67,6 @@ export class MyLevel extends Scene {
         color: Color.Cyan,
       })
     )
-
     this.add(
       new Label({
         text: 'HIGH SCORE',
@@ -92,7 +91,6 @@ export class MyLevel extends Scene {
         color: Color.White,
       })
     )
-
     this.add(
       new Label({
         text: 'L=01',

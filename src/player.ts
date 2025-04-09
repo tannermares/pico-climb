@@ -35,7 +35,7 @@ export class Player extends Actor {
     const keys = engine.input.keyboard
 
     const speed = 50
-    const jumpStrength = 200
+    const jumpStrength = 100
 
     if (this.climbing) {
       this.vel.x = 0
@@ -58,7 +58,12 @@ export class Player extends Actor {
       }
 
       // Jump
-      if (!this.climbing && !this.jumping && keys.wasPressed(Keys.X)) {
+      if (
+        !this.climbing &&
+        !this.jumping &&
+        this.vel.y === 0 &&
+        keys.wasPressed(Keys.X)
+      ) {
         this.vel.y = -jumpStrength
         this.jumping = true
       }

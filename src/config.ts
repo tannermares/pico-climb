@@ -95,21 +95,25 @@ export const Config = {
     vec(152, 56),
   ],
   ladders: [
-    { pos: vec(84, 230), height: 34 },
+    { pos: vec(84, 223), height: 4 },
+    { pos: vec(84, 244), height: 8 },
     { pos: vec(188, 231), height: 24 },
 
     { pos: vec(36, 198), height: 24 },
     { pos: vec(100, 198), height: 32 },
 
-    { pos: vec(68, 165), height: 38 },
+    { pos: vec(68, 157), height: 6 },
+    { pos: vec(68, 180), height: 8 },
     { pos: vec(116, 165), height: 32 },
     { pos: vec(188, 165), height: 24 },
 
     { pos: vec(36, 132), height: 24 },
     { pos: vec(76, 132), height: 28 },
-    { pos: vec(172, 132), height: 40 },
+    { pos: vec(172, 124), height: 8 },
+    { pos: vec(172, 148), height: 8 },
 
-    { pos: vec(92, 100), height: 32 },
+    { pos: vec(92, 94), height: 4 },
+    { pos: vec(92, 111), height: 12 },
     { pos: vec(188, 99), height: 24 },
 
     { pos: vec(44, 56), height: 56 },

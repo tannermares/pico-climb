@@ -10,12 +10,12 @@ const game = new Engine({
   pixelArt: true,
   // pixelRatio: 2,
   scenes: { start: MyLevel },
-  physics: { gravity: vec(0, 800) },
+  physics: { gravity: vec(0, 400) },
 })
 
 game
   .start('start', {
-    loader,
+    // loader,
     // inTransition: new FadeInOut({
     //   duration: 1000,
     //   direction: 'in',

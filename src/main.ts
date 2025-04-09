@@ -1,4 +1,11 @@
-import { Color, DisplayMode, Engine, FadeInOut, vec } from 'excalibur'
+import {
+  Color,
+  DisplayMode,
+  Engine,
+  FadeInOut,
+  SolverStrategy,
+  vec,
+} from 'excalibur'
 import { loader } from './resources'
 import { MyLevel } from './level'
 

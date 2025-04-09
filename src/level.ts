@@ -1,17 +1,30 @@
-import { Actor, Color, Engine, Font, Label, Scene, vec } from 'excalibur'
+import {
+  Actor,
+  Color,
+  Engine,
+  Font,
+  Label,
+  Random,
+  Scene,
+  vec,
+} from 'excalibur'
 import { Player } from './player'
 import { Girder } from './girder'
 import { Config } from './config'
 import { Wall } from './wall'
 import { Ladder } from './ladder'
+import { DrumFactory } from './drum-factory'
 
 export class MyLevel extends Scene {
+  random = new Random()
+  pipeFactory = new DrumFactory(this, this.random)
+
   override onInitialize(engine: Engine): void {
     const player = new Player()
     this.add(player)
 
-    Config.walls.forEach(([begin, end]) => {
-      this.add(new Wall(begin, end))
+    Config.walls.forEach((pos) => {
+      this.add(new Wall(pos))
     })
 
     Config.girders.forEach((pos) => {
@@ -100,5 +113,7 @@ export class MyLevel extends Scene {
         })
       )
     })
+
+    this.pipeFactory.start()
   }
 }

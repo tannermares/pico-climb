@@ -1,11 +1,23 @@
-import { Actor, CollisionType, Color, EdgeCollider, Vector } from 'excalibur'
+import { Actor, Collider, CollisionType, EdgeCollider, Vector } from 'excalibur'
+import { Config } from './config'
+import { Drum } from './drum'
 
 export class Wall extends Actor {
-  constructor(begin: Vector, end: Vector) {
+  constructor(pos: Vector) {
     super({
       name: 'Wall',
-      collider: new EdgeCollider({ begin, end }),
+      width: 1,
+      height: 256,
+      pos,
+      // collider: new EdgeCollider({ begin, end }),
       collisionType: CollisionType.Fixed,
+      // collisionGroup: Config.colliders.WallsCollideWith,
     })
+  }
+
+  override onPreCollisionResolve(other: Collider, self: Collider): void {
+    if (self.owner instanceof Drum) {
+      self.owner.vel.x = -self.owner.vel.x
+    }
   }
 }

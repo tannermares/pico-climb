@@ -24,7 +24,7 @@ export class Intro extends Scene {
       new Timer({
         interval: 3000,
         repeats: false,
-        action: () => this.engine.goToScene('start'),
+        action: () => this.engine.goToScene('level'),
       })
     )
   }

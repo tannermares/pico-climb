@@ -3,9 +3,12 @@ import {
   CollisionType,
   Color,
   Engine,
+  ExcaliburGraphicsContext,
   Font,
+  Keys,
   Label,
   Scene,
+  SceneActivationContext,
   vec,
 } from 'excalibur'
 import { Player } from './player'

@@ -3,7 +3,9 @@ import {
   CollisionType,
   Color,
   Engine,
+  ExcaliburGraphicsContext,
   Font,
+  Keys,
   Label,
   Random,
   Scene,
@@ -18,7 +20,7 @@ import { DrumFactory } from './drumFactory'
 import { Drum } from './drum'
 import { DrumSensor } from './drumSensor'
 
-export class MyLevel extends Scene {
+export class Level extends Scene {
   random = new Random()
   pipeFactory = new DrumFactory(this, this.random)
 
@@ -169,5 +171,15 @@ export class MyLevel extends Scene {
           })
         )
       })
+
+    this.engine.input.keyboard.on('press', ({ key }) => {
+      if (key === Keys.P) {
+        if (this.engine.isRunning()) {
+          this.engine.stop()
+        } else {
+          this.engine.start()
+        }
+      }
+    })
   }
 }

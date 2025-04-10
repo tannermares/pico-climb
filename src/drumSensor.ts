@@ -16,7 +16,7 @@ export class DrumSensor extends Actor {
   override onCollisionStart(_self: Collider, other: Collider): void {
     if (other.owner instanceof Drum) {
       const sign = Math.sign(other.owner.vel.x)
-      other.owner.acc.x = 70 * sign * -1
+      other.owner.acc.x = 60 * sign * -1
     }
   }
 }

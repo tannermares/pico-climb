@@ -2,7 +2,7 @@ import { Color, DisplayMode, Engine, FadeInOut, vec } from 'excalibur'
 
 import { GameOver } from './gameOver'
 import { Intro } from './intro'
-import { MyLevel } from './level'
+import { Level } from './level'
 import { loader } from './resources'
 
 const game = new Engine({
@@ -11,12 +11,12 @@ const game = new Engine({
   backgroundColor: Color.Black,
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
-  scenes: { start: MyLevel, intro: Intro, gameOver: GameOver },
+  scenes: { level: Level, intro: Intro, gameOver: GameOver },
   physics: { gravity: vec(0, 100) },
 })
 
 game
-  .start('intro', {
+  .start('level', {
     // loader,
     // inTransition: new FadeInOut({
     //   duration: 1000,

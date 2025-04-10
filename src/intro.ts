@@ -15,7 +15,7 @@ export class Intro extends Scene {
       new Label({
         text: 'HOW HIGH CAN YOU GET',
         font: new Font({ family: 'Galaxian', size: 8 }),
-        pos: vec(60, 128),
+        pos: vec(30, 128),
         color: Color.White,
       })
     )

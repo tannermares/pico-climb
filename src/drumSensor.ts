@@ -9,9 +9,9 @@ export class DrumSensor extends Actor {
       height: 16,
       width: 1,
       pos,
-      color: Color.Yellow,
+      // color: Color.Yellow,
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.DrumGroup,
+      collisionGroup: Config.colliders.DrumSensorGroup,
     })
   }
 

@@ -21,15 +21,18 @@ export class Ladder extends Actor {
       height: 2,
       pos: vec(0, this.height / 2 - 1),
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.LadderGroup,
-      color: Color.Yellow,
+      collisionGroup: Config.colliders.LaddersCanCollideWith,
+      // color: Color.Yellow,
       z: 1,
     })
 
     this.addChild(floorSensor)
 
     floorSensor.on('collisionstart', ({ other, self }) => {
-      if (other.owner.parent instanceof Player) {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.name === 'ladderSensor'
+      ) {
         if (other.owner.parent.climbing) {
           other.owner.parent.canClimbDown = false
           other.owner.parent.stopClimbing()
@@ -50,15 +53,18 @@ export class Ladder extends Actor {
       height: 1,
       pos: vec(0, -this.height / 2 - 1),
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.LadderGroup,
-      color: Color.Yellow,
+      collisionGroup: Config.colliders.LaddersCanCollideWith,
+      // color: Color.Yellow,
       z: 1,
     })
 
     this.addChild(roofSensor)
 
     roofSensor.on('collisionstart', ({ other, self }) => {
-      if (other.owner.parent instanceof Player) {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.name === 'ladderSensor'
+      ) {
         if (other.owner.parent.climbing) {
           other.owner.parent.canClimbUp = false
           other.owner.parent.stopClimbing()

@@ -31,7 +31,7 @@ export class Player extends Actor {
       pos: vec(16, 248),
       width: 8,
       height: 1,
-      color: Color.Brown,
+      // color: Color.Brown,
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
       z: 2,
@@ -42,10 +42,10 @@ export class Player extends Actor {
     this._bodySensor = new Actor({
       name: 'BodySensor',
       width: 8,
-      height: 16,
-      pos: vec(0, -16 / 2),
+      height: 8,
+      pos: vec(0, -7),
       collisionType: CollisionType.Passive,
-      // collisionGroup: Config.colliders.PlayerCanCollideWith,
+      collisionGroup: Config.colliders.PlayerGroup,
       color: Color.White,
       z: -1,
     })
@@ -70,8 +70,8 @@ export class Player extends Actor {
       width: 3,
       height: 1,
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.LaddersSensorCanCollideWith,
-      color: Color.Yellow,
+      collisionGroup: Config.colliders.LadderSensorGroup,
+      // color: Color.Yellow,
       z: 1,
     })
     this.addChild(this._ladderSensor)
@@ -150,12 +150,12 @@ export class Player extends Actor {
       }
 
       // Try to climb up
-      if (!this.jumping && this.canClimbUp && keys.wasPressed(Keys.Up)) {
-        this.startClimbing()
-      }
-
-      // Try to climb down
-      if (!this.jumping && this.canClimbDown && keys.wasPressed(Keys.Down)) {
+      if (
+        !this.jumping &&
+        this.canClimbUp &&
+        (keys.wasPressed(Keys.Up) || keys.wasPressed(Keys.Down)) &&
+        !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
+      ) {
         this.startClimbing()
       }
     }

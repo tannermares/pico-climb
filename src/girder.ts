@@ -3,16 +3,16 @@ import { Player } from './player'
 import { Config } from './config'
 
 export class Girder extends Actor {
-  constructor(pos: Vector) {
+  constructor(pos: Vector, width = 16) {
     super({
       name: 'Girder',
       pos,
-      width: 16,
+      width,
       height: 8,
       color: Color.Red,
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
-      // z: 1,
+      z: 1,
     })
   }
 

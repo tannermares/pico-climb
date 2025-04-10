@@ -87,13 +87,5 @@ export class Ladder extends Actor {
         other.owner.parent.canClimbDown = false
       }
     })
-
-    // this.addChild(
-    //   new DrumTrigger(
-    //     vec(this.width / 2 + 1, -this.height / 2 - 8),
-    //     'down',
-    //     this.level.rand
-    //   )
-    // )
   }
 }

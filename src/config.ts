@@ -1,5 +1,4 @@
 import { CollisionGroup, CollisionGroupManager, vec } from 'excalibur'
-import { Wall } from './wall'
 
 const DrumGroup = CollisionGroupManager.create('drum')
 const FootGroup = CollisionGroupManager.create('foot')

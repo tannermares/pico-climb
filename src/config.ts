@@ -144,11 +144,48 @@ export const Config = {
   drums: [vec(4, 60), vec(12, 60), vec(4, 76), vec(12, 76)],
   walls: [vec(0, 128), vec(224, 128)],
   drumSensors: [
-    vec(192, 80),
-    vec(32, 113),
-    vec(192, 146),
-    vec(32, 179),
     vec(192, 212),
+    vec(32, 179),
+    vec(192, 146),
+    vec(32, 113),
+    vec(192, 80),
+  ],
+  drumDownTriggers: [
+    vec(98, 80),
+    vec(194, 84),
+
+    vec(30, 117),
+    vec(70, 114),
+    vec(167, 108),
+
+    vec(73, 142),
+    vec(121, 145),
+    vec(193, 150),
+
+    vec(30, 183),
+    vec(95, 179),
+
+    vec(89, 210),
+    vec(194, 216),
+  ],
+  drumLeftTriggers: [
+    vec(92, 116),
+    vec(188, 110),
+
+    vec(68, 184),
+    vec(116, 181),
+    vec(188, 176),
+
+    vec(84, 248),
+    vec(188, 242),
+  ],
+  drumRightTriggers: [
+    vec(36, 143),
+    vec(76, 146),
+    vec(172, 152),
+
+    vec(36, 209),
+    vec(100, 213),
   ],
   colliders: {
     DrumGroup,

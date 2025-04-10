@@ -5,6 +5,7 @@ import {
   Font,
   Keys,
   Label,
+  Random,
   Scene,
   vec,
   Vector,
@@ -17,8 +18,10 @@ import { Ladder } from './ladder'
 import { DrumFactory } from './drumFactory'
 import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
+import { DrumTrigger } from './drumTrigger'
 
 export class Level extends Scene {
+  rand = new Random()
   bonus = 4500
   pipeFactory = new DrumFactory(this)
   player = new Player(this)
@@ -96,9 +99,18 @@ export class Level extends Scene {
     Config.girders.forEach((pos) => this.add(new Girder(pos)))
 
     Config.ladders.forEach(({ pos, height }) =>
-      this.add(new Ladder(pos, height))
+      this.add(new Ladder(pos, height, this))
     )
 
+    Config.drumDownTriggers.forEach((pos) =>
+      this.add(new DrumTrigger(pos, 'down', this.rand))
+    )
+    Config.drumLeftTriggers.forEach((pos) =>
+      this.add(new DrumTrigger(pos, 'left', this.rand))
+    )
+    Config.drumRightTriggers.forEach((pos) =>
+      this.add(new DrumTrigger(pos, 'right', this.rand))
+    )
     Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
     Config.drums.forEach((pos) => this.add(this.staticDrum(pos)))
 

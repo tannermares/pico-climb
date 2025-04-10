@@ -13,7 +13,7 @@ export class Girder extends Actor {
       color: Color.fromHex(colors.cherry1),
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
-      z: 1,
+      // z: 1,
     })
   }
 

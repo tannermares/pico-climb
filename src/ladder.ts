@@ -2,9 +2,11 @@ import { Actor, CollisionType, Color, Engine, vec, Vector } from 'excalibur'
 import { Config } from './config'
 import { Player } from './player'
 import { colors } from './colors'
+import { DrumTrigger } from './drumTrigger'
+import { Level } from './level'
 
 export class Ladder extends Actor {
-  constructor(pos: Vector, height: number) {
+  constructor(pos: Vector, height: number, private level: Level) {
     super({
       name: 'Ladder',
       pos,
@@ -85,5 +87,13 @@ export class Ladder extends Actor {
         other.owner.parent.canClimbDown = false
       }
     })
+
+    // this.addChild(
+    //   new DrumTrigger(
+    //     vec(this.width / 2 + 1, -this.height / 2 - 8),
+    //     'down',
+    //     this.level.rand
+    //   )
+    // )
   }
 }

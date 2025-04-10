@@ -24,21 +24,17 @@ const PlayersCanCollideWith = CollisionGroup.collidesWith([
   WallGroup,
   DrumGroup,
 ])
-const WallsCollideWith = CollisionGroup.collidesWith([
-  PlayerGroup,
-  FootGroup,
-  DrumGroup,
-])
+const WallsCollideWith = CollisionGroup.collidesWith([PlayerGroup, FootGroup])
 
 export const Config = {
   girders: [
-    vec(8, 252),
-    vec(24, 252),
-    vec(40, 252),
-    vec(56, 252),
-    vec(72, 252),
-    vec(88, 252),
-    vec(104, 252),
+    // vec(8, 252),
+    // vec(24, 252),
+    // vec(40, 252),
+    // vec(56, 252),
+    // vec(72, 252),
+    // vec(88, 252),
+    // vec(104, 252),
     vec(120, 251),
     vec(136, 250),
     vec(152, 249),
@@ -103,15 +99,15 @@ export const Config = {
     vec(200, 114),
     vec(216, 113),
 
-    vec(8, 88),
-    vec(24, 88),
-    vec(40, 88),
-    vec(56, 88),
-    vec(72, 88),
-    vec(88, 88),
-    vec(104, 88),
-    vec(120, 88),
-    vec(136, 88),
+    // vec(8, 88),
+    // vec(24, 88),
+    // vec(40, 88),
+    // vec(56, 88),
+    // vec(72, 88),
+    // vec(88, 88),
+    // vec(104, 88),
+    // vec(120, 88),
+    // vec(136, 88),
     vec(152, 89),
     vec(168, 90),
     vec(184, 91),
@@ -152,10 +148,13 @@ export const Config = {
   ],
   barrels: [vec(4, 60), vec(12, 60), vec(4, 76), vec(12, 76)],
   walls: [vec(0, 128), vec(224, 128)],
-  // walls: [
-  //   [vec(0, 0), vec(0, 256)],
-  //   [vec(224, 0), vec(224, 256)],
-  // ],
+  drumSensors: [
+    vec(192, 80),
+    vec(32, 113),
+    vec(192, 146),
+    vec(32, 179),
+    vec(192, 212),
+  ],
   colliders: {
     DrumGroup,
     DrumsCanCollideWith,

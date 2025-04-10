@@ -9,7 +9,7 @@ export class DrumFactory {
     this.timer = new Timer({
       random: this.random,
       randomRange: [1000, 3000],
-      interval: 5000,
+      interval: 1000,
       repeats: true,
       action: () => this.spawnDrums(),
     })

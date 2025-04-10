@@ -5,7 +5,6 @@ import {
   Engine,
   Font,
   Label,
-  Random,
   Scene,
   vec,
 } from 'excalibur'
@@ -14,18 +13,9 @@ import { Girder } from './girder'
 import { Config } from './config'
 import { Wall } from './wall'
 import { Ladder } from './ladder'
-import { DrumFactory } from './drumFactory'
-import { Drum } from './drum'
-import { DrumSensor } from './drumSensor'
 
-export class MyLevel extends Scene {
-  random = new Random()
-  pipeFactory = new DrumFactory(this, this.random)
-
+export class GameOver extends Scene {
   override onInitialize(engine: Engine): void {
-    const player = new Player()
-    this.add(player)
-
     Config.walls.forEach((pos) => {
       this.add(new Wall(pos))
     })
@@ -62,10 +52,6 @@ export class MyLevel extends Scene {
 
     Config.ladders.forEach(({ pos, height }) => {
       this.add(new Ladder(pos, height))
-    })
-
-    Config.drumSensors.forEach((pos) => {
-      this.add(new DrumSensor(pos))
     })
 
     Config.barrels.forEach((pos) => {
@@ -136,38 +122,24 @@ export class MyLevel extends Scene {
       })
     )
 
-    this.pipeFactory.start()
-
-    const drumKiller = new Actor({
-      height: 16,
-      width: 1,
-      pos: vec(0, 240),
-      collisionType: CollisionType.Passive,
-    })
-    drumKiller.on('collisionend', ({ other }) => {
-      if (other.owner instanceof Drum) other.owner.kill()
-    })
-    this.add(drumKiller)
-  }
-
-  override onActivate(): void {
-    const player = this.actors.find((actor) => actor instanceof Player)
-
-    this.actors.forEach((actor) => {
-      if (actor.name === 'Lives') actor.kill()
-    })
-
-    if (player)
-      new Array(player.lives).fill(0).forEach((n, i) => {
-        this.add(
-          new Actor({
-            name: 'Lives',
-            height: 8,
-            width: 8,
-            pos: vec(10 * (i + 1) + 2, 24),
-            color: Color.White,
-          })
-        )
+    this.add(
+      new Actor({
+        height: 30,
+        width: 100,
+        pos: vec(110, 180),
+        color: Color.Black,
+        z: 2,
       })
+    )
+
+    this.add(
+      new Label({
+        text: 'GAME OVER',
+        font: new Font({ family: 'Galaxian', size: 8 }),
+        pos: vec(72, 180),
+        color: Color.Azure,
+        z: 3,
+      })
+    )
   }
 }

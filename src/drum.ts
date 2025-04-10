@@ -1,26 +1,21 @@
-import {
-  Actor,
-  Collider,
-  CollisionContact,
-  CollisionType,
-  Color,
-  Side,
-  vec,
-} from 'excalibur'
+import { Actor, clamp, CollisionType, Color, Engine, vec } from 'excalibur'
 import { Config } from './config'
-import { Wall } from './wall'
 
 export class Drum extends Actor {
   constructor() {
     super({
       name: 'Drum',
-      pos: vec(32, 68),
-      radius: 5,
+      pos: vec(50, 79),
+      height: 10,
+      width: 12,
       collisionType: CollisionType.Active,
-      // collisionGroup: Config.colliders.DrumsCanCollideWith,
+      collisionGroup: Config.colliders.DrumGroup,
       color: Color.Orange,
-      vel: vec(8, 0),
-      rotation: 8,
+      vel: vec(65, 0),
     })
+  }
+
+  override onPostUpdate(_engine: Engine): void {
+    this.vel.x = clamp(this.vel.x, -65, 65)
   }
 }

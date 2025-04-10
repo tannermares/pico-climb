@@ -1,13 +1,9 @@
-import {
-  Color,
-  DisplayMode,
-  Engine,
-  FadeInOut,
-  SolverStrategy,
-  vec,
-} from 'excalibur'
-import { loader } from './resources'
+import { Color, DisplayMode, Engine, FadeInOut, vec } from 'excalibur'
+
+import { GameOver } from './gameOver'
+import { Intro } from './intro'
 import { MyLevel } from './level'
+import { loader } from './resources'
 
 const game = new Engine({
   width: 224,
@@ -15,12 +11,12 @@ const game = new Engine({
   backgroundColor: Color.Black,
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
-  scenes: { start: MyLevel },
-  physics: { gravity: vec(0, 400) },
+  scenes: { start: MyLevel, intro: Intro, gameOver: GameOver },
+  physics: { gravity: vec(0, 100) },
 })
 
 game
-  .start('start', {
+  .start('intro', {
     // loader,
     // inTransition: new FadeInOut({
     //   duration: 1000,

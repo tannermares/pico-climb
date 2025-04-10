@@ -8,6 +8,7 @@ import {
   Vector,
 } from 'excalibur'
 import { Config } from './config'
+import { Drum } from './drum'
 
 export class Player extends Actor {
   lives = 3
@@ -41,6 +42,21 @@ export class Player extends Actor {
       z: -1,
     })
 
+    bodySensor.on('collisionstart', ({ other }) => {
+      if (other.owner instanceof Drum) {
+        if (this.lives === 1) {
+          this.scene?.engine.goToScene('gameOver')
+        } else {
+          this.lives -= 1
+          this.scene?.engine.goToScene('intro')
+          this.scene?.actors.forEach((actor) => {
+            if (actor instanceof Drum) actor.kill()
+          })
+          this.reset()
+        }
+      }
+    })
+
     this.addChild(bodySensor)
 
     const ladderSensor = new Actor({
@@ -60,7 +76,7 @@ export class Player extends Actor {
     const keys = engine.input.keyboard
 
     const speed = 50
-    const jumpStrength = 100
+    const jumpStrength = 50
 
     if (this.climbing) {
       this.vel.x = 0
@@ -116,5 +132,9 @@ export class Player extends Actor {
     this.vel = Vector.Zero
     this.body.useGravity = true
     this.body.collisionType = CollisionType.Active
+  }
+
+  reset() {
+    this.pos = vec(16, 248)
   }
 }

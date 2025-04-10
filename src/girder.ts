@@ -36,8 +36,16 @@ export class Girder extends Actor {
     }
   }
 
-  override onCollisionStart(_self: Collider, other: Collider): void {
-    if (other.owner instanceof Player) {
+  override onCollisionStart(
+    _self: Collider,
+    other: Collider,
+    side: Side
+  ): void {
+    if (
+      other.owner instanceof Player &&
+      other.owner.vel.y === 0 &&
+      side === Side.Top
+    ) {
       other.owner.jumping = false
     }
   }

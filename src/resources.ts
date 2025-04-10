@@ -1,8 +1,8 @@
 import { FontSource, ImageSource, Loader } from 'excalibur'
 
 export const Resources = {
-  Sword: new ImageSource('./images/sword.png'),
   Font: new FontSource('/fonts/Galaxian1979.ttf', 'Galaxian'),
+  Pico: new ImageSource('/images/pico.png'),
 } as const
 
 export const loader = new Loader()

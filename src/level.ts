@@ -9,6 +9,7 @@ import {
   Label,
   Random,
   Scene,
+  Side,
   vec,
 } from 'excalibur'
 import { Player } from './player'
@@ -40,8 +41,13 @@ export class Level extends Scene {
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
     })
-    flatTopGirder.on('collisionstart', ({ other }) => {
-      if (other.owner instanceof Player) other.owner.jumping = false
+    flatTopGirder.on('collisionstart', ({ other, side }) => {
+      if (
+        other.owner instanceof Player &&
+        other.owner.vel.y === 0 &&
+        side === Side.Top
+      )
+        other.owner.jumping = false
     })
     this.add(flatTopGirder)
 
@@ -53,8 +59,13 @@ export class Level extends Scene {
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
     })
-    flatFloorGirder.on('collisionstart', ({ other }) => {
-      if (other.owner instanceof Player) other.owner.jumping = false
+    flatFloorGirder.on('collisionstart', ({ other, side }) => {
+      if (
+        other.owner instanceof Player &&
+        other.owner.vel.y === 0 &&
+        side === Side.Top
+      )
+        other.owner.jumping = false
     })
     this.add(flatFloorGirder)
 
@@ -139,17 +150,6 @@ export class Level extends Scene {
     )
 
     this.pipeFactory.start()
-
-    const drumKiller = new Actor({
-      height: 16,
-      width: 1,
-      pos: vec(0, 240),
-      collisionType: CollisionType.Passive,
-    })
-    drumKiller.on('collisionend', ({ other }) => {
-      if (other.owner instanceof Drum) other.owner.kill()
-    })
-    this.add(drumKiller)
   }
 
   override onActivate(): void {

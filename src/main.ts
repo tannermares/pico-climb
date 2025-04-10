@@ -17,7 +17,7 @@ const game = new Engine({
 
 game
   .start('level', {
-    // loader,
+    loader,
     // inTransition: new FadeInOut({
     //   duration: 1000,
     //   direction: 'in',

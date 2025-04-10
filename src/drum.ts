@@ -9,10 +9,12 @@ export class Drum extends Actor {
       height: 10,
       width: 12,
       collisionType: CollisionType.Active,
-      collisionGroup: Config.colliders.DrumGroup,
+      collisionGroup: Config.colliders.DrumsCanCollideWith,
       color: Color.Orange,
       vel: vec(65, 0),
     })
+
+    this.on('exitviewport', () => this.kill())
   }
 
   override onPostUpdate(_engine: Engine): void {

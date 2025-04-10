@@ -4,7 +4,6 @@ const DrumGroup = CollisionGroupManager.create('drum')
 const FootGroup = CollisionGroupManager.create('foot')
 const GirderGroup = CollisionGroupManager.create('girder')
 const LadderGroup = CollisionGroupManager.create('ladder')
-const LadderSensorGroup = CollisionGroupManager.create('ladderSensor')
 const PlayerGroup = CollisionGroupManager.create('player')
 const WallGroup = CollisionGroupManager.create('wall')
 
@@ -12,18 +11,11 @@ const DrumsCanCollideWith = CollisionGroup.collidesWith([
   DrumGroup,
   GirderGroup,
   PlayerGroup,
-  WallGroup,
 ])
 const FeetCanCollideWith = CollisionGroup.collidesWith([GirderGroup, WallGroup])
-const GirdersCanCollideWith = CollisionGroup.collidesWith([FootGroup])
-const LaddersCanCollideWith = CollisionGroup.collidesWith([FootGroup])
 const LaddersSensorCanCollideWith = CollisionGroup.collidesWith([LadderGroup])
-const PlayersCanCollideWith = CollisionGroup.collidesWith([
-  PlayerGroup,
-  WallGroup,
-  DrumGroup,
-])
-const WallsCollideWith = CollisionGroup.collidesWith([PlayerGroup, FootGroup])
+const PlayerCanCollideWith = CollisionGroup.collidesWith([DrumGroup])
+const WallsCollideWith = CollisionGroup.collidesWith([FootGroup])
 
 export const Config = {
   girders: [
@@ -160,13 +152,13 @@ export const Config = {
     FeetCanCollideWith,
     FootGroup,
     GirderGroup,
-    GirdersCanCollideWith,
+    // GirdersCanCollideWith,
     LadderGroup,
-    LaddersCanCollideWith,
-    LadderSensorGroup,
+    // LaddersCanCollideWith,
+    // LadderSensorGroup,
     LaddersSensorCanCollideWith,
     PlayerGroup,
-    PlayersCanCollideWith,
+    PlayerCanCollideWith,
     WallGroup,
     WallsCollideWith,
   },

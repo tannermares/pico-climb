@@ -31,9 +31,6 @@ export class GameOver extends Scene {
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
     })
-    flatTopGirder.on('collisionstart', ({ other }) => {
-      if (other.owner instanceof Player) other.owner.jumping = false
-    })
     this.add(flatTopGirder)
 
     const flatFloorGirder = new Actor({
@@ -43,9 +40,6 @@ export class GameOver extends Scene {
       color: Color.Red,
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
-    })
-    flatFloorGirder.on('collisionstart', ({ other }) => {
-      if (other.owner instanceof Player) other.owner.jumping = false
     })
     this.add(flatFloorGirder)
 

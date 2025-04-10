@@ -1,14 +1,18 @@
 import {
   Actor,
+  Animation,
+  AnimationStrategy,
   CollisionType,
   Color,
   Engine,
   Keys,
+  SpriteSheet,
   vec,
   Vector,
 } from 'excalibur'
 import { Config } from './config'
 import { Drum } from './drum'
+import { Resources } from './resources'
 
 export class Player extends Actor {
   lives = 3
@@ -16,6 +20,10 @@ export class Player extends Actor {
   canClimbDown = false
   climbing = false
   jumping = false
+  _bodySensor!: Actor
+  _ladderSensor!: Actor
+  startSprite!: ex.Sprite
+  runAnimation!: ex.Animation
 
   constructor() {
     super({
@@ -31,18 +39,17 @@ export class Player extends Actor {
   }
 
   override onInitialize(engine: Engine): void {
-    const bodySensor = new Actor({
+    this._bodySensor = new Actor({
       name: 'BodySensor',
       width: 8,
       height: 16,
       pos: vec(0, -16 / 2),
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.PlayersCanCollideWith,
+      // collisionGroup: Config.colliders.PlayerCanCollideWith,
       color: Color.White,
       z: -1,
     })
-
-    bodySensor.on('collisionstart', ({ other }) => {
+    this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
         if (this.lives === 1) {
           this.scene?.engine.goToScene('gameOver')
@@ -56,10 +63,9 @@ export class Player extends Actor {
         }
       }
     })
+    this.addChild(this._bodySensor)
 
-    this.addChild(bodySensor)
-
-    const ladderSensor = new Actor({
+    this._ladderSensor = new Actor({
       name: 'ladderSensor',
       width: 3,
       height: 1,
@@ -68,15 +74,44 @@ export class Player extends Actor {
       color: Color.Yellow,
       z: 1,
     })
+    this.addChild(this._ladderSensor)
 
-    this.addChild(ladderSensor)
+    // Slice up image into a sprite sheet
+    const spriteSheet = SpriteSheet.fromImageSource({
+      image: Resources.Pico,
+      grid: {
+        rows: 1,
+        columns: 3,
+        spriteWidth: 16,
+        spriteHeight: 16,
+      },
+    })
+
+    this.startSprite = spriteSheet.getSprite(0, 0)
+    this.runAnimation = Animation.fromSpriteSheet(
+      spriteSheet,
+      [1, 2],
+      80,
+      AnimationStrategy.Loop
+    )
+    this._bodySensor.graphics.add('start', this.startSprite)
+    this._bodySensor.graphics.add('run', this.runAnimation)
+    this._bodySensor.graphics.add('jump', this.startSprite)
+
+    this._bodySensor.graphics.use('start')
+    this._bodySensor.graphics.flipHorizontal = true
   }
 
   override onPreUpdate(engine: Engine): void {
     const keys = engine.input.keyboard
 
-    const speed = 50
+    const speed = 30
     const jumpStrength = 50
+
+    if (this.jumping) {
+      this._bodySensor.graphics.use('jump')
+      return
+    }
 
     if (this.climbing) {
       this.vel.x = 0
@@ -92,9 +127,14 @@ export class Player extends Actor {
       // Normal Movement
       if (keys.isHeld(Keys.Right)) {
         this.vel.x = speed
+        this._bodySensor.graphics.use('run')
+        this._bodySensor.graphics.flipHorizontal = true
       } else if (keys.isHeld(Keys.Left)) {
+        this._bodySensor.graphics.use('run')
+        this._bodySensor.graphics.flipHorizontal = false
         this.vel.x = -speed
       } else {
+        this._bodySensor.graphics.use('start')
         this.vel.x = 0
       }
 

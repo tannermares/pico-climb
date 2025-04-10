@@ -10,7 +10,7 @@ export class Wall extends Actor {
       height: 256,
       pos,
       collisionType: CollisionType.Fixed,
-      collisionGroup: Config.colliders.WallsCollideWith,
+      collisionGroup: Config.colliders.WallGroup,
     })
   }
 }

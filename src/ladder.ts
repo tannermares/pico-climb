@@ -22,13 +22,13 @@ export class Ladder extends Actor {
       pos: vec(0, this.height / 2 - 1),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow,
+      // color: Color.Yellow, // DEBUG
       z: 1,
     })
 
     this.addChild(floorSensor)
 
-    floorSensor.on('collisionstart', ({ other, self }) => {
+    floorSensor.on('collisionstart', ({ other }) => {
       if (
         other.owner.parent instanceof Player &&
         other.owner.name === 'ladderSensor'
@@ -41,8 +41,11 @@ export class Ladder extends Actor {
       }
     })
 
-    floorSensor.on('collisionend', ({ other, self }) => {
-      if (other.owner.parent instanceof Player) {
+    floorSensor.on('collisionend', ({ other }) => {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.name === 'ladderSensor'
+      ) {
         other.owner.parent.canClimbUp = false
       }
     })
@@ -54,13 +57,13 @@ export class Ladder extends Actor {
       pos: vec(0, -this.height / 2 - 1),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow,
+      // color: Color.Yellow, // DEBUG
       z: 1,
     })
 
     this.addChild(roofSensor)
 
-    roofSensor.on('collisionstart', ({ other, self }) => {
+    roofSensor.on('collisionstart', ({ other }) => {
       if (
         other.owner.parent instanceof Player &&
         other.owner.name === 'ladderSensor'
@@ -73,8 +76,11 @@ export class Ladder extends Actor {
       }
     })
 
-    roofSensor.on('collisionend', ({ other, self }) => {
-      if (other.owner.parent instanceof Player) {
+    roofSensor.on('collisionend', ({ other }) => {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.name === 'ladderSensor'
+      ) {
         other.owner.parent.canClimbDown = false
       }
     })

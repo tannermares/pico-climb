@@ -31,7 +31,7 @@ export class Player extends Actor {
       pos: vec(16, 248),
       width: 8,
       height: 1,
-      // color: Color.Brown,
+      // color: Color.Brown, // DEBUG
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
       z: 2,
@@ -46,7 +46,7 @@ export class Player extends Actor {
       pos: vec(0, -7),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.PlayerGroup,
-      color: Color.White,
+      // color: Color.White, // DEBUG
       z: -1,
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
@@ -71,7 +71,7 @@ export class Player extends Actor {
       height: 1,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LadderSensorGroup,
-      // color: Color.Yellow,
+      // color: Color.Yellow, // DEBUG
       z: 1,
     })
     this.addChild(this._ladderSensor)
@@ -91,7 +91,7 @@ export class Player extends Actor {
     this.runAnimation = Animation.fromSpriteSheet(
       spriteSheet,
       [1, 2],
-      80,
+      100,
       AnimationStrategy.Loop
     )
     this._bodySensor.graphics.add('start', this.startSprite)

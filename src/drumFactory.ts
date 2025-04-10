@@ -1,14 +1,13 @@
-import { Random, Timer, vec } from 'excalibur'
-import { MyLevel } from './level'
+import { Timer, vec } from 'excalibur'
+
 import { Drum } from './drum'
+import { Level } from './level'
 
 export class DrumFactory {
   private timer: Timer
 
-  constructor(private level: MyLevel, private random: Random) {
+  constructor(private level: Level) {
     this.timer = new Timer({
-      // random: this.random,
-      // randomRange: [1000, 3000],
       interval: 3000,
       repeats: true,
       action: () => this.spawnDrums(),

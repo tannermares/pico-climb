@@ -11,6 +11,7 @@ const WallGroup = CollisionGroupManager.create('wall')
 
 const DrumsCanCollideWith = CollisionGroup.collidesWith([
   DrumSensorGroup,
+  LadderGroup,
   GirderGroup,
   PlayerGroup,
 ])

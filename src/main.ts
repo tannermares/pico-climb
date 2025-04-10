@@ -1,4 +1,4 @@
-import { Color, DisplayMode, Engine, FadeInOut, vec } from 'excalibur'
+import { Color, DisplayMode, Engine, vec } from 'excalibur'
 
 import { GameOver } from './gameOver'
 import { Intro } from './intro'
@@ -16,13 +16,4 @@ const game = new Engine({
   physics: { gravity: vec(0, 100) },
 })
 
-game
-  .start('level', {
-    loader,
-    // inTransition: new FadeInOut({
-    //   duration: 1000,
-    //   direction: 'in',
-    //   color: Color.ExcaliburBlue,
-    // }),
-  })
-  .then(() => {})
+game.start('level', { loader })

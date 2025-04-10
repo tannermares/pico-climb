@@ -13,8 +13,10 @@ import {
 import { Config } from './config'
 import { Drum } from './drum'
 import { Resources } from './resources'
+import { Level } from './level'
 
 export class Player extends Actor {
+  playing = false
   lives = 3
   canClimbUp = false
   canClimbDown = false
@@ -25,7 +27,7 @@ export class Player extends Actor {
   startSprite!: ex.Sprite
   runAnimation!: ex.Animation
 
-  constructor() {
+  constructor(private level: Level) {
     super({
       name: 'PlayerFeet',
       pos: vec(16, 248),
@@ -46,19 +48,19 @@ export class Player extends Actor {
       pos: vec(0, -7),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.PlayerGroup,
-      // color: Color.White, // DEBUG
+      color: Color.White, // DEBUG
       z: -1,
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
         if (this.lives === 1) {
-          this.scene?.engine.goToScene('gameOver')
+          this.level.engine.goToScene('gameOver')
+          this.level.pipeFactory.reset()
+          this.reset()
         } else {
           this.lives -= 1
-          this.scene?.engine.goToScene('intro')
-          this.scene?.actors.forEach((actor) => {
-            if (actor instanceof Drum) actor.kill()
-          })
+          this.level.engine.goToScene('intro')
+          this.level.pipeFactory.reset()
           this.reset()
         }
       }
@@ -102,7 +104,9 @@ export class Player extends Actor {
     this._bodySensor.graphics.flipHorizontal = true
   }
 
-  override onPreUpdate(engine: Engine): void {
+  override onPostUpdate(engine: Engine): void {
+    if (!this.playing) return
+
     const keys = engine.input.keyboard
 
     const speed = 30
@@ -139,12 +143,7 @@ export class Player extends Actor {
       }
 
       // Jump
-      if (
-        !this.climbing &&
-        !this.jumping &&
-        this.vel.y === 0 &&
-        keys.wasPressed(Keys.X)
-      ) {
+      if (!this.jumping && this.vel.y === 0 && keys.wasPressed(Keys.X)) {
         this.vel.y = -jumpStrength
         this.jumping = true
       }
@@ -174,7 +173,20 @@ export class Player extends Actor {
     this.body.collisionType = CollisionType.Active
   }
 
+  start() {
+    this.playing = true
+    this.pos = vec(16, 248)
+  }
+
+  stop() {
+    this.playing = false
+    this.vel = Vector.Zero
+    this.acc = Vector.Zero
+  }
+
   reset() {
     this.pos = vec(16, 248)
+    this.graphics.flipHorizontal = true
+    this.stop()
   }
 }

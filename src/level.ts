@@ -5,9 +5,9 @@ import {
   Font,
   Keys,
   Label,
-  Random,
   Scene,
   vec,
+  Vector,
 } from 'excalibur'
 import { Player } from './player'
 import { Girder } from './girder'
@@ -19,12 +19,75 @@ import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
 
 export class Level extends Scene {
-  random = new Random()
-  pipeFactory = new DrumFactory(this, this.random)
+  bonus = 4500
+  pipeFactory = new DrumFactory(this)
+  player = new Player(this)
+  dk = new Actor({
+    height: 32,
+    width: 32,
+    pos: vec(32, 68),
+    color: Color.fromHex(colors.clay1),
+  })
+  pauline = new Actor({
+    height: 24,
+    width: 16,
+    pos: vec(72, 40),
+    color: Color.fromHex(colors.purple3),
+  })
+  helpLabel = new Label({
+    text: 'HELP!',
+    font: new Font({ family: 'Galaxian', size: 4 }),
+    pos: vec(80, 28),
+    color: Color.fromHex(colors.blue3),
+  })
+  font = new Font({ family: 'Galaxian', size: 8 })
+  otherFont = new Font({ family: 'comic-sans', size: 8 })
+  highScoreLabel = new Label({
+    text: 'HIGH SCORE',
+    font: this.font,
+    pos: vec(72, 0),
+    color: Color.fromHex(colors.cherry1),
+  })
+  currentScore = new Label({
+    text: '000000',
+    font: this.font,
+    pos: vec(8, 8),
+    color: Color.White,
+  })
+  highScore = new Label({
+    text: '000000',
+    font: this.font,
+    pos: vec(88, 8),
+    color: Color.White,
+  })
+  levelLabel = new Label({
+    text: 'L=01',
+    font: this.font,
+    pos: vec(172, 24),
+    color: Color.fromHex(colors.blue1),
+  })
+  bonusLabel = new Label({
+    text: 'BONUS',
+    font: this.otherFont,
+    pos: vec(172, 32),
+    color: Color.fromHex(colors.blue1),
+  })
+  bonusScore = new Label({
+    text: `${this.bonus}`,
+    font: this.font,
+    pos: vec(172, 44),
+    color: Color.fromHex(colors.blue3),
+  })
+  staticDrum = (pos: Vector) =>
+    new Actor({
+      height: 16,
+      width: 8,
+      pos,
+      color: Color.fromHex(colors.orange1),
+    })
 
   override onInitialize(engine: Engine): void {
-    const player = new Player()
-    this.add(player)
+    this.add(this.player)
 
     Config.walls.forEach((pos) => this.add(new Wall(pos)))
 
@@ -37,69 +100,32 @@ export class Level extends Scene {
     )
 
     Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
-    Config.drums.forEach((pos) =>
-      this.add(
-        new Actor({
-          height: 16,
-          width: 8,
-          pos,
-          color: Color.fromHex(colors.orange1),
-        })
-      )
-    )
+    Config.drums.forEach((pos) => this.add(this.staticDrum(pos)))
 
     // Placeholder DK and Pauline
-    this.add(
-      new Actor({
-        height: 32,
-        width: 32,
-        pos: vec(32, 68),
-        color: Color.fromHex(colors.clay1),
-      })
-    )
-    this.add(
-      new Actor({
-        height: 24,
-        width: 16,
-        pos: vec(72, 40),
-        color: Color.fromHex(colors.purple3),
-      })
-    )
+    this.add(this.dk)
+    this.add(this.pauline)
 
     // Labels
-    this.add(
-      new Label({
-        text: 'HELP!',
-        font: new Font({ family: 'Galaxian', size: 4 }),
-        pos: vec(80, 28),
-        color: Color.fromHex(colors.blue3),
-      })
-    )
-    const font = new Font({ family: 'Galaxian', size: 8 })
-    this.add(
-      new Label({
-        text: 'HIGH SCORE',
-        font,
-        pos: vec(72, 0),
-        color: Color.fromHex(colors.cherry1),
-      })
-    )
-    this.add(
-      new Label({ text: '000000', font, pos: vec(8, 8), color: Color.White })
-    )
-    this.add(
-      new Label({ text: '000000', font, pos: vec(88, 8), color: Color.White })
-    )
-    this.add(
-      new Label({
-        text: 'L=01',
-        font,
-        pos: vec(172, 24),
-        color: Color.fromHex(colors.blue1),
-      })
-    )
+    this.add(this.helpLabel)
+    this.add(this.highScoreLabel)
+    this.add(this.currentScore)
+    this.add(this.highScore)
+    this.add(this.levelLabel)
+    this.add(this.bonusLabel)
+    this.add(this.bonusScore)
 
     this.pipeFactory.start()
+
+    engine.input.keyboard.on('press', ({ key }) => {
+      if (key === Keys.P) {
+        if (engine.isRunning()) {
+          engine.stop()
+        } else {
+          engine.start()
+        }
+      }
+    })
   }
 
   override onActivate(): void {
@@ -109,7 +135,8 @@ export class Level extends Scene {
       if (actor.name === 'Lives') actor.kill()
     })
 
-    if (player)
+    if (player) {
+      player.start()
       new Array(player.lives).fill(0).forEach((n, i) => {
         this.add(
           new Actor({
@@ -121,15 +148,6 @@ export class Level extends Scene {
           })
         )
       })
-
-    this.engine.input.keyboard.on('press', ({ key }) => {
-      if (key === Keys.P) {
-        if (this.engine.isRunning()) {
-          this.engine.stop()
-        } else {
-          this.engine.start()
-        }
-      }
-    })
+    }
   }
 }

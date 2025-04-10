@@ -7,6 +7,7 @@ import {
   Label,
   Random,
   Scene,
+  Timer,
   vec,
   Vector,
 } from 'excalibur'
@@ -22,7 +23,7 @@ import { DrumTrigger } from './drumTrigger'
 
 export class Level extends Scene {
   rand = new Random()
-  bonus = 4500
+  bonus = 5000
   pipeFactory = new DrumFactory(this)
   player = new Player(this)
   dk = new Actor({
@@ -81,6 +82,14 @@ export class Level extends Scene {
     pos: vec(172, 44),
     color: Color.fromHex(colors.blue3),
   })
+  bonusTimer = new Timer({
+    interval: 3000,
+    repeats: true,
+    action: () => {
+      this.bonus -= 100
+      this.bonusScore.text = `${this.bonus}`
+    },
+  })
   staticDrum = (pos: Vector) =>
     new Actor({
       height: 16,
@@ -127,6 +136,8 @@ export class Level extends Scene {
     this.add(this.bonusLabel)
     this.add(this.bonusScore)
 
+    this.add(this.bonusTimer)
+    this.bonusTimer.start()
     this.pipeFactory.start()
 
     engine.input.keyboard.on('press', ({ key }) => {
@@ -146,6 +157,10 @@ export class Level extends Scene {
     this.actors.forEach((actor) => {
       if (actor.name === 'Lives') actor.kill()
     })
+
+    this.bonus = 5000
+    this.bonusScore.text = `${5000}`
+    this.bonusTimer.reset()
 
     if (player) {
       player.start()

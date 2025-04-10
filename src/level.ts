@@ -46,6 +46,12 @@ export class Level extends Scene {
   })
   font = new Font({ family: 'Galaxian', size: 8 })
   otherFont = new Font({ family: 'comic-sans', size: 8 })
+  oneUpLabel = new Label({
+    text: '1UP',
+    font: this.font,
+    pos: vec(24, 0),
+    color: Color.fromHex(colors.cherry1),
+  })
   highScoreLabel = new Label({
     text: 'HIGH SCORE',
     font: this.font,
@@ -81,6 +87,13 @@ export class Level extends Scene {
     font: this.font,
     pos: vec(172, 44),
     color: Color.fromHex(colors.blue3),
+  })
+  oneUpTimer = new Timer({
+    interval: 300,
+    repeats: true,
+    action: () => {
+      this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
+    },
   })
   bonusTimer = new Timer({
     interval: 3000,
@@ -129,6 +142,7 @@ export class Level extends Scene {
 
     // Labels
     this.add(this.helpLabel)
+    this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
     this.add(this.currentScore)
     this.add(this.highScore)
@@ -137,6 +151,9 @@ export class Level extends Scene {
     this.add(this.bonusScore)
 
     this.add(this.bonusTimer)
+    this.add(this.oneUpTimer)
+
+    this.oneUpTimer.start()
     this.bonusTimer.start()
     this.pipeFactory.start()
 

@@ -9,7 +9,7 @@ export class Ladder extends Actor {
       pos,
       width: 8,
       height,
-      color: Color.Azure,
+      color: Color.fromHex('#0099db'),
       collisionType: CollisionType.PreventCollision,
     })
   }

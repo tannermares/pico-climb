@@ -9,7 +9,7 @@ export class Girder extends Actor {
       pos,
       width,
       height: 8,
-      color: Color.Red,
+      color: Color.fromHex('#ff0044'),
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
       z: 1,

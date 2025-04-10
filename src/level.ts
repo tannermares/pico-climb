@@ -37,15 +37,32 @@ export class Level extends Scene {
 
     Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
     Config.drums.forEach((pos) =>
-      this.add(new Actor({ height: 16, width: 8, pos, color: Color.Orange }))
+      this.add(
+        new Actor({
+          height: 16,
+          width: 8,
+          pos,
+          color: Color.fromHex('#f77622'),
+        })
+      )
     )
 
     // Placeholder DK and Pauline
     this.add(
-      new Actor({ height: 32, width: 32, pos: vec(32, 68), color: Color.Brown })
+      new Actor({
+        height: 32,
+        width: 32,
+        pos: vec(32, 68),
+        color: Color.fromHex('#be4a2f'),
+      })
     )
     this.add(
-      new Actor({ height: 24, width: 16, pos: vec(72, 40), color: Color.Pink })
+      new Actor({
+        height: 24,
+        width: 16,
+        pos: vec(72, 40),
+        color: Color.fromHex('#f6757a'),
+      })
     )
 
     // Labels
@@ -54,12 +71,17 @@ export class Level extends Scene {
         text: 'HELP!',
         font: new Font({ family: 'Galaxian', size: 4 }),
         pos: vec(80, 28),
-        color: Color.Cyan,
+        color: Color.fromHex('#2ce8f5'),
       })
     )
     const font = new Font({ family: 'Galaxian', size: 8 })
     this.add(
-      new Label({ text: 'HIGH SCORE', font, pos: vec(72, 0), color: Color.Red })
+      new Label({
+        text: 'HIGH SCORE',
+        font,
+        pos: vec(72, 0),
+        color: Color.fromHex('#ff0044'),
+      })
     )
     this.add(
       new Label({ text: '000000', font, pos: vec(8, 8), color: Color.White })
@@ -68,7 +90,12 @@ export class Level extends Scene {
       new Label({ text: '000000', font, pos: vec(88, 8), color: Color.White })
     )
     this.add(
-      new Label({ text: 'L=01', font, pos: vec(172, 24), color: Color.Blue })
+      new Label({
+        text: 'L=01',
+        font,
+        pos: vec(172, 24),
+        color: Color.fromHex('#124e89'),
+      })
     )
 
     this.pipeFactory.start()

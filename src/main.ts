@@ -8,7 +8,7 @@ import { loader } from './resources'
 const game = new Engine({
   width: 224,
   height: 256,
-  backgroundColor: Color.Black,
+  backgroundColor: Color.fromHex('#181425'),
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
   scenes: { level: Level, intro: Intro, gameOver: GameOver },

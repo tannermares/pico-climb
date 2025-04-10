@@ -1,14 +1,8 @@
 
 body {
-  background-color: gray;
+  background-color: #181425;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    /* background-color: black; */
-  }
 }

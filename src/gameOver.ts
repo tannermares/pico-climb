@@ -19,45 +19,23 @@ import { Ladder } from './ladder'
 
 export class GameOver extends Scene {
   override onInitialize(engine: Engine): void {
-    Config.walls.forEach((pos) => {
-      this.add(new Wall(pos))
-    })
+    Config.walls.forEach((pos) => this.add(new Wall(pos)))
 
-    const flatTopGirder = new Actor({
-      height: 8,
-      width: 144,
-      pos: vec(72, 88),
-      color: Color.Red,
-      collisionType: CollisionType.Fixed,
-      collisionGroup: Config.colliders.GirderGroup,
-    })
-    this.add(flatTopGirder)
+    this.add(new Girder(vec(72, 88), 144))
+    this.add(new Girder(vec(56, 252), 112))
 
-    const flatFloorGirder = new Actor({
-      height: 8,
-      width: 112,
-      pos: vec(56, 252),
-      color: Color.Red,
-      collisionType: CollisionType.Fixed,
-      collisionGroup: Config.colliders.GirderGroup,
-    })
-    this.add(flatFloorGirder)
-
-    Config.girders.forEach((pos) => {
-      this.add(new Girder(pos))
-    })
-
-    Config.ladders.forEach(({ pos, height }) => {
+    Config.girders.forEach((pos) => this.add(new Girder(pos)))
+    Config.ladders.forEach(({ pos, height }) =>
       this.add(new Ladder(pos, height))
-    })
+    )
 
-    Config.barrels.forEach((pos) => {
+    Config.drums.forEach((pos) => {
       this.add(
         new Actor({
           height: 16,
           width: 8,
           pos,
-          color: Color.Orange,
+          color: Color.fromHex('#f77622'),
         })
       )
     })
@@ -124,7 +102,7 @@ export class GameOver extends Scene {
         height: 30,
         width: 100,
         pos: vec(110, 180),
-        color: Color.Black,
+        color: Color.fromHex('#181425'),
         z: 2,
       })
     )

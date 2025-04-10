@@ -10,7 +10,7 @@ export class Drum extends Actor {
       width: 12,
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
-      color: Color.Orange,
+      color: Color.fromHex('#f77622'),
       vel: vec(65, 0),
     })
 

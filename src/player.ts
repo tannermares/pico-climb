@@ -78,10 +78,10 @@ export class Player extends Actor {
 
     // Slice up image into a sprite sheet
     const spriteSheet = SpriteSheet.fromImageSource({
-      image: Resources.Pico,
+      image: Resources.SpriteSheet,
       grid: {
-        rows: 1,
-        columns: 3,
+        rows: 16,
+        columns: 16,
         spriteWidth: 16,
         spriteHeight: 16,
       },

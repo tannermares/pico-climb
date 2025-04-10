@@ -16,6 +16,7 @@ import { Girder } from './girder'
 import { Config } from './config'
 import { Wall } from './wall'
 import { Ladder } from './ladder'
+import { colors } from './colors'
 
 export class GameOver extends Scene {
   override onInitialize(engine: Engine): void {
@@ -35,7 +36,7 @@ export class GameOver extends Scene {
           height: 16,
           width: 8,
           pos,
-          color: Color.fromHex('#f77622'),
+          color: Color.fromHex(colors.orange1),
         })
       )
     })
@@ -102,7 +103,7 @@ export class GameOver extends Scene {
         height: 30,
         width: 100,
         pos: vec(110, 180),
-        color: Color.fromHex('#181425'),
+        color: Color.fromHex(colors.gray6),
         z: 2,
       })
     )

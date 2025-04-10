@@ -1,6 +1,7 @@
 import { Actor, CollisionType, Color, Engine, vec, Vector } from 'excalibur'
 import { Config } from './config'
 import { Player } from './player'
+import { colors } from './colors'
 
 export class Ladder extends Actor {
   constructor(pos: Vector, height: number) {
@@ -9,7 +10,7 @@ export class Ladder extends Actor {
       pos,
       width: 8,
       height,
-      color: Color.fromHex('#0099db'),
+      color: Color.fromHex(colors.blue2),
       collisionType: CollisionType.PreventCollision,
     })
   }

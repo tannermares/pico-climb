@@ -1,6 +1,7 @@
 import { Actor, Collider, CollisionType, Color, Side, Vector } from 'excalibur'
 import { Player } from './player'
 import { Config } from './config'
+import { colors } from './colors'
 
 export class Girder extends Actor {
   constructor(pos: Vector, width = 16) {
@@ -9,7 +10,7 @@ export class Girder extends Actor {
       pos,
       width,
       height: 8,
-      color: Color.fromHex('#ff0044'),
+      color: Color.fromHex(colors.cherry1),
       collisionType: CollisionType.Fixed,
       collisionGroup: Config.colliders.GirderGroup,
       z: 1,

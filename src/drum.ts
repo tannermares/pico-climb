@@ -1,5 +1,6 @@
 import { Actor, clamp, CollisionType, Color, Engine, vec } from 'excalibur'
 import { Config } from './config'
+import { colors } from './colors'
 
 export class Drum extends Actor {
   constructor() {
@@ -10,7 +11,7 @@ export class Drum extends Actor {
       width: 12,
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
-      color: Color.fromHex('#f77622'),
+      color: Color.fromHex(colors.orange1),
       vel: vec(65, 0),
     })
 

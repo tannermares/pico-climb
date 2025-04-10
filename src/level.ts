@@ -16,6 +16,7 @@ import { Wall } from './wall'
 import { Ladder } from './ladder'
 import { DrumFactory } from './drumFactory'
 import { DrumSensor } from './drumSensor'
+import { colors } from './colors'
 
 export class Level extends Scene {
   random = new Random()
@@ -42,7 +43,7 @@ export class Level extends Scene {
           height: 16,
           width: 8,
           pos,
-          color: Color.fromHex('#f77622'),
+          color: Color.fromHex(colors.orange1),
         })
       )
     )
@@ -53,7 +54,7 @@ export class Level extends Scene {
         height: 32,
         width: 32,
         pos: vec(32, 68),
-        color: Color.fromHex('#be4a2f'),
+        color: Color.fromHex(colors.clay1),
       })
     )
     this.add(
@@ -61,7 +62,7 @@ export class Level extends Scene {
         height: 24,
         width: 16,
         pos: vec(72, 40),
-        color: Color.fromHex('#f6757a'),
+        color: Color.fromHex(colors.purple3),
       })
     )
 
@@ -71,7 +72,7 @@ export class Level extends Scene {
         text: 'HELP!',
         font: new Font({ family: 'Galaxian', size: 4 }),
         pos: vec(80, 28),
-        color: Color.fromHex('#2ce8f5'),
+        color: Color.fromHex(colors.blue3),
       })
     )
     const font = new Font({ family: 'Galaxian', size: 8 })
@@ -80,7 +81,7 @@ export class Level extends Scene {
         text: 'HIGH SCORE',
         font,
         pos: vec(72, 0),
-        color: Color.fromHex('#ff0044'),
+        color: Color.fromHex(colors.cherry1),
       })
     )
     this.add(
@@ -94,7 +95,7 @@ export class Level extends Scene {
         text: 'L=01',
         font,
         pos: vec(172, 24),
-        color: Color.fromHex('#124e89'),
+        color: Color.fromHex(colors.blue1),
       })
     )
 

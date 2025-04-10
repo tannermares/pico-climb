@@ -139,4 +139,12 @@ export class GameOver extends Scene {
       })
     )
   }
+
+  override onActivate(): void {
+    this.engine.input.keyboard.on('press', ({ key }) => {
+      if (key === Keys.Enter) {
+        this.engine.goToScene('intro')
+      }
+    })
+  }
 }

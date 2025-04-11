@@ -29,6 +29,8 @@ import { Drum } from './drum'
 
 export class Level extends Scene {
   rand = new Random()
+  score = 0
+  highScore = 0
   bonus = 5000
   drumFactory = new DrumFactory(this)
   player = new Player(this)
@@ -45,14 +47,14 @@ export class Level extends Scene {
     pos: vec(72, 0),
     color: Color.fromHex(colors.blue2),
   })
-  currentScore = new Label({
-    text: '000000',
+  scoreCard = new Label({
+    text: String(this.score).padStart(6, '0'),
     font: this.font,
     pos: vec(8, 8),
     color: Color.White,
   })
-  highScore = new Label({
-    text: '000000',
+  highScoreCard = new Label({
+    text: String(this.highScore).padStart(6, '0'),
     font: this.font,
     pos: vec(88, 8),
     color: Color.White,
@@ -98,9 +100,9 @@ export class Level extends Scene {
     )
 
     // Drums
-    Config.drumDownTriggers.forEach((pos) =>
-      this.add(new DrumTrigger(pos, 'down', this.rand))
-    )
+    // Config.drumDownTriggers.forEach((pos) =>
+    //   this.add(new DrumTrigger(pos, 'down', this.rand))
+    // )
     Config.drumLeftTriggers.forEach((pos) =>
       this.add(new DrumTrigger(pos, 'left', this.rand))
     )
@@ -112,14 +114,23 @@ export class Level extends Scene {
     this.add(this.drumCloset)
     Config.drums.forEach((pos) => this.add(new StaticDrum(pos)))
 
-    // this.add(new Drum())
-    // this.drumFactory.start()
+    // this.add(new Drum(this))
+    this.drumFactory.start()
 
     // Labels
     this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
-    this.add(this.currentScore)
-    this.add(this.highScore)
+    this.add(this.scoreCard)
+    this.add(this.highScoreCard)
+
+    const highScore = localStorage.getItem('highScore')
+    if (highScore) {
+      this.highScore = +highScore
+      this.setHighScore(this.highScore)
+    } else {
+      this.setHighScore(0)
+    }
+
     this.add(this.bonusLabel)
     this.add(this.bonusScore)
 
@@ -128,6 +139,7 @@ export class Level extends Scene {
 
     this.oneUpTimer.start()
     this.bonusTimer.start()
+    this.player.start()
 
     engine.input.keyboard.on('press', ({ key }) => {
       if (key === Keys.P) {
@@ -163,5 +175,19 @@ export class Level extends Scene {
         this.add(new PlayerLife(vec(8 * i + 12, 24)))
       })
     }
+  }
+
+  incrementScore(score: number) {
+    this.score += score
+    this.scoreCard.text = String(this.score).padStart(6, '0')
+    this.setHighScore(this.score)
+  }
+
+  setHighScore(score: number) {
+    if (score > this.highScore) {
+      localStorage.setItem('highScore', this.score.toString())
+      this.highScore = score
+    }
+    this.highScoreCard.text = String(this.highScore).padStart(6, '0')
   }
 }

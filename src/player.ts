@@ -41,6 +41,8 @@ export class Player extends Actor {
   )
   static climbSprite1 = Player.spriteSheet.getSprite(3, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(4, 0)
+  // static startingPoint = vec(16, 248)
+  static startingPoint = vec(200, 80) // Score testing
 
   playing = false
   lives = 3
@@ -56,7 +58,7 @@ export class Player extends Actor {
   constructor(private level: Level) {
     super({
       name: 'PlayerFeet',
-      pos: vec(16, 244),
+      pos: Player.startingPoint,
       width: 5,
       height: 2,
       // color: Color.Brown, // DEBUG
@@ -220,7 +222,7 @@ export class Player extends Actor {
 
   start() {
     this.playing = true
-    this.pos = vec(16, 244)
+    this.pos = Player.startingPoint
   }
 
   stop() {
@@ -230,7 +232,7 @@ export class Player extends Actor {
   }
 
   reset() {
-    this.pos = vec(16, 244)
+    this.pos = Player.startingPoint
     this.graphics.flipHorizontal = true
     this.stop()
   }

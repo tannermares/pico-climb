@@ -17,7 +17,7 @@ export class DrumFactory {
   }
 
   spawnDrums() {
-    this.level.add(new Drum())
+    this.level.add(new Drum(this.level))
   }
 
   start() {

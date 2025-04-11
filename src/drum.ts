@@ -6,6 +6,7 @@ import {
   CollisionType,
   Color,
   Engine,
+  Label,
   range,
   SpriteSheet,
   vec,
@@ -13,6 +14,8 @@ import {
 import { Config } from './config'
 import { colors } from './colors'
 import { Resources } from './resources'
+import { Player } from './player'
+import { Level } from './level'
 
 export class Drum extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -44,7 +47,7 @@ export class Drum extends Actor {
     AnimationStrategy.Loop
   )
 
-  constructor() {
+  constructor(private level: Level) {
     super({
       name: 'Drum',
       pos: vec(20, 79),
@@ -62,6 +65,36 @@ export class Drum extends Actor {
     this.graphics.add('roll', Drum.rollAnimation)
     this.graphics.add('rollDown', Drum.rollDownAnimation)
     this.graphics.use('roll')
+
+    const scoreSensor = new Actor({
+      name: 'ScoreSensor',
+      width: 2,
+      height: 8,
+      pos: vec(0, -this.height + 2),
+      collisionType: CollisionType.Passive,
+      collisionGroup: Config.colliders.DrumsCanCollideWith,
+      // color: Color.Yellow, // DEBUG
+      z: 1,
+    })
+    scoreSensor.on('collisionstart', ({ other }) => {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.parent.jumping &&
+        other.owner.name === 'BodySensor'
+      ) {
+        this.level.incrementScore(100)
+        Resources.Score.play()
+        const scoreLabel = new Label({
+          pos: vec(other.owner.parent.pos.x - 10, other.owner.parent.pos.y + 3),
+          text: '100',
+          color: Color.White,
+        })
+        this.level.add(scoreLabel)
+        this.level.engine.clock.schedule(() => scoreLabel.kill(), 1000)
+      }
+    })
+
+    this.addChild(scoreSensor)
   }
 
   override onPostUpdate(_engine: Engine): void {

@@ -7,7 +7,6 @@ import {
   Color,
   Engine,
   Label,
-  range,
   SpriteSheet,
   vec,
 } from 'excalibur'

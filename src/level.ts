@@ -112,9 +112,9 @@ export class Level extends Scene {
     )
 
     // Drums
-    // Config.drumDownTriggers.forEach((pos) =>
-    //   this.add(new DrumTrigger(pos, 'down', this.rand))
-    // )
+    Config.drumDownTriggers.forEach((pos) =>
+      this.add(new DrumTrigger(pos, 'down', this.rand))
+    )
     Config.drumLeftTriggers.forEach((pos) =>
       this.add(new DrumTrigger(pos, 'left', this.rand))
     )
@@ -172,7 +172,7 @@ export class Level extends Scene {
 
   override onActivate(): void {
     Resources.BackgroundMusic.loop = true
-    // Resources.BackgroundMusic.play()
+    Resources.BackgroundMusic.play()
 
     this.actors.forEach((actor) => {
       if (actor.name === 'Lives') actor.kill()
@@ -181,6 +181,9 @@ export class Level extends Scene {
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
     this.bonusTimer.reset()
+
+    this.drumOffTimer.reset()
+    this.drumFactory.start()
 
     this.player.start()
     new Array(this.player.lives).fill(0).forEach((n, i) => {

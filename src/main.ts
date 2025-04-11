@@ -12,6 +12,7 @@ const game = new Engine({
   backgroundColor: Color.fromHex(colors.gray6),
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
+  antialiasing: false,
   scenes: { level: Level, intro: Intro, gameOver: GameOver },
   physics: { gravity: vec(0, 100) },
 })

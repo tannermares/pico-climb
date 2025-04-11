@@ -93,7 +93,8 @@ export const Config = {
     vec(184, 115),
     vec(200, 114),
     vec(216, 113),
-
+  ],
+  groundGirders: [
     // vec(8, 88),
     // vec(24, 88),
     // vec(40, 88),
@@ -137,11 +138,9 @@ export const Config = {
     { pos: vec(92, 111), height: 12, sensors: true, broken: true },
     { pos: vec(188, 103), height: 16, sensors: true, broken: false },
 
-    { pos: vec(44, 56), height: 56, sensors: false, broken: false },
-    { pos: vec(60, 56), height: 56, sensors: false, broken: false },
     { pos: vec(132, 72), height: 24, sensors: true, broken: false },
   ],
-  drums: [vec(4, 60), vec(12, 60), vec(4, 76), vec(12, 76)],
+  drums: [vec(16, 66), vec(16, 78)],
   walls: [vec(0, 128), vec(224, 128)],
   drumSensors: [
     vec(192, 212),

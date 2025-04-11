@@ -15,9 +15,9 @@ export class Intro extends Scene {
   override onInitialize(engine: Engine): void {
     this.add(
       new Label({
-        text: 'HOW HIGH CAN YOU GET',
+        text: 'CAN YOU MAKE IT TO WORSHIP',
         font: new Font({ family: 'Galaxian', size: 8 }),
-        pos: vec(30, 128),
+        pos: vec(8, 128),
         color: Color.White,
       })
     )

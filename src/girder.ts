@@ -35,7 +35,18 @@ export class Girder extends Actor {
       },
     })
 
-  constructor(pos: Vector, width = 16) {
+  static altSprite = Girder.spriteSheet.getSprite(1, 4)
+  tiledAltSprite = (width: number) =>
+    Girder.spriteSheet.getTiledSprite(1, 4, {
+      width,
+      height: 8,
+      wrapping: {
+        x: ImageWrapping.Repeat,
+        y: ImageWrapping.Clamp,
+      },
+    })
+
+  constructor(pos: Vector, width = 16, private alt = false) {
     super({
       name: 'Girder',
       pos,
@@ -51,7 +62,13 @@ export class Girder extends Actor {
   override onInitialize(engine: Engine): void {
     this.graphics.add(
       'sprite',
-      this.width === 16 ? Girder.sprite : this.tiledSprite(this.width)
+      this.width === 16
+        ? this.alt
+          ? Girder.altSprite
+          : Girder.sprite
+        : this.alt
+        ? this.tiledAltSprite(this.width)
+        : this.tiledSprite(this.width)
     )
     this.graphics.use('sprite')
   }

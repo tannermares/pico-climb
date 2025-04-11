@@ -21,43 +21,29 @@ import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
 import { DrumTrigger } from './drumTrigger'
 import { Resources } from './resources'
+import { StaticDrum } from './staticDrum'
+import { BonusLabel } from './bonusLabel'
+import { DrumCloset } from './drumCloset'
+import { PlayerLife } from './playerLife'
+import { Drum } from './drum'
 
 export class Level extends Scene {
   rand = new Random()
   bonus = 5000
-  pipeFactory = new DrumFactory(this)
+  drumFactory = new DrumFactory(this)
   player = new Player(this)
-  dk = new Actor({
-    height: 32,
-    width: 32,
-    pos: vec(32, 68),
-    color: Color.fromHex(colors.clay1),
-  })
-  pauline = new Actor({
-    height: 24,
-    width: 16,
-    pos: vec(72, 40),
-    color: Color.fromHex(colors.purple3),
-  })
-  helpLabel = new Label({
-    text: 'HELP!',
-    font: new Font({ family: 'Galaxian', size: 4 }),
-    pos: vec(80, 28),
-    color: Color.fromHex(colors.blue3),
-  })
   font = new Font({ family: 'Galaxian', size: 8 })
-  otherFont = new Font({ family: 'comic-sans', size: 8 })
   oneUpLabel = new Label({
     text: '1UP',
     font: this.font,
     pos: vec(24, 0),
-    color: Color.fromHex(colors.cherry1),
+    color: Color.fromHex(colors.blue2),
   })
   highScoreLabel = new Label({
     text: 'HIGH SCORE',
     font: this.font,
     pos: vec(72, 0),
-    color: Color.fromHex(colors.cherry1),
+    color: Color.fromHex(colors.blue2),
   })
   currentScore = new Label({
     text: '000000',
@@ -71,18 +57,8 @@ export class Level extends Scene {
     pos: vec(88, 8),
     color: Color.White,
   })
-  levelLabel = new Label({
-    text: 'L=01',
-    font: this.font,
-    pos: vec(172, 24),
-    color: Color.fromHex(colors.blue1),
-  })
-  bonusLabel = new Label({
-    text: 'BONUS',
-    font: this.otherFont,
-    pos: vec(172, 32),
-    color: Color.fromHex(colors.blue1),
-  })
+  drumCloset = new DrumCloset()
+  bonusLabel = new BonusLabel()
   bonusScore = new Label({
     text: `${this.bonus}`,
     font: this.font,
@@ -104,27 +80,24 @@ export class Level extends Scene {
       this.bonusScore.text = `${this.bonus}`
     },
   })
-  staticDrum = (pos: Vector) =>
-    new Actor({
-      height: 16,
-      width: 8,
-      pos,
-      color: Color.fromHex(colors.orange1),
-    })
 
   override onInitialize(engine: Engine): void {
     this.add(this.player)
 
     Config.walls.forEach((pos) => this.add(new Wall(pos)))
 
-    this.add(new Girder(vec(72, 88), 144))
     this.add(new Girder(vec(56, 252), 112))
     Config.girders.forEach((pos) => this.add(new Girder(pos)))
+
+    // Brown girders
+    this.add(new Girder(vec(72, 88), 144, true))
+    Config.groundGirders.forEach((pos) => this.add(new Girder(pos, 16, true)))
 
     Config.ladders.forEach(({ pos, height, sensors, broken }) =>
       this.add(new Ladder(pos, height, sensors, broken))
     )
 
+    // Drums
     Config.drumDownTriggers.forEach((pos) =>
       this.add(new DrumTrigger(pos, 'down', this.rand))
     )
@@ -135,19 +108,18 @@ export class Level extends Scene {
       this.add(new DrumTrigger(pos, 'right', this.rand))
     )
     Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
-    Config.drums.forEach((pos) => this.add(this.staticDrum(pos)))
 
-    // Placeholder DK and Pauline
-    this.add(this.dk)
-    this.add(this.pauline)
+    this.add(this.drumCloset)
+    Config.drums.forEach((pos) => this.add(new StaticDrum(pos)))
+
+    // this.add(new Drum())
+    // this.drumFactory.start()
 
     // Labels
-    this.add(this.helpLabel)
     this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
     this.add(this.currentScore)
     this.add(this.highScore)
-    this.add(this.levelLabel)
     this.add(this.bonusLabel)
     this.add(this.bonusScore)
 
@@ -156,7 +128,6 @@ export class Level extends Scene {
 
     this.oneUpTimer.start()
     this.bonusTimer.start()
-    // this.pipeFactory.start()
 
     engine.input.keyboard.on('press', ({ key }) => {
       if (key === Keys.P) {
@@ -188,15 +159,7 @@ export class Level extends Scene {
     if (player) {
       player.start()
       new Array(player.lives).fill(0).forEach((n, i) => {
-        this.add(
-          new Actor({
-            name: 'Lives',
-            height: 8,
-            width: 8,
-            pos: vec(10 * (i + 1) + 2, 24),
-            color: Color.White,
-          })
-        )
+        this.add(new PlayerLife(vec(8 * i + 12, 24)))
       })
     }
   }

@@ -81,12 +81,12 @@ export class Player extends Actor {
       if (other.owner instanceof Drum) {
         if (this.lives === 1) {
           this.level.engine.goToScene('gameOver')
-          this.level.pipeFactory.reset()
+          this.level.drumFactory.reset()
           this.reset()
         } else {
           this.lives -= 1
           this.level.engine.goToScene('intro')
-          this.level.pipeFactory.reset()
+          this.level.drumFactory.reset()
           this.reset()
         }
       }

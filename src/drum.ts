@@ -18,43 +18,42 @@ export class Drum extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
     image: Resources.SpriteSheet,
     grid: {
-      rows: 16,
-      columns: 16,
+      rows: 1,
+      columns: 6,
       spriteWidth: 16,
-      spriteHeight: 16,
+      spriteHeight: 10,
+    },
+    spacing: {
+      originOffset: {
+        x: 0,
+        y: 22,
+      },
     },
   })
-  static rollAnimation = Animation.fromSpriteSheetCoordinates({
-    spriteSheet: Drum.spriteSheet,
-    durationPerFrame: 200,
-    frameCoordinates: [
-      { x: 0, y: 1 },
-      { x: 1, y: 1 },
-      { x: 2, y: 1 },
-      { x: 3, y: 1 },
-    ],
-  })
+  static rollAnimation = Animation.fromSpriteSheet(
+    Drum.spriteSheet,
+    [0, 1, 2, 3],
+    200,
+    AnimationStrategy.Loop
+  )
 
-  static rollDownAnimation = Animation.fromSpriteSheetCoordinates({
-    spriteSheet: Drum.spriteSheet,
-    durationPerFrame: 200,
-    frameCoordinates: [
-      { x: 4, y: 1 },
-      { x: 5, y: 1 },
-    ],
-  })
+  static rollDownAnimation = Animation.fromSpriteSheet(
+    Drum.spriteSheet,
+    [4, 5],
+    200,
+    AnimationStrategy.Loop
+  )
 
   constructor() {
     super({
       name: 'Drum',
-      pos: vec(50, 79),
+      pos: vec(20, 79),
       height: 10,
       width: 12,
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
       color: Color.fromHex(colors.orange1),
       vel: vec(65, 0),
-      anchor: vec(0.5, 0.8125),
     })
 
     this.on('exitviewport', () => this.kill())

@@ -10,6 +10,7 @@ import {
   vec,
 } from 'excalibur'
 import { Resources } from './resources'
+import { Level } from './level'
 
 export class Intro extends Scene {
   override onInitialize(engine: Engine): void {
@@ -31,7 +32,11 @@ export class Intro extends Scene {
     )
   }
 
-  override onActivate(context: SceneActivationContext<unknown>): void {
+  override onActivate(context: SceneActivationContext): void {
+    if (context.previousScene instanceof Level) {
+      context.previousScene.player.reset()
+    }
+
     Resources.Intro.play()
   }
 

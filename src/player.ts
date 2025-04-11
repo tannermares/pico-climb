@@ -81,15 +81,17 @@ export class Player extends Actor {
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
+        this.level.drumFactory.stop()
+        this.level.engine.clock.schedule(
+          () => this.level.drumFactory.reset(),
+          1000
+        )
+
         if (this.lives === 1) {
           this.level.engine.goToScene('gameOver')
-          this.level.drumFactory.reset()
-          this.reset()
         } else {
           this.lives -= 1
           this.level.engine.goToScene('intro')
-          this.level.drumFactory.reset()
-          this.reset()
         }
       }
     })
@@ -222,6 +224,7 @@ export class Player extends Actor {
 
   start() {
     this.playing = true
+    this.graphics.flipHorizontal = true
     this.pos = Player.startingPoint
   }
 

@@ -174,8 +174,6 @@ export class Level extends Scene {
     Resources.BackgroundMusic.loop = true
     // Resources.BackgroundMusic.play()
 
-    const player = this.actors.find((actor) => actor instanceof Player)
-
     this.actors.forEach((actor) => {
       if (actor.name === 'Lives') actor.kill()
     })
@@ -184,12 +182,10 @@ export class Level extends Scene {
     this.bonusScore.text = `${5000}`
     this.bonusTimer.reset()
 
-    if (player) {
-      player.start()
-      new Array(player.lives).fill(0).forEach((n, i) => {
-        this.add(new PlayerLife(vec(8 * i + 12, 24)))
-      })
-    }
+    this.player.start()
+    new Array(this.player.lives).fill(0).forEach((n, i) => {
+      this.add(new PlayerLife(vec(8 * i + 12, 24)))
+    })
   }
 
   incrementScore(score: number) {

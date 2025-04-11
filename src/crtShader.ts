@@ -17,15 +17,15 @@ vec2 resolution = vec2(224, 256);
 
 float scan_line_amount = 1.0;
 float warp_amount = 0.1;
-float noise_amount = 0.03;
-float interference_amount = 0.2;
+float noise_amount = 0.003;
+float interference_amount = 0.02;
 float grille_amount = 0.1;
-float grille_size = 1.0;
+float grille_size = 2.0;
 float vignette_amount = 0.6;
 float vignette_intensity = 0.4;
 float aberation_amount = 0.5;
 float roll_line_amount = 0.3;
-float roll_speed = 1.0;
+float roll_speed = 0.001;
 float scan_line_strength = -8.0;
 float pixel_strength = -2.0;
 

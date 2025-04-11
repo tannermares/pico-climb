@@ -26,6 +26,7 @@ export class DrumTrigger extends Actor {
     if (other.owner instanceof Drum) {
       if (this.type === 'down') {
         if (this.random.bool(0.25)) {
+          other.owner.graphics.use('rollDown')
           other.owner.acc = Vector.Zero
           other.owner.vel.x = 0
           other.owner.vel.y = 65
@@ -35,6 +36,7 @@ export class DrumTrigger extends Actor {
             if (other.owner instanceof Drum) {
               other.owner.body.useGravity = true
               other.owner.body.collisionType = CollisionType.Active
+              other.owner.graphics.use('roll')
             }
           }, 300)
         }

@@ -35,6 +35,15 @@ export class Drum extends Actor {
     ],
   })
 
+  static rollDownAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Drum.spriteSheet,
+    durationPerFrame: 200,
+    frameCoordinates: [
+      { x: 4, y: 1 },
+      { x: 5, y: 1 },
+    ],
+  })
+
   constructor() {
     super({
       name: 'Drum',
@@ -52,6 +61,7 @@ export class Drum extends Actor {
   }
   override onInitialize(engine: Engine): void {
     this.graphics.add('roll', Drum.rollAnimation)
+    this.graphics.add('rollDown', Drum.rollDownAnimation)
     this.graphics.use('roll')
   }
 

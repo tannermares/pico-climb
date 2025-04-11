@@ -1,6 +1,7 @@
 import {
   Actor,
   Color,
+  CoordPlane,
   Engine,
   Font,
   Keys,
@@ -20,6 +21,7 @@ import { DrumFactory } from './drumFactory'
 import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
 import { DrumTrigger } from './drumTrigger'
+import crtShader from './crtShader'
 
 export class Level extends Scene {
   rand = new Random()
@@ -166,6 +168,26 @@ export class Level extends Scene {
         }
       }
     })
+
+    const overlay = new Actor({
+      x: 0,
+      y: 0,
+      anchor: vec(0, 0),
+      width: 224,
+      height: this.engine.screen.resolution.height,
+      coordPlane: CoordPlane.Screen,
+      color: Color.Red // < - this gets overridden by the material
+    });
+
+    const crtMaterial = this.engine.graphicsContext.createMaterial({
+      name: 'crt',
+      fragmentSource: crtShader,
+      color: Color.fromRGB(55, 0, 200, .6)
+    })
+
+    overlay.graphics.material = crtMaterial
+    overlay.z = 99
+    this.add(overlay)
   }
 
   override onActivate(): void {

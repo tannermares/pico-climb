@@ -2,30 +2,25 @@ export default `#version 300 es
 precision mediump float;
 
 uniform float u_time_ms;
-uniform vec4 u_color;
-uniform sampler2D u_graphic;
-uniform sampler2D u_screen_texture;
+uniform sampler2D u_image;
 
-uniform vec2 u_resolution; // screen resolution
-uniform vec2 u_graphic_resolution; // graphic resolution
-
-in vec2 v_uv;
-in vec2 v_screenuv;
+in vec2 v_texcoord;
 out vec4 fragColor;
 
 vec2 resolution = vec2(224, 256);
 
+float time = 0.0;
 float scan_line_amount = 1.0;
 float warp_amount = 0.1;
-float noise_amount = 0.003;
-float interference_amount = 0.02;
+float noise_amount = 0.03;
+float interference_amount = 0.2;
 float grille_amount = 0.1;
-float grille_size = 2.0;
+float grille_size = 1.0;
 float vignette_amount = 0.6;
 float vignette_intensity = 0.4;
 float aberation_amount = 0.5;
 float roll_line_amount = 0.3;
-float roll_speed = 0.001;
+float roll_speed = 1.0;
 float scan_line_strength = -8.0;
 float pixel_strength = -2.0;
 
@@ -38,14 +33,14 @@ vec3 fetch_pixel(vec2 uv, vec2 off){
 
 	float noise = 0.0;
 	if(noise_amount > 0.0){
-		noise = random(pos + fract(u_time_ms)) * noise_amount;
+		noise = random(pos + fract(time)) * noise_amount;
 	}
 
 	if(max(abs(pos.x - 0.5), abs(pos.y - 0.5)) > 0.5){
 		return vec3(0.0, 0.0, 0.0);
 	}
 
-	vec3 clr = texture(u_screen_texture, pos, -16.0).rgb + noise;
+	vec3 clr = texture(u_image, pos, -16.0).rgb + noise;
 	return clr;
 }
 
@@ -131,15 +126,16 @@ vec3 grille(vec2 uv){
 }
 
 float roll_line(vec2 uv){
-	float x = uv.y * 3.0 - u_time_ms * roll_speed;
+	float x = uv.y * 3.0 - time * roll_speed;
 	float f = cos(x) * cos(x * 2.35 + 1.1) * cos(x * 4.45 + 2.3);
 	float roll_line = smoothstep(0.5, 0.9, f);
 	return roll_line * roll_line_amount;
 }
 
 void main(){
-	vec2 pix = v_uv.xy;
-	vec2 pos = warp(v_uv);
+	time = u_time_ms / 1000.0;
+	vec2 pix = v_texcoord.xy;
+	vec2 pos = warp(v_texcoord);
 	
 	float line = 0.0;
 	if(roll_line_amount > 0.0){
@@ -148,7 +144,7 @@ void main(){
 
 	vec2 sq_pix = floor(pos * resolution) / resolution + vec2(0.5) / resolution;
 	if(interference_amount + roll_line_amount > 0.0){
-		float interference = random(sq_pix.yy + fract(u_time_ms));
+		float interference = random(sq_pix.yy + fract(time));
 		pos.x += (interference * (interference_amount + line * 6.0)) / resolution.x;
 	}
 

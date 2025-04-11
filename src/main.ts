@@ -5,6 +5,7 @@ import { Intro } from './intro'
 import { Level } from './level'
 import { loader } from './resources'
 import { colors } from './colors'
+import CrtPostProcessor from './crtPostProcessor'
 
 const game = new Engine({
   width: 224,
@@ -17,4 +18,6 @@ const game = new Engine({
   physics: { gravity: vec(0, 100) },
 })
 
+const shader = new CrtPostProcessor()
+game.graphicsContext.addPostProcessor(shader)
 game.start('level', { loader })

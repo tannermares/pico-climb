@@ -168,25 +168,6 @@ export class Level extends Scene {
         }
       }
     })
-
-    const overlay = new Actor({
-      x: 0,
-      y: 0,
-      anchor: vec(0, 0),
-      width: this.engine.screen.resolution.width,
-      height: this.engine.screen.resolution.height,
-      color: Color.Red // < - this gets overridden by the material
-    });
-
-    const crtMaterial = this.engine.graphicsContext.createMaterial({
-      name: 'crt',
-      fragmentSource: crtShader,
-    })
-
-    overlay.graphics.flipVertical = true
-    overlay.graphics.material = crtMaterial
-    overlay.z = 99
-    this.add(overlay)
   }
 
   override onActivate(): void {

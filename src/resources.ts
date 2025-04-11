@@ -7,8 +7,8 @@ import {
 } from 'excalibur'
 
 export const Resources = {
-  Font: new FontSource('/fonts/Galaxian1979.ttf', 'Galaxian'),
-  SpriteSheet: new ImageSource('/images/spritesheet.png'),
+  Font: new FontSource('./fonts/Galaxian1979.ttf', 'Galaxian'),
+  SpriteSheet: new ImageSource('./images/spritesheet.png'),
 
   // Sounds
   Death: new Sound('./sounds/death.wav'),

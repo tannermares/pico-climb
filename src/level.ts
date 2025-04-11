@@ -121,8 +121,8 @@ export class Level extends Scene {
     this.add(new Girder(vec(56, 252), 112))
     Config.girders.forEach((pos) => this.add(new Girder(pos)))
 
-    Config.ladders.forEach(({ pos, height, sensors }) =>
-      this.add(new Ladder(pos, height, sensors))
+    Config.ladders.forEach(({ pos, height, sensors, broken }) =>
+      this.add(new Ladder(pos, height, sensors, broken))
     )
 
     Config.drumDownTriggers.forEach((pos) =>

@@ -47,6 +47,7 @@ export class Player extends Actor {
   canClimbUp = false
   canClimbDown = false
   climbing = false
+  climbingWall = false
   jumping = false
   _bodySensor!: Actor
   _ladderSensor!: Actor
@@ -130,8 +131,13 @@ export class Player extends Actor {
       this.vel.x = 0
 
       if (keys.isHeld(Keys.Up)) {
-        this._bodySensor.graphics.use('climb')
-        this.vel.y = -speed
+        if (this.climbingWall) {
+          this._bodySensor.graphics.use('climb1')
+          this.vel.y = 0
+        } else {
+          this._bodySensor.graphics.use('climb')
+          this.vel.y = -speed
+        }
       } else if (keys.isHeld(Keys.Down)) {
         this._bodySensor.graphics.use('climb')
         this.vel.y = speed

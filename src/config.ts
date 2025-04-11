@@ -140,7 +140,6 @@ export const Config = {
 
     { pos: vec(132, 72), height: 24, sensors: true, broken: false },
   ],
-  drums: [vec(16, 66), vec(16, 78)],
   walls: [vec(0, 128), vec(224, 128)],
   drumSensors: [
     vec(192, 212),

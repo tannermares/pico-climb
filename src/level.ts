@@ -67,6 +67,18 @@ export class Level extends Scene {
     pos: vec(172, 44),
     color: Color.fromHex(colors.blue3),
   })
+  throwingDrum = new StaticDrum(vec(16, 66))
+  drumOffTimer = new Timer({
+    interval: 3000,
+    repeats: true,
+    action: () => {
+      this.throwingDrum.graphics.isVisible = false
+      this.engine.clock.schedule(
+        () => (this.throwingDrum.graphics.isVisible = true),
+        1500
+      )
+    },
+  })
   oneUpTimer = new Timer({
     interval: 300,
     repeats: true,
@@ -112,9 +124,12 @@ export class Level extends Scene {
     Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
 
     this.add(this.drumCloset)
-    Config.drums.forEach((pos) => this.add(new StaticDrum(pos)))
+    this.add(this.throwingDrum)
+    this.add(this.drumOffTimer)
+    this.drumOffTimer.start()
+    this.add(new StaticDrum(vec(16, 78)))
 
-    // this.add(new Drum(this))
+    // this.add(new Drum(this)) // Score Testing
     this.drumFactory.start()
 
     // Labels

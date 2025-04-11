@@ -1,11 +1,40 @@
-import { Actor, CollisionType, Color, Engine, vec, Vector } from 'excalibur'
+import {
+  Actor,
+  CollisionType,
+  Color,
+  Engine,
+  ImageWrapping,
+  SpriteSheet,
+  vec,
+  Vector,
+} from 'excalibur'
 import { Config } from './config'
 import { Player } from './player'
 import { colors } from './colors'
 import { DrumTrigger } from './drumTrigger'
 import { Level } from './level'
+import { Resources } from './resources'
 
 export class Ladder extends Actor {
+  static spriteSheet = SpriteSheet.fromImageSource({
+    image: Resources.SpriteSheet,
+    grid: {
+      rows: 32,
+      columns: 32,
+      spriteWidth: 8,
+      spriteHeight: 8,
+    },
+  })
+  sprite = (height: number) =>
+    Ladder.spriteSheet.getTiledSprite(1, 4, {
+      width: 8,
+      height,
+      wrapping: {
+        x: ImageWrapping.Clamp,
+        y: ImageWrapping.Repeat,
+      },
+    })
+
   constructor(pos: Vector, height: number, private level: Level) {
     super({
       name: 'Ladder',
@@ -18,6 +47,9 @@ export class Ladder extends Actor {
   }
 
   override onInitialize(engine: Engine): void {
+    this.graphics.add('sprite', this.sprite(this.height))
+    this.graphics.use('sprite')
+
     const floorSensor = new Actor({
       name: 'FloorSensor',
       width: 3,

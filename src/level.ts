@@ -20,6 +20,7 @@ import { DrumFactory } from './drumFactory'
 import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
 import { DrumTrigger } from './drumTrigger'
+import { Resources } from './resources'
 
 export class Level extends Scene {
   rand = new Random()
@@ -169,6 +170,9 @@ export class Level extends Scene {
   }
 
   override onActivate(): void {
+    Resources.BackgroundMusic.loop = true
+    Resources.BackgroundMusic.play()
+
     const player = this.actors.find((actor) => actor instanceof Player)
 
     this.actors.forEach((actor) => {

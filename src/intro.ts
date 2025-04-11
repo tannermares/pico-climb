@@ -5,9 +5,11 @@ import {
   Font,
   Label,
   Scene,
+  SceneActivationContext,
   Timer,
   vec,
 } from 'excalibur'
+import { Resources } from './resources'
 
 export class Intro extends Scene {
   override onInitialize(engine: Engine): void {
@@ -27,6 +29,10 @@ export class Intro extends Scene {
         action: () => this.engine.goToScene('level'),
       })
     )
+  }
+
+  override onActivate(context: SceneActivationContext<unknown>): void {
+    Resources.Intro.play()
   }
 
   override onPostDraw(_ctx: ExcaliburGraphicsContext, elapsed: number): void {

@@ -30,7 +30,7 @@ export class Player extends Actor {
   constructor(private level: Level) {
     super({
       name: 'PlayerFeet',
-      pos: vec(16, 248),
+      pos: vec(16, 244),
       width: 8,
       height: 1,
       // color: Color.Brown, // DEBUG
@@ -175,7 +175,7 @@ export class Player extends Actor {
 
   start() {
     this.playing = true
-    this.pos = vec(16, 248)
+    this.pos = vec(16, 244)
   }
 
   stop() {
@@ -185,7 +185,7 @@ export class Player extends Actor {
   }
 
   reset() {
-    this.pos = vec(16, 248)
+    this.pos = vec(16, 244)
     this.graphics.flipHorizontal = true
     this.stop()
   }

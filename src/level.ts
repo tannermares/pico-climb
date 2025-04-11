@@ -156,7 +156,7 @@ export class Level extends Scene {
 
     this.oneUpTimer.start()
     this.bonusTimer.start()
-    this.pipeFactory.start()
+    // this.pipeFactory.start()
 
     engine.input.keyboard.on('press', ({ key }) => {
       if (key === Keys.P) {
@@ -168,10 +168,12 @@ export class Level extends Scene {
       }
     })
   }
+  override onDeactivate(): void {
+    Resources.BackgroundMusic.stop()
+  }
 
   override onActivate(): void {
     Resources.BackgroundMusic.loop = true
-    Resources.BackgroundMusic.play()
 
     const player = this.actors.find((actor) => actor instanceof Player)
 

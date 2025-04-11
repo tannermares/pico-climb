@@ -68,10 +68,9 @@ export class Ladder extends Actor {
         other.owner.parent instanceof Player &&
         other.owner.name === 'ladderSensor'
       ) {
-        if (other.owner.parent.climbing) {
-          other.owner.parent.canClimbDown = false
-          other.owner.parent.stopClimbing()
-        }
+        if (other.owner.parent.climbing) other.owner.parent.stopClimbing()
+
+        other.owner.parent.canClimbDown = false
         other.owner.parent.canClimbUp = true
       }
     })
@@ -103,10 +102,9 @@ export class Ladder extends Actor {
         other.owner.parent instanceof Player &&
         other.owner.name === 'ladderSensor'
       ) {
-        if (other.owner.parent.climbing) {
-          other.owner.parent.canClimbUp = false
-          other.owner.parent.stopClimbing()
-        }
+        if (other.owner.parent.climbing) other.owner.parent.stopClimbing()
+
+        other.owner.parent.canClimbUp = false
         other.owner.parent.canClimbDown = true
       }
     })

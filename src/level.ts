@@ -173,18 +173,17 @@ export class Level extends Scene {
       x: 0,
       y: 0,
       anchor: vec(0, 0),
-      width: 224,
+      width: this.engine.screen.resolution.width,
       height: this.engine.screen.resolution.height,
-      coordPlane: CoordPlane.Screen,
       color: Color.Red // < - this gets overridden by the material
     });
 
     const crtMaterial = this.engine.graphicsContext.createMaterial({
       name: 'crt',
       fragmentSource: crtShader,
-      color: Color.fromRGB(55, 0, 200, .6)
     })
 
+    overlay.graphics.flipVertical = true
     overlay.graphics.material = crtMaterial
     overlay.z = 99
     this.add(overlay)

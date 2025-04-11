@@ -139,7 +139,7 @@ float roll_line(vec2 uv){
 
 void main(){
 	vec2 pix = v_uv.xy;
-	vec2 pos = warp(v_screenuv);
+	vec2 pos = warp(v_uv);
 	
 	float line = 0.0;
 	if(roll_line_amount > 0.0){
@@ -168,4 +168,5 @@ void main(){
 	if(vignette_amount > 0.0)clr *= vignette(pos);
 	
 	fragColor.rgb = clr;
+	fragColor.a = 1.0;
 }`

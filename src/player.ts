@@ -92,8 +92,8 @@ export class Player extends Actor {
     this.startSprite = spriteSheet.getSprite(0, 0)
     this.runAnimation = Animation.fromSpriteSheet(
       spriteSheet,
-      [1, 2],
-      100,
+      [0, 1, 0, 2],
+      50,
       AnimationStrategy.Loop
     )
     this._bodySensor.graphics.add('start', this.startSprite)

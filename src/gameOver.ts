@@ -1,17 +1,5 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  Engine,
-  ExcaliburGraphicsContext,
-  Font,
-  Keys,
-  Label,
-  Scene,
-  SceneActivationContext,
-  vec,
-} from 'excalibur'
-import { Player } from './player'
+import { Actor, Color, Engine, Font, Keys, Label, Scene, vec } from 'excalibur'
+
 import { Girder } from './girder'
 import { Config } from './config'
 import { Wall } from './wall'
@@ -29,17 +17,6 @@ export class GameOver extends Scene {
     Config.ladders.forEach(({ pos, height }) =>
       this.add(new Ladder(pos, height))
     )
-
-    Config.drums.forEach((pos) => {
-      this.add(
-        new Actor({
-          height: 16,
-          width: 8,
-          pos,
-          color: Color.fromHex(colors.orange1),
-        })
-      )
-    })
 
     this.add(
       new Actor({

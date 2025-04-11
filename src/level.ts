@@ -1,5 +1,4 @@
 import {
-  Actor,
   Color,
   Engine,
   Font,
@@ -9,7 +8,6 @@ import {
   Scene,
   Timer,
   vec,
-  Vector,
 } from 'excalibur'
 import { Player } from './player'
 import { Girder } from './girder'
@@ -25,7 +23,7 @@ import { StaticDrum } from './staticDrum'
 import { BonusLabel } from './bonusLabel'
 import { DrumCloset } from './drumCloset'
 import { PlayerLife } from './playerLife'
-import { Drum } from './drum'
+// import { Drum } from './drum'
 
 export class Level extends Scene {
   rand = new Random()

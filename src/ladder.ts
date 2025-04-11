@@ -11,10 +11,7 @@ import {
 import { Config } from './config'
 import { Player } from './player'
 import { colors } from './colors'
-import { DrumTrigger } from './drumTrigger'
-import { Level } from './level'
 import { Resources } from './resources'
-import { Wall } from './wall'
 
 export class Ladder extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({

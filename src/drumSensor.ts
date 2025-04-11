@@ -1,4 +1,4 @@
-import { Actor, Collider, CollisionType, Color, Vector } from 'excalibur'
+import { Actor, Collider, CollisionType, Vector } from 'excalibur'
 
 import { Drum } from './drum'
 import { Config } from './config'
@@ -11,7 +11,6 @@ export class DrumSensor extends Actor {
       pos,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.DrumSensorGroup,
-      // color: Color.Cyan,
     })
   }
 

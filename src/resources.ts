@@ -1,5 +1,5 @@
 import {
-  DefaultLoader,
+  // DefaultLoader,
   FontSource,
   ImageSource,
   Loader,

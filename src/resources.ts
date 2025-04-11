@@ -15,13 +15,14 @@ export const Resources = {
   Intro: new Sound('./sounds/intro.wav'),
   Jump: new Sound('./sounds/jump.wav'),
   Score: new Sound('./sounds/score.wav'),
-  Walk: new Sound('./sounds/walk.wav'),
+  Walk1: new Sound('./sounds/walk1.wav'),
+  Walk2: new Sound('./sounds/walk2.wav'),
 
   // Music
   BackgroundMusic: new Sound('./sounds/bg-music.ogg'),
 } as const
 
-export const loader = new DefaultLoader()
+export const loader = new Loader()
 for (const res of Object.values(Resources)) {
   loader.addResource(res)
 }

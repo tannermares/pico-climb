@@ -145,6 +145,7 @@ export class Level extends Scene {
 
   override onActivate(): void {
     Resources.BackgroundMusic.loop = true
+    // Resources.BackgroundMusic.play()
 
     const player = this.actors.find((actor) => actor instanceof Player)
 

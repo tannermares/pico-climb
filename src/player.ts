@@ -135,10 +135,18 @@ export class Player extends Actor {
           this._bodySensor.graphics.use('climb1')
           this.vel.y = 0
         } else {
+          if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
+            this.level.rand.bool(0.75)
+              ? Resources.Walk1.play()
+              : Resources.Walk2.play()
           this._bodySensor.graphics.use('climb')
           this.vel.y = -speed
         }
       } else if (keys.isHeld(Keys.Down)) {
+        if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
+          this.level.rand.bool(0.75)
+            ? Resources.Walk1.play()
+            : Resources.Walk2.play()
         this._bodySensor.graphics.use('climb')
         this.vel.y = speed
       } else {
@@ -150,10 +158,18 @@ export class Player extends Actor {
 
     // Normal Movement
     if (keys.isHeld(Keys.Right)) {
+      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
+        this.level.rand.bool(0.75)
+          ? Resources.Walk1.play()
+          : Resources.Walk2.play()
       this.vel.x = speed
       this._bodySensor.graphics.use('run')
       this._bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
+      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
+        this.level.rand.bool(0.75)
+          ? Resources.Walk1.play()
+          : Resources.Walk2.play()
       this._bodySensor.graphics.use('run')
       this._bodySensor.graphics.flipHorizontal = false
       this.vel.x = -speed
@@ -164,6 +180,7 @@ export class Player extends Actor {
 
     // Jump
     if (!this.jumping && this.vel.y === 0 && keys.wasPressed(Keys.X)) {
+      Resources.Jump.play()
       this.vel.y = -jumpStrength
       this.jumping = true
     }

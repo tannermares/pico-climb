@@ -56,8 +56,8 @@ export class Player extends Actor {
     super({
       name: 'PlayerFeet',
       pos: vec(16, 244),
-      width: 8,
-      height: 1,
+      width: 5,
+      height: 2,
       // color: Color.Brown, // DEBUG
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,

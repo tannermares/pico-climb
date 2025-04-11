@@ -35,7 +35,7 @@ export class Ladder extends Actor {
       },
     })
 
-  constructor(pos: Vector, height: number, private level: Level) {
+  constructor(pos: Vector, height: number, private sensors = true) {
     super({
       name: 'Ladder',
       pos,
@@ -50,6 +50,8 @@ export class Ladder extends Actor {
     this.graphics.add('sprite', this.sprite(this.height))
     this.graphics.use('sprite')
 
+    if (!this.sensors) return
+
     const floorSensor = new Actor({
       name: 'FloorSensor',
       width: 3,
@@ -57,7 +59,7 @@ export class Ladder extends Actor {
       pos: vec(0, this.height / 2 - 1),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow, // DEBUG
+      color: Color.Yellow, // DEBUG
       z: 1,
     })
 
@@ -87,11 +89,11 @@ export class Ladder extends Actor {
     const roofSensor = new Actor({
       name: 'RoofSensor',
       width: 3,
-      height: 1,
-      pos: vec(0, -this.height / 2 - 1),
+      height: 2,
+      pos: vec(0, -this.height / 2 - 10),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow, // DEBUG
+      color: Color.Yellow, // DEBUG
       z: 1,
     })
 

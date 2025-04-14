@@ -41,8 +41,8 @@ export class Player extends Actor {
   )
   static climbSprite1 = Player.spriteSheet.getSprite(3, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(4, 0)
-  static startingPoint = vec(16, 248)
-  // static startingPoint = vec(200, 80) // Score testing
+  // static startingPoint = vec(16, 248)
+  static startingPoint = vec(200, 80) // Score testing
 
   playing = false
   lives = 3
@@ -81,14 +81,7 @@ export class Player extends Actor {
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
-        this.level.drumFactory.stop()
-        // this.level.bonusTimer.stop()
-        this.level.drumOffTimer.stop()
-
-        this.level.engine.clock.schedule(
-          () => this.level.drumFactory.reset(),
-          1000
-        )
+        this.level.stop()
 
         if (this.lives === 1) {
           this.level.engine.goToScene('gameOver')

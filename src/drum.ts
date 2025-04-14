@@ -6,7 +6,6 @@ import {
   CollisionType,
   Color,
   Engine,
-  Label,
   SpriteSheet,
   vec,
 } from 'excalibur'
@@ -17,6 +16,12 @@ import { Player } from './player'
 import { Level } from './level'
 
 export class Drum extends Actor {
+  static couldMultiply = false
+  static startMultiplier = false
+  static scoreMultiplier = 1
+  static maxMultiplier = 1
+  static baseScore = 100
+
   static spriteSheet = SpriteSheet.fromImageSource({
     image: Resources.SpriteSheet,
     grid: {
@@ -81,15 +86,32 @@ export class Drum extends Actor {
         other.owner.parent.jumping &&
         other.owner.name === 'BodySensor'
       ) {
-        this.level.incrementScore(100)
-        Resources.Score.play()
-        const scoreLabel = new Label({
-          pos: vec(other.owner.parent.pos.x - 10, other.owner.parent.pos.y + 3),
-          text: '100',
-          color: Color.White,
-        })
-        this.level.add(scoreLabel)
-        this.level.engine.clock.schedule(() => scoreLabel.kill(), 1000)
+        if (Drum.couldMultiply) {
+          Drum.scoreMultiplier += 2
+          Drum.maxMultiplier += 2
+
+          clamp(Drum.scoreMultiplier, 1, 5)
+          clamp(Drum.maxMultiplier, 1, 5)
+        } else {
+          Drum.couldMultiply = true
+        }
+      }
+    })
+    scoreSensor.on('collisionend', ({ other }) => {
+      if (
+        other.owner.parent instanceof Player &&
+        other.owner.parent.jumping &&
+        other.owner.name === 'BodySensor'
+      ) {
+        if (Drum.couldMultiply && Drum.scoreMultiplier > 1) {
+          Drum.scoreMultiplier -= 2
+
+          clamp(Drum.scoreMultiplier, 1, 5)
+        } else {
+          this.level.incrementScore(Drum.baseScore * Drum.maxMultiplier)
+          Drum.couldMultiply = false
+          Drum.maxMultiplier = 1
+        }
       }
     })
 

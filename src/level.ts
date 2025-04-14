@@ -23,6 +23,7 @@ import { StaticDrum } from './staticDrum'
 import { BonusLabel } from './bonusLabel'
 import { DrumCloset } from './drumCloset'
 import { PlayerLife } from './playerLife'
+import { Drum } from './drum'
 // import { Drum } from './drum'
 
 export class Level extends Scene {
@@ -127,9 +128,6 @@ export class Level extends Scene {
     this.drumOffTimer.start()
     this.add(new StaticDrum(vec(16, 78)))
 
-    // this.add(new Drum(this)) // Score Testing
-    this.drumFactory.start()
-
     // Labels
     this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
@@ -150,10 +148,6 @@ export class Level extends Scene {
     this.add(this.bonusTimer)
     this.add(this.oneUpTimer)
 
-    this.oneUpTimer.start()
-    this.bonusTimer.start()
-    this.player.start()
-
     engine.input.keyboard.on('press', ({ key }) => {
       if (key === Keys.P) {
         if (engine.isRunning()) {
@@ -164,35 +158,71 @@ export class Level extends Scene {
       }
     })
   }
-  override onDeactivate(): void {
-    Resources.BackgroundMusic.stop()
-  }
 
   override onActivate(): void {
     Resources.BackgroundMusic.loop = true
     Resources.BackgroundMusic.play()
 
+    this.reset()
+  }
+
+  override onDeactivate(): void {
+    Resources.BackgroundMusic.stop()
+
+    this.stop()
+  }
+
+  reset() {
     this.actors.forEach((actor) => {
       if (actor.name === 'Lives') actor.kill()
+    })
+    new Array(this.player.lives).fill(0).forEach((n, i) => {
+      this.add(new PlayerLife(vec(8 * i + 12, 24)))
     })
 
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
-    this.bonusTimer.reset()
 
+    this.oneUpTimer.reset()
+    this.bonusTimer.reset()
     this.drumOffTimer.reset()
+    this.drumFactory.reset()
+
+    this.start()
+  }
+
+  start() {
+    this.oneUpTimer.start()
+    this.bonusTimer.start()
+    this.drumOffTimer.start()
     this.drumFactory.start()
 
     this.player.start()
-    new Array(this.player.lives).fill(0).forEach((n, i) => {
-      this.add(new PlayerLife(vec(8 * i + 12, 24)))
-    })
+  }
+
+  stop() {
+    this.oneUpTimer.stop()
+    this.bonusTimer.stop()
+    this.drumOffTimer.stop()
+    this.drumFactory.stop()
+
+    this.player.stop()
   }
 
   incrementScore(score: number) {
+    Resources.Score.play()
+
     this.score += score
     this.scoreCard.text = String(this.score).padStart(6, '0')
     this.setHighScore(this.score)
+
+    const scoreLabel = new Label({
+      pos: vec(this.player.pos.x - 10, this.player.pos.y + 3),
+      text: `${score}`,
+      color: Color.White,
+    })
+    this.add(scoreLabel)
+    this.engine.clock.schedule(() => scoreLabel.kill(), 1000)
   }
 
   setHighScore(score: number) {

@@ -182,7 +182,7 @@ export class Level extends Scene {
 
   reset() {
     this.actors.forEach((actor) => {
-      if (actor.name === 'Lives') actor.kill()
+      if (actor.name === 'PlayerLife') actor.kill()
     })
     new Array(this.player.lives).fill(0).forEach((n, i) => {
       this.add(new PlayerLife(vec(8 * i + 12, 24)))

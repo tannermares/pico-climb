@@ -231,6 +231,11 @@ export class Player extends Actor {
   }
 
   reset() {
+    this.canClimbUp = false
+    this.canClimbDown = false
+    this.climbingWall = false
+    this.jumping = false
+    this.stopClimbing()
     this.pos = Player.startingPoint
     this.graphics.flipHorizontal = true
     this.stop()

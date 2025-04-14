@@ -32,7 +32,7 @@ export class Guitarist extends Actor {
     300
   )
 
-  constructor(pos: Vector) {
+  constructor(pos: Vector, private animated = true) {
     super({
       name: 'Guitarist',
       width: 16,
@@ -45,6 +45,6 @@ export class Guitarist extends Actor {
   override onInitialize(_engine: Engine): void {
     this.graphics.add('sprite', Guitarist.sprite)
     this.graphics.add('animation', Guitarist.animation)
-    this.graphics.use('animation')
+    this.animated ? this.graphics.use('animation') : this.graphics.use('sprite')
   }
 }

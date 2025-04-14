@@ -5,6 +5,7 @@ import { Intro } from './intro'
 import { Level } from './level'
 import { loader } from './resources'
 import { colors } from './colors'
+import { Start } from './start'
 
 const game = new Engine({
   width: 224,
@@ -13,8 +14,8 @@ const game = new Engine({
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
   antialiasing: false,
-  scenes: { level: Level, intro: Intro, gameOver: GameOver },
+  scenes: { start: Start, level: Level, intro: Intro, gameOver: GameOver },
   physics: { gravity: vec(0, 100) },
 })
 
-game.start('level', { loader })
+game.start('start', { loader })

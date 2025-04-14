@@ -1,4 +1,11 @@
-import { Actor, Collider, CollisionType, Random, Vector } from 'excalibur'
+import {
+  Actor,
+  Collider,
+  CollisionType,
+  Color,
+  Random,
+  Vector,
+} from 'excalibur'
 
 import { Drum } from './drum'
 import { Config } from './config'
@@ -11,6 +18,7 @@ export class DrumTrigger extends Actor {
       pos,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.DrumSensorGroup,
+      color: Color.Yellow,
     })
   }
 
@@ -18,23 +26,16 @@ export class DrumTrigger extends Actor {
     if (other.owner instanceof Drum) {
       if (this.type === 'down') {
         if (this.random.bool(0.25)) {
-          other.owner.graphics.use('rollDown')
-          other.owner.acc = Vector.Zero
-          other.owner.vel.x = 0
-          other.owner.vel.y = 65
-          other.owner.body.useGravity = false
-          other.owner.body.collisionType = CollisionType.PreventCollision
+          other.owner.rollDown()
+
           this.scene?.engine.clock.schedule(() => {
-            if (other.owner instanceof Drum) {
-              other.owner.body.useGravity = true
-              other.owner.body.collisionType = CollisionType.Active
-              other.owner.graphics.use('roll')
-            }
+            if (other.owner instanceof Drum) other.owner.continueRolling()
           }, 300)
         }
       } else {
         other.owner.acc = Vector.Zero
         other.owner.vel.y = 0
+        other.owner.graphics.use('roll')
 
         if (this.type === 'right') {
           other.owner.vel.x = 65

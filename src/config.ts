@@ -23,13 +23,6 @@ const WallsCollideWith = CollisionGroup.collidesWith([FootGroup])
 
 export const Config = {
   girders: [
-    // vec(8, 252),
-    // vec(24, 252),
-    // vec(40, 252),
-    // vec(56, 252),
-    // vec(72, 252),
-    // vec(88, 252),
-    // vec(104, 252),
     vec(120, 251),
     vec(136, 250),
     vec(152, 249),
@@ -95,15 +88,6 @@ export const Config = {
     vec(216, 113),
   ],
   groundGirders: [
-    // vec(8, 88),
-    // vec(24, 88),
-    // vec(40, 88),
-    // vec(56, 88),
-    // vec(72, 88),
-    // vec(88, 88),
-    // vec(104, 88),
-    // vec(120, 88),
-    // vec(136, 88),
     vec(152, 89),
     vec(168, 90),
     vec(184, 91),
@@ -156,9 +140,9 @@ export const Config = {
     vec(70, 114),
     vec(167, 108),
 
-    vec(73, 142),
-    vec(121, 145),
-    vec(193, 150),
+    vec(72, 142),
+    vec(122, 145),
+    vec(194, 150),
 
     vec(30, 183),
     vec(95, 179),
@@ -170,17 +154,17 @@ export const Config = {
     vec(92, 116),
     vec(188, 110),
 
-    vec(68, 184),
-    vec(116, 181),
+    vec(68, 183),
+    vec(116, 180),
     vec(188, 176),
 
-    vec(84, 248),
+    vec(84, 247),
     vec(188, 242),
   ],
   drumRightTriggers: [
     vec(36, 143),
-    vec(76, 146),
-    vec(172, 152),
+    vec(76, 145),
+    vec(172, 151),
 
     vec(36, 209),
     vec(100, 213),

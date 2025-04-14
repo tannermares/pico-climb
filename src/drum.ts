@@ -8,6 +8,7 @@ import {
   Engine,
   SpriteSheet,
   vec,
+  Vector,
 } from 'excalibur'
 import { Config } from './config'
 import { colors } from './colors'
@@ -126,5 +127,19 @@ export class Drum extends Actor {
     } else {
       this.graphics.flipHorizontal = false
     }
+  }
+
+  rollDown() {
+    this.graphics.use('rollDown')
+    this.acc = Vector.Zero
+    this.vel.x = 0
+    this.vel.y = 65
+    this.body.useGravity = false
+    this.body.collisionType = CollisionType.PreventCollision
+  }
+
+  continueRolling() {
+    this.body.useGravity = true
+    this.body.collisionType = CollisionType.Active
   }
 }

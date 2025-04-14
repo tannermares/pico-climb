@@ -23,8 +23,6 @@ import { StaticDrum } from './staticDrum'
 import { BonusLabel } from './bonusLabel'
 import { DrumCloset } from './drumCloset'
 import { PlayerLife } from './playerLife'
-import { Drum } from './drum'
-// import { Drum } from './drum'
 
 export class Level extends Scene {
   rand = new Random()
@@ -125,7 +123,6 @@ export class Level extends Scene {
     this.add(this.drumCloset)
     this.add(this.throwingDrum)
     this.add(this.drumOffTimer)
-    this.drumOffTimer.start()
     this.add(new StaticDrum(vec(16, 78)))
 
     // Labels

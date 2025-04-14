@@ -34,6 +34,7 @@ export class Intro extends Scene {
 
   override onActivate(context: SceneActivationContext): void {
     if (context.previousScene instanceof Level) {
+      context.previousScene.reset()
       context.previousScene.player.reset()
     }
 

@@ -5,13 +5,13 @@ import {
   Engine,
   ImageWrapping,
   SpriteSheet,
-  vec,
   Vector,
 } from 'excalibur'
-import { Config } from './config'
-import { Player } from './player'
 import { colors } from './colors'
 import { Resources } from './resources'
+import { LadderFloorSensor } from './ladderFloorSensor'
+import { LadderWallSensor } from './ladderWallSensor'
+import { LadderRoofSensor } from './ladderRoofSensor'
 
 export class Ladder extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -49,103 +49,18 @@ export class Ladder extends Actor {
     })
   }
 
-  override onInitialize(engine: Engine): void {
+  override onInitialize(_engine: Engine): void {
     this.graphics.add('sprite', this.sprite(this.height))
     this.graphics.use('sprite')
 
     if (!this.sensors) return
 
-    const floorSensor = new Actor({
-      name: 'FloorSensor',
-      width: 3,
-      height: 2,
-      pos: vec(0, this.height / 2 - 1),
-      collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow, // DEBUG
-      z: 1,
-    })
-    floorSensor.on('collisionstart', ({ other }) => {
-      if (
-        other.owner.parent instanceof Player &&
-        other.owner.name === 'ladderSensor'
-      ) {
-        if (other.owner.parent.climbing) other.owner.parent.stopClimbing()
-
-        other.owner.parent.canClimbDown = false
-        other.owner.parent.canClimbUp = true
-      }
-    })
-    floorSensor.on('collisionend', ({ other }) => {
-      if (
-        other.owner.parent instanceof Player &&
-        other.owner.name === 'ladderSensor'
-      ) {
-        other.owner.parent.canClimbUp = false
-      }
-    })
-    this.addChild(floorSensor)
+    this.addChild(new LadderFloorSensor(this))
 
     if (this.broken) {
-      const ladderWall = new Actor({
-        name: 'LadderWall',
-        width: 8,
-        height: 2,
-        pos: vec(0, -this.height / 2 - 10),
-        collisionType: CollisionType.Passive,
-        collisionGroup: Config.colliders.LaddersCanCollideWith,
-        // color: Color.Yellow, // DEBUG
-        z: 1,
-      })
-      ladderWall.on('collisionstart', ({ other }) => {
-        if (
-          other.owner.parent instanceof Player &&
-          other.owner.name === 'ladderSensor'
-        ) {
-          other.owner.parent.climbingWall = true
-        }
-      })
-      ladderWall.on('collisionend', ({ other }) => {
-        if (
-          other.owner.parent instanceof Player &&
-          other.owner.name === 'ladderSensor'
-        ) {
-          if (other.owner.parent.climbing)
-            other.owner.parent.climbingWall = false
-        }
-      })
-      this.addChild(ladderWall)
+      this.addChild(new LadderWallSensor(this))
     } else {
-      const roofSensor = new Actor({
-        name: 'RoofSensor',
-        width: 3,
-        height: 2,
-        pos: vec(0, -this.height / 2 - 10),
-        collisionType: CollisionType.Passive,
-        collisionGroup: Config.colliders.LaddersCanCollideWith,
-        // color: Color.Yellow, // DEBUG
-        z: 1,
-      })
-      roofSensor.on('collisionstart', ({ other }) => {
-        if (
-          other.owner.parent instanceof Player &&
-          other.owner.name === 'ladderSensor'
-        ) {
-          if (other.owner.parent.climbing) other.owner.parent.stopClimbing()
-
-          other.owner.parent.canClimbUp = false
-          other.owner.parent.canClimbDown = true
-        }
-      })
-      roofSensor.on('collisionend', ({ other }) => {
-        if (
-          other.owner.parent instanceof Player &&
-          other.owner.name === 'ladderSensor'
-        ) {
-          other.owner.parent.canClimbDown = false
-        }
-      })
-      this.addChild(roofSensor)
+      this.addChild(new LadderRoofSensor(this))
     }
   }
 }

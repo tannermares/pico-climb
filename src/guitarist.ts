@@ -30,7 +30,7 @@ export class Guitarist extends Actor {
   static animation = Animation.fromSpriteSheet(
     Guitarist.spriteSheet,
     [0, 1],
-    200,
+    300,
     AnimationStrategy.Loop
   )
 

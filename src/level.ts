@@ -28,6 +28,7 @@ import { DrumSet } from './drumSet'
 
 export class Level extends Scene {
   rand = new Random()
+  lives = 3
   score = 0
   highScore = 0
   bonus = 5000
@@ -91,6 +92,10 @@ export class Level extends Scene {
     action: () => {
       this.bonus -= 100
       this.bonusScore.text = `${this.bonus}`
+
+      if (this.bonus === 0) {
+        this.triggerDeath()
+      }
     },
   })
   guitarist = new Guitarist(vec(80, 40))
@@ -184,7 +189,7 @@ export class Level extends Scene {
     this.actors.forEach((actor) => {
       if (actor.name === 'PlayerLife') actor.kill()
     })
-    new Array(this.player.lives).fill(0).forEach((n, i) => {
+    new Array(this.lives).fill(0).forEach((n, i) => {
       this.add(new PlayerLife(vec(8 * i + 12, 24)))
     })
 
@@ -239,5 +244,16 @@ export class Level extends Scene {
       this.highScore = score
     }
     this.highScoreCard.text = String(this.highScore).padStart(6, '0')
+  }
+
+  triggerDeath() {
+    this.stop()
+
+    if (this.lives === 1) {
+      this.engine.goToScene('gameOver')
+    } else {
+      this.lives -= 1
+      this.engine.goToScene('intro')
+    }
   }
 }

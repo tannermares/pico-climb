@@ -13,15 +13,13 @@ export class LadderWallSensor extends Actor {
       pos: vec(0, -ladder.height / 2 - 10),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      // color: Color.Yellow, // DEBUG
-      z: 1,
     })
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
     if (
       other.owner.parent instanceof Player &&
-      other.owner.name === 'ladderSensor'
+      other.owner.name === 'LadderSensor'
     ) {
       other.owner.parent.climbingWall = true
     }
@@ -30,7 +28,7 @@ export class LadderWallSensor extends Actor {
   override onCollisionEnd(_self: Collider, other: Collider): void {
     if (
       other.owner.parent instanceof Player &&
-      other.owner.name === 'ladderSensor'
+      other.owner.name === 'LadderSensor'
     ) {
       if (other.owner.parent.climbing) other.owner.parent.climbingWall = false
     }

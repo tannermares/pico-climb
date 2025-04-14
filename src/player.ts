@@ -62,10 +62,9 @@ export class Player extends Actor {
       pos: Player.startingPoint,
       width: 5,
       height: 2,
-      // color: Color.Brown, // DEBUG
+      // color: Color.Cyan, // DEBUG
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
-      z: 2,
     })
   }
 
@@ -78,7 +77,6 @@ export class Player extends Actor {
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.PlayerGroup,
       color: Color.White, // DEBUG
-      z: -1,
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
@@ -95,13 +93,12 @@ export class Player extends Actor {
     this.addChild(this._bodySensor)
 
     this._ladderSensor = new Actor({
-      name: 'ladderSensor',
+      name: 'LadderSensor',
       width: 3,
-      height: 1,
+      height: 2,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LadderSensorGroup,
-      // color: Color.Yellow, // DEBUG
-      z: 1,
+      color: Color.Yellow, // DEBUG
     })
     this.addChild(this._ladderSensor)
 

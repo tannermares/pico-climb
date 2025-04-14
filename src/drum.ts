@@ -4,14 +4,13 @@ import {
   AnimationStrategy,
   clamp,
   CollisionType,
-  Color,
   Engine,
   SpriteSheet,
   vec,
   Vector,
 } from 'excalibur'
 import { Config } from './config'
-import { colors } from './colors'
+
 import { Resources } from './resources'
 import { Player } from './player'
 import { Level } from './level'
@@ -60,13 +59,13 @@ export class Drum extends Actor {
       width: 12,
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
-      color: Color.fromHex(colors.orange1),
       vel: vec(65, 0),
     })
 
     this.on('exitviewport', () => this.kill())
   }
-  override onInitialize(engine: Engine): void {
+
+  override onInitialize(_engine: Engine): void {
     this.graphics.add('roll', Drum.rollAnimation)
     this.graphics.add('rollDown', Drum.rollDownAnimation)
     this.graphics.use('roll')
@@ -78,8 +77,6 @@ export class Drum extends Actor {
       pos: vec(0, -this.height + 2),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
-      // color: Color.Yellow, // DEBUG
-      z: 1,
     })
     scoreSensor.on('collisionstart', ({ other }) => {
       if (

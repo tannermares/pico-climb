@@ -1,11 +1,4 @@
-import {
-  Actor,
-  Collider,
-  CollisionType,
-  Color,
-  Random,
-  Vector,
-} from 'excalibur'
+import { Actor, Collider, CollisionType, Random, Vector } from 'excalibur'
 
 import { Drum } from './drum'
 import { Config } from './config'
@@ -13,18 +6,20 @@ import { Config } from './config'
 export class DrumTrigger extends Actor {
   constructor(pos: Vector, private type: string, private random: Random) {
     super({
-      height: type === 'down' ? 8 : 1,
-      width: type === 'down' ? 1 : 8,
+      height: type === 'slow' ? 16 : type === 'down' ? 8 : 1,
+      width: type === 'slow' || type === 'down' ? 1 : 8,
       pos,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.DrumSensorGroup,
-      color: Color.Yellow,
     })
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
     if (other.owner instanceof Drum) {
-      if (this.type === 'down') {
+      if (this.type === 'slow') {
+        const sign = Math.sign(other.owner.vel.x)
+        other.owner.acc.x = 60 * sign * -1
+      } else if (this.type === 'down') {
         if (this.random.bool(0.25)) {
           other.owner.rollDown()
 

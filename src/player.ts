@@ -69,7 +69,7 @@ export class Player extends Actor {
     })
   }
 
-  override onInitialize(engine: Engine): void {
+  override onInitialize(_engine: Engine): void {
     this._bodySensor = new Actor({
       name: 'BodySensor',
       width: 8,

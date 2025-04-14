@@ -125,7 +125,7 @@ export const Config = {
     { pos: vec(132, 72), height: 24, sensors: true, broken: false },
   ],
   walls: [vec(0, 128), vec(224, 128)],
-  drumSensors: [
+  drumSlowTriggers: [
     vec(192, 212),
     vec(32, 179),
     vec(192, 146),

@@ -15,7 +15,6 @@ import { Config } from './config'
 import { Wall } from './wall'
 import { Ladder } from './ladder'
 import { DrumFactory } from './drumFactory'
-import { DrumSensor } from './drumSensor'
 import { colors } from './colors'
 import { DrumTrigger } from './drumTrigger'
 import { Resources } from './resources'
@@ -118,7 +117,9 @@ export class Level extends Scene {
     Config.drumRightTriggers.forEach((pos) =>
       this.add(new DrumTrigger(pos, 'right', this.rand))
     )
-    Config.drumSensors.forEach((pos) => this.add(new DrumSensor(pos)))
+    Config.drumSlowTriggers.forEach((pos) =>
+      this.add(new DrumTrigger(pos, 'slow', this.rand))
+    )
 
     this.add(this.drumCloset)
     this.add(this.throwingDrum)

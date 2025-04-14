@@ -1,4 +1,4 @@
-import { Timer, vec } from 'excalibur'
+import { Timer, Vector } from 'excalibur'
 
 import { Drum } from './drum'
 import { Level } from './level'
@@ -34,7 +34,11 @@ export class DrumFactory {
     this.timer.stop()
 
     for (const actor of this.level.actors) {
-      if (actor instanceof Drum) actor.vel = vec(0, 0)
+      if (actor instanceof Drum) {
+        actor.acc = Vector.Zero
+        actor.vel = Vector.Zero
+        actor.graphics.use('sprite')
+      }
     }
   }
 }

@@ -196,7 +196,7 @@ export class Level extends Scene {
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
 
-    this.oneUpTimer.reset()
+    // this.oneUpTimer.reset()
     this.bonusTimer.reset()
     this.drumOffTimer.reset()
     this.drumFactory.reset()
@@ -214,7 +214,7 @@ export class Level extends Scene {
   }
 
   stop() {
-    this.oneUpTimer.stop()
+    // this.oneUpTimer.stop()
     this.bonusTimer.stop()
     this.drumOffTimer.stop()
     this.drumFactory.stop()
@@ -248,12 +248,20 @@ export class Level extends Scene {
 
   triggerDeath() {
     this.stop()
+    this.player.stop()
 
-    if (this.lives === 1) {
-      this.engine.goToScene('gameOver')
-    } else {
-      this.lives -= 1
-      this.engine.goToScene('intro')
-    }
+    this.engine.clock.schedule(() => {
+      this.drumFactory.reset()
+      this.player.triggerDeath()
+    }, 1000)
+
+    this.engine.clock.schedule(() => {
+      if (this.lives === 1) {
+        this.engine.goToScene('gameOver')
+      } else {
+        this.lives -= 1
+        this.engine.goToScene('intro')
+      }
+    }, 5000)
   }
 }

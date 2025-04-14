@@ -1,7 +1,6 @@
 import {
   Actor,
   Animation,
-  AnimationStrategy,
   CollisionType,
   Engine,
   SpriteSheet,
@@ -27,12 +26,7 @@ export class Singer extends Actor {
     },
   })
   static sprite = Singer.spriteSheet.getSprite(0, 0)
-  static animation = Animation.fromSpriteSheet(
-    Singer.spriteSheet,
-    [0, 1],
-    300,
-    AnimationStrategy.Loop
-  )
+  static animation = Animation.fromSpriteSheet(Singer.spriteSheet, [0, 1], 300)
 
   constructor(pos: Vector) {
     super({

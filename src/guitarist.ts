@@ -1,7 +1,6 @@
 import {
   Actor,
   Animation,
-  AnimationStrategy,
   CollisionType,
   Engine,
   SpriteSheet,
@@ -30,8 +29,7 @@ export class Guitarist extends Actor {
   static animation = Animation.fromSpriteSheet(
     Guitarist.spriteSheet,
     [0, 1],
-    300,
-    AnimationStrategy.Loop
+    300
   )
 
   constructor(pos: Vector) {

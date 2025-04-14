@@ -1,7 +1,6 @@
 import {
   Actor,
   Animation,
-  AnimationStrategy,
   clamp,
   CollisionType,
   Engine,
@@ -37,18 +36,17 @@ export class Drum extends Actor {
       },
     },
   })
+  static sprite = this.spriteSheet.getSprite(0, 0)
   static rollAnimation = Animation.fromSpriteSheet(
     Drum.spriteSheet,
     [0, 1, 2, 3],
-    200,
-    AnimationStrategy.Loop
+    200
   )
 
   static rollDownAnimation = Animation.fromSpriteSheet(
     Drum.spriteSheet,
     [4, 5],
-    200,
-    AnimationStrategy.Loop
+    200
   )
 
   constructor(private level: Level) {
@@ -66,6 +64,7 @@ export class Drum extends Actor {
   }
 
   override onInitialize(_engine: Engine): void {
+    this.graphics.add('sprite', Drum.sprite)
     this.graphics.add('roll', Drum.rollAnimation)
     this.graphics.add('rollDown', Drum.rollDownAnimation)
     this.graphics.use('roll')

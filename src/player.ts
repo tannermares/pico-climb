@@ -19,10 +19,25 @@ export class Player extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
     image: Resources.SpriteSheet,
     grid: {
-      rows: 16,
-      columns: 16,
+      rows: 1,
+      columns: 9,
       spriteWidth: 16,
       spriteHeight: 16,
+    },
+  })
+  static deathSpriteSheet = SpriteSheet.fromImageSource({
+    image: Resources.SpriteSheet,
+    grid: {
+      rows: 1,
+      columns: 1,
+      spriteWidth: 24,
+      spriteHeight: 16,
+    },
+    spacing: {
+      originOffset: {
+        x: 265,
+        y: 0,
+      },
     },
   })
   static startSprite = Player.spriteSheet.getSprite(0, 0)
@@ -30,15 +45,29 @@ export class Player extends Actor {
   static runAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
     [0, 1, 0, 2],
-    80,
-    AnimationStrategy.Loop
+    80
   )
   static climbAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
     [3, 4],
-    300,
-    AnimationStrategy.Loop
+    300
   )
+  static deathAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Player.spriteSheet,
+    frameCoordinates: [
+      { x: 7, y: 0 },
+      { x: 6, y: 0 },
+      { x: 7, y: 0 },
+      { x: 6, y: 0 },
+      { x: 7, y: 0 },
+      { x: 6, y: 0 },
+      { x: 8, y: 0 },
+    ],
+    durationPerFrame: 300,
+    strategy: AnimationStrategy.Freeze,
+  })
+
+  static deadSprite = Player.deathSpriteSheet.getSprite(0, 0)
   static climbSprite1 = Player.spriteSheet.getSprite(3, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(4, 0)
   // static startingPoint = vec(16, 248)
@@ -100,6 +129,7 @@ export class Player extends Actor {
     this._bodySensor.graphics.add('climb', Player.climbAnimation)
     this._bodySensor.graphics.add('climb1', Player.climbSprite1)
     this._bodySensor.graphics.add('climb2', Player.climbSprite2)
+    this._bodySensor.graphics.add('death', Player.deathAnimation)
 
     this._bodySensor.graphics.use('start')
     this._bodySensor.graphics.flipHorizontal = true
@@ -228,6 +258,9 @@ export class Player extends Actor {
     this.stopClimbing()
     this.pos = Player.startingPoint
     this.graphics.flipHorizontal = true
-    this.stop()
+  }
+
+  triggerDeath() {
+    this._bodySensor.graphics.use('death')
   }
 }

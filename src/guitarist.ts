@@ -20,7 +20,7 @@ export class Guitarist extends Actor {
     },
     spacing: {
       originOffset: {
-        x: 56,
+        x: 64,
         y: 80,
       },
     },

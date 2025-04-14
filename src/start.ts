@@ -16,6 +16,7 @@ import { colors } from './colors'
 import { Guitarist } from './guitarist'
 import { Singer } from './singer'
 import { DrumSet } from './drumSet'
+import { Logo } from './logo'
 
 export class Start extends Scene {
   font = new Font({ family: 'Galaxian', size: 8 })
@@ -44,13 +45,20 @@ export class Start extends Scene {
     pos: vec(88, 8),
     color: Color.White,
   })
+  logo = new Logo()
+  pressEnter = new Label({
+    text: 'Press Enter',
+    font: this.font,
+    pos: vec(62, 168),
+    color: Color.White,
+  })
   guitarist = new Guitarist(vec(88, 200), false)
   drumSet = new DrumSet(vec(108, 204))
   singer = new Singer(vec(128, 200), false)
   copyRightLabel = new Label({
     text: '© 2025',
     font: this.font,
-    pos: vec(80, 224),
+    pos: vec(78, 224),
     color: Color.White,
   })
   companyLabel = new Label({
@@ -64,15 +72,18 @@ export class Start extends Scene {
     interval: 300,
     repeats: true,
     action: () => {
+      this.pressEnter.graphics.isVisible = !this.pressEnter.graphics.isVisible
       this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
     },
   })
 
-  override onInitialize(engine: Engine): void {
+  override onInitialize(_engine: Engine): void {
     this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
+    this.add(this.logo)
+    this.add(this.pressEnter)
     this.add(this.guitarist)
     this.add(this.drumSet)
     this.add(this.singer)

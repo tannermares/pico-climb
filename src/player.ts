@@ -29,19 +29,19 @@ export class Player extends Actor {
     image: Resources.SpriteSheet,
     grid: {
       rows: 1,
-      columns: 1,
-      spriteWidth: 24,
+      columns: 5,
+      spriteWidth: 16,
       spriteHeight: 16,
     },
     spacing: {
       originOffset: {
-        x: 265,
-        y: 0,
+        x: 128,
+        y: 16,
       },
     },
   })
   static startSprite = Player.spriteSheet.getSprite(0, 0)
-  static jumpSprite = Player.spriteSheet.getSprite(1, 0)
+  static jumpSprite = Player.spriteSheet.getSprite(3, 0)
   static runAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
     [0, 1, 0, 2],
@@ -49,27 +49,32 @@ export class Player extends Actor {
   )
   static climbAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
-    [3, 4],
+    [4, 5],
     300
   )
   static deathAnimation = Animation.fromSpriteSheetCoordinates({
-    spriteSheet: Player.spriteSheet,
+    spriteSheet: Player.deathSpriteSheet,
     frameCoordinates: [
-      { x: 7, y: 0 },
-      { x: 6, y: 0 },
-      { x: 7, y: 0 },
-      { x: 6, y: 0 },
-      { x: 7, y: 0 },
-      { x: 6, y: 0 },
-      { x: 8, y: 0 },
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 0 },
+      { x: 3, y: 0 },
+      { x: 4, y: 0 },
     ],
-    durationPerFrame: 300,
+    durationPerFrame: 200,
     strategy: AnimationStrategy.Freeze,
   })
 
-  static deadSprite = Player.deathSpriteSheet.getSprite(0, 0)
-  static climbSprite1 = Player.spriteSheet.getSprite(3, 0)
-  static climbSprite2 = Player.spriteSheet.getSprite(4, 0)
+  static climbSprite1 = Player.spriteSheet.getSprite(4, 0)
+  static climbSprite2 = Player.spriteSheet.getSprite(5, 0)
   // static startingPoint = vec(16, 248)
   // static startingPoint = vec(200, 80) // Score testing
   static startingPoint = vec(130, 40) // Barrel testing
@@ -178,24 +183,27 @@ export class Player extends Actor {
 
     // Normal Movement
     if (keys.isHeld(Keys.Right)) {
-      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
-        this.level.rand.bool(0.75)
-          ? Resources.Walk1.play()
-          : Resources.Walk2.play()
       this.vel.x = speed
-      this._bodySensor.graphics.use('run')
-      this._bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
-      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
-        this.level.rand.bool(0.75)
-          ? Resources.Walk1.play()
-          : Resources.Walk2.play()
-      this._bodySensor.graphics.use('run')
-      this._bodySensor.graphics.flipHorizontal = false
       this.vel.x = -speed
     } else {
-      this._bodySensor.graphics.use('start')
       this.vel.x = 0
+    }
+
+    // Animations
+    if (this.vel.x === 0) {
+      this._bodySensor.graphics.use('start')
+    } else {
+      this._bodySensor.graphics.use('run')
+      this._bodySensor.graphics.flipHorizontal = this.vel.x > 0
+    }
+
+    // Sounds
+    if (this.vel.x !== 0) {
+      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
+        this.level.rand.bool(0.75)
+          ? Resources.Walk1.play()
+          : Resources.Walk2.play()
     }
 
     // Jump

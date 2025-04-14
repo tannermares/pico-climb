@@ -22,6 +22,9 @@ import { StaticDrum } from './staticDrum'
 import { BonusLabel } from './bonusLabel'
 import { DrumCloset } from './drumCloset'
 import { PlayerLife } from './playerLife'
+import { Guitarist } from './guitarist'
+import { Singer } from './singer'
+import { DrumSet } from './drumSet'
 
 export class Level extends Scene {
   rand = new Random()
@@ -90,6 +93,9 @@ export class Level extends Scene {
       this.bonusScore.text = `${this.bonus}`
     },
   })
+  guitarist = new Guitarist(vec(80, 40))
+  drumSet = new DrumSet(vec(100, 44))
+  singer = new Singer(vec(120, 40))
 
   override onInitialize(engine: Engine): void {
     this.add(this.player)
@@ -121,9 +127,12 @@ export class Level extends Scene {
       this.add(new DrumTrigger(pos, 'slow', this.rand))
     )
 
+    // Decorations
+    this.add(this.guitarist)
+    this.add(this.drumSet)
+    this.add(this.singer)
     this.add(this.drumCloset)
     this.add(this.throwingDrum)
-    this.add(this.drumOffTimer)
     this.add(new StaticDrum(vec(16, 78)))
 
     // Labels
@@ -143,6 +152,7 @@ export class Level extends Scene {
     this.add(this.bonusLabel)
     this.add(this.bonusScore)
 
+    this.add(this.drumOffTimer)
     this.add(this.bonusTimer)
     this.add(this.oneUpTimer)
 

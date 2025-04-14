@@ -52,7 +52,7 @@ export class Drum extends Actor {
   constructor(private level: Level) {
     super({
       name: 'Drum',
-      pos: vec(18, 79),
+      pos: vec(40, 79),
       height: 10,
       width: 12,
       collisionType: CollisionType.Active,

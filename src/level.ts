@@ -25,6 +25,7 @@ import { PlayerLife } from './playerLife'
 import { Guitarist } from './guitarist'
 import { Singer } from './singer'
 import { DrumSet } from './drumSet'
+import { DrumThrower } from './drumThrower'
 
 export class Level extends Scene {
   rand = new Random()
@@ -68,15 +69,17 @@ export class Level extends Scene {
     color: Color.fromHex(colors.blue3),
   })
   throwingDrum = new StaticDrum(vec(16, 66))
+  drumThrower = new DrumThrower(vec(30, 72))
   drumOffTimer = new Timer({
     interval: 3000,
     repeats: true,
     action: () => {
+      this.drumThrower.graphics.use('throw')
       this.throwingDrum.graphics.isVisible = false
-      this.engine.clock.schedule(
-        () => (this.throwingDrum.graphics.isVisible = true),
-        1500
-      )
+      this.engine.clock.schedule(() => {
+        this.drumThrower.graphics.use('pickup')
+        this.throwingDrum.graphics.isVisible = true
+      }, 1500)
     },
   })
   oneUpTimer = new Timer({
@@ -138,6 +141,7 @@ export class Level extends Scene {
     this.add(this.singer)
     this.add(this.drumCloset)
     this.add(this.throwingDrum)
+    this.add(this.drumThrower)
     this.add(new StaticDrum(vec(16, 78)))
 
     // Labels
@@ -196,7 +200,6 @@ export class Level extends Scene {
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
 
-    // this.oneUpTimer.reset()
     this.bonusTimer.reset()
     this.drumOffTimer.reset()
     this.drumFactory.reset()
@@ -214,7 +217,6 @@ export class Level extends Scene {
   }
 
   stop() {
-    // this.oneUpTimer.stop()
     this.bonusTimer.stop()
     this.drumOffTimer.stop()
     this.drumFactory.stop()

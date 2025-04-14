@@ -1,17 +1,5 @@
-import {
-  Color,
-  Engine,
-  ExcaliburGraphicsContext,
-  Font,
-  Keys,
-  Label,
-  Scene,
-  SceneActivationContext,
-  Timer,
-  vec,
-} from 'excalibur'
-import { Resources } from './resources'
-import { Level } from './level'
+import { Color, Engine, Font, Keys, Label, Scene, Timer, vec } from 'excalibur'
+
 import { colors } from './colors'
 import { Guitarist } from './guitarist'
 import { Singer } from './singer'

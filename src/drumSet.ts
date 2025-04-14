@@ -27,6 +27,7 @@ export class DrumSet extends Actor {
       height: 24,
       pos,
       collisionType: CollisionType.PreventCollision,
+      z: 1,
     })
   }
 

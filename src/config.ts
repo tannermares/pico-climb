@@ -93,12 +93,10 @@ export const Config = {
     vec(184, 91),
     vec(200, 92),
 
-    vec(72, 56),
-    vec(88, 56),
-    vec(104, 56),
-    vec(120, 56),
-    vec(136, 56),
-    vec(152, 56),
+    vec(80, 56),
+    vec(96, 56),
+    vec(112, 56),
+    vec(128, 56),
   ],
   ladders: [
     { pos: vec(84, 223), height: 4, sensors: false, broken: false },

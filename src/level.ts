@@ -217,10 +217,11 @@ export class Level extends Scene {
   }
 
   stop() {
+    Resources.BackgroundMusic.stop()
+
     this.bonusTimer.stop()
     this.drumOffTimer.stop()
     this.drumFactory.stop()
-
     this.player.stop()
   }
 
@@ -251,9 +252,11 @@ export class Level extends Scene {
   triggerDeath() {
     this.stop()
     this.player.stop()
+    Resources.Hit.play()
 
     this.engine.clock.schedule(() => {
       this.drumFactory.reset()
+      Resources.Death.play()
       this.player.triggerDeath()
     }, 1000)
 

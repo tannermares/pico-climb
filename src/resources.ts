@@ -12,6 +12,7 @@ export const Resources = {
 
   // Sounds
   Death: new Sound('./sounds/death.wav'),
+  Hit: new Sound('./sounds/hit.wav'),
   Intro: new Sound('./sounds/intro.wav'),
   Jump: new Sound('./sounds/jump.wav'),
   Score: new Sound('./sounds/score.wav'),

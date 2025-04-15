@@ -69,7 +69,7 @@ export class Player extends Actor {
       { x: 3, y: 0 },
       { x: 4, y: 0 },
     ],
-    durationPerFrame: 200,
+    durationPerFrame: 100,
     strategy: AnimationStrategy.Freeze,
   })
 

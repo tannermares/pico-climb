@@ -85,9 +85,8 @@ export class Player extends Actor {
 
   static climbSprite1 = Player.spriteSheet.getSprite(4, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(5, 0)
-  static startingPoint = vec(16, 248)
-  // static startingPoint = vec(130, 80) // Score testing
-  // static startingPoint = vec(130, 200) // Barrel testing
+  // static startingPoint = vec(16, 248)
+  static startingPoint = vec(130, 80) // Score testing
 
   playing = false
   canClimbUp = false

@@ -1,4 +1,5 @@
 import {
+  Actor,
   Color,
   Engine,
   Font,
@@ -32,7 +33,7 @@ import { Score } from './score'
 export class Level extends Scene {
   rand = new Random()
   win = false
-  lives = 3
+  lives = 2
   score = 0
   highScore = 0
   bonus = 5000
@@ -109,6 +110,22 @@ export class Level extends Scene {
   drumSet = new DrumSet(vec(100, 44))
   singer = new Singer(vec(120, 40))
   winTrigger = new WinTrigger(this)
+  gameOverOverlay = new Actor({
+    height: 40,
+    width: 112,
+    pos: vec(112, 180),
+    color: Color.fromHex(colors.gray6),
+    z: 2,
+    visible: false,
+  })
+  gameOverLabel = new Label({
+    text: 'GAME  OVER',
+    font: this.font,
+    pos: vec(70, 177),
+    color: Color.fromHex(colors.blue3),
+    z: 3,
+    visible: false,
+  })
 
   override onInitialize(engine: Engine): void {
     this.add(this.player)
@@ -155,6 +172,8 @@ export class Level extends Scene {
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
+    this.add(this.gameOverOverlay)
+    this.add(this.gameOverLabel)
 
     const highScore = localStorage.getItem('highScore')
     if (highScore) {
@@ -171,15 +190,6 @@ export class Level extends Scene {
     this.add(this.bonusTimer)
     this.add(this.oneUpTimer)
 
-    engine.input.keyboard.on('press', ({ key }) => {
-      if (key === Keys.P) {
-        if (engine.isRunning()) {
-          engine.stop()
-        } else {
-          engine.start()
-        }
-      }
-    })
     Resources.BackgroundMusic.loop = true
   }
 
@@ -199,7 +209,7 @@ export class Level extends Scene {
     this.actors.forEach((actor) => {
       if (actor.name === 'PlayerLife') actor.kill()
     })
-    new Array(this.lives).fill(0).forEach((n, i) => {
+    new Array(this.lives - 1).fill(0).forEach((n, i) => {
       this.add(new PlayerLife(vec(8 * i + 12, 24)))
     })
 
@@ -266,7 +276,7 @@ export class Level extends Scene {
 
     this.engine.clock.schedule(() => {
       if (this.lives === 1) {
-        this.engine.goToScene('gameOver')
+        this.triggerGameOver()
       } else {
         this.lives -= 1
         this.engine.goToScene('intro')
@@ -288,7 +298,29 @@ export class Level extends Scene {
     this.player._bodySensor.graphics.flipHorizontal = false
     this.player.actions.moveBy(vec(-30, 0), 12)
 
-    // Add Bonus
+    this.engine.clock.schedule(() => this.triggerGameOver(), 8000)
+  }
+
+  triggerGameOver() {
+    this.stop()
+    // this.player.stop()
+    this.drumFactory.reset()
+    Resources.BackgroundMusic.stop()
+
+    this.engine.clock.schedule(() => {
+      this.engine.goToScene('start')
+      this.score = 0
+      this.gameOverOverlay.graphics.isVisible = false
+      this.gameOverLabel.graphics.isVisible = false
+    }, 5000)
+
+    this.gameOverOverlay.graphics.isVisible = true
+    this.gameOverLabel.graphics.isVisible = true
+
+    this.addBonus()
+  }
+
+  addBonus() {
     this.score += this.bonus
     this.scoreCard.text = String(this.score).padStart(6, '0')
     this.setHighScore(this.score)

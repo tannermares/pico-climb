@@ -1,6 +1,5 @@
-import { Color, DisplayMode, Engine, vec } from 'excalibur'
+import { Color, DisplayMode, Engine, Keys, vec } from 'excalibur'
 
-import { GameOver } from './gameOver'
 import { Intro } from './intro'
 import { Level } from './level'
 import { loader } from './resources'
@@ -14,8 +13,18 @@ const game = new Engine({
   displayMode: DisplayMode.FitScreen,
   pixelArt: true,
   antialiasing: false,
-  scenes: { start: Start, level: Level, intro: Intro, gameOver: GameOver },
+  scenes: { start: Start, level: Level, intro: Intro },
   physics: { gravity: vec(0, 100) },
+})
+
+game.input.keyboard.on('press', ({ key }) => {
+  if (key === Keys.P) {
+    if (game.isRunning()) {
+      game.stop()
+    } else {
+      game.start()
+    }
+  }
 })
 
 game.start('start', { loader })

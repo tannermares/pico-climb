@@ -1,4 +1,14 @@
-import { Color, Engine, Font, Keys, Label, Scene, Timer, vec } from 'excalibur'
+import {
+  Color,
+  Engine,
+  Font,
+  KeyEvent,
+  Keys,
+  Label,
+  Scene,
+  Timer,
+  vec,
+} from 'excalibur'
 
 import { colors } from './colors'
 import { Guitarist } from './guitarist'
@@ -64,8 +74,9 @@ export class Start extends Scene {
       this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
     },
   })
+  boundGoToIntro = this.goToIntro.bind(this)
 
-  override onInitialize(_engine: Engine): void {
+  override onInitialize(engine: Engine): void {
     this.add(this.oneUpLabel)
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
@@ -89,10 +100,14 @@ export class Start extends Scene {
   }
 
   override onActivate(): void {
-    this.engine.input.keyboard.on('press', ({ key }) => {
-      if (key === Keys.Enter) {
-        this.engine.goToScene('intro')
-      }
-    })
+    this.engine.input.keyboard.on('press', this.boundGoToIntro)
+  }
+
+  override onDeactivate(): void {
+    this.engine.input.keyboard.off('press', this.boundGoToIntro)
+  }
+
+  goToIntro({ key }: KeyEvent) {
+    if (key === Keys.Enter) this.engine.goToScene('intro')
   }
 }

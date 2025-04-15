@@ -1,4 +1,4 @@
-import { Actor, Collider, CollisionType, Color, vec } from 'excalibur'
+import { Actor, Collider, CollisionType, vec } from 'excalibur'
 
 import { Config } from './config'
 import { Level } from './level'
@@ -9,10 +9,9 @@ export class WinTrigger extends Actor {
       name: 'WinTrigger',
       width: 8,
       height: 2,
-      pos: vec(132, 51),
+      pos: vec(132, 50),
       collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.FeetCanCollideWith,
-      color: Color.Yellow,
+      collisionGroup: Config.colliders.LaddersCanCollideWith,
     })
   }
 

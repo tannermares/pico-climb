@@ -3,7 +3,6 @@ import {
   Animation,
   AnimationStrategy,
   CollisionType,
-  Color,
   Engine,
   Keys,
   SpriteSheet,
@@ -46,6 +45,11 @@ export class Player extends Actor {
     Player.spriteSheet,
     [0, 1, 0, 2],
     80
+  )
+  static walkAnimation = Animation.fromSpriteSheet(
+    Player.spriteSheet,
+    [0, 1, 0, 2],
+    300
   )
   static climbAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
@@ -95,7 +99,6 @@ export class Player extends Actor {
       pos: Player.startingPoint,
       width: 5,
       height: 2,
-      color: Color.Cyan, // DEBUG
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
     })
@@ -132,6 +135,7 @@ export class Player extends Actor {
 
     this._bodySensor.graphics.add('start', Player.startSprite)
     this._bodySensor.graphics.add('run', Player.runAnimation)
+    this._bodySensor.graphics.add('walk', Player.walkAnimation)
     this._bodySensor.graphics.add('jump', Player.jumpSprite)
     this._bodySensor.graphics.add('climb', Player.climbAnimation)
     this._bodySensor.graphics.add('climb1', Player.climbSprite1)

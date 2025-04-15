@@ -31,6 +31,7 @@ import { Score } from './score'
 
 export class Level extends Scene {
   rand = new Random()
+  win = false
   lives = 3
   score = 0
   highScore = 0
@@ -274,10 +275,18 @@ export class Level extends Scene {
   }
 
   triggerWin() {
+    if (this.win) return
+
+    this.win = true
     this.stop()
     this.player.stop()
+    this.drumFactory.reset()
     Resources.BackgroundMusic.stop()
     Resources.Win.play()
+
+    this.player._bodySensor.graphics.use('walk')
+    this.player._bodySensor.graphics.flipHorizontal = false
+    this.player.actions.moveBy(vec(-30, 0), 12)
 
     // Add Bonus
     this.score += this.bonus

@@ -94,6 +94,7 @@ export class Player extends Actor {
   falling = true
   _bodySensor!: Actor
   _ladderSensor!: Actor
+  _fallingSensor!: Actor
   startSprite!: ex.Sprite
   fallTimer = new Timer({
     interval: 300,
@@ -139,9 +140,20 @@ export class Player extends Actor {
       height: 2,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LadderSensorGroup,
-      color: Color.Yellow, // DEBUG
+      // color: Color.Yellow, // DEBUG
     })
     this.addChild(this._ladderSensor)
+
+    // this._fallingSensor = new Actor({
+    //   name: 'PlayerFallingSensor',
+    //   width: 3,
+    //   height: 2,
+    //   pos: vec(0, 4),
+    //   collisionType: CollisionType.Passive,
+    //   collisionGroup: Config.colliders.FeetCanCollideWith,
+    //   color: Color.Yellow, // DEBUG
+    // })
+    // this.addChild(this._fallingSensor)
 
     this._bodySensor.graphics.add('start', Player.startSprite)
     this._bodySensor.graphics.add('run', Player.runAnimation)

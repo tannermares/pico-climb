@@ -45,10 +45,34 @@ export class Intro extends Scene {
   guitarist = new Guitarist(vec(88, 200), false)
   drumSet = new DrumSet(vec(108, 204))
   singer = new Singer(vec(128, 200), false)
+  arrows = new Label({
+    text: 'Arrows:',
+    font: this.font,
+    pos: vec(52, 224),
+    color: Color.fromHex(colors.blue2),
+  })
+  move = new Label({
+    text: 'move',
+    font: this.font,
+    pos: vec(112, 224),
+    color: Color.White,
+  })
+  space = new Label({
+    text: 'Space:',
+    font: this.font,
+    pos: vec(60, 232),
+    color: Color.fromHex(colors.blue2),
+  })
+  jump = new Label({
+    text: 'jump',
+    font: this.font,
+    pos: vec(112, 232),
+    color: Color.White,
+  })
   canYouMakeItLabel = new Label({
     text: 'CAN YOU MAKE IT TO WORSHIP?',
     font: this.font,
-    pos: vec(4, 232),
+    pos: vec(4, 112),
     color: Color.White,
   })
 
@@ -70,6 +94,10 @@ export class Intro extends Scene {
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
+    this.add(this.arrows)
+    this.add(this.move)
+    this.add(this.space)
+    this.add(this.jump)
     this.add(this.guitarist)
     this.add(this.drumSet)
     this.add(this.singer)

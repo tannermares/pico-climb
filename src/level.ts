@@ -184,7 +184,7 @@ export class Level extends Scene {
   }
 
   override onActivate(): void {
-    // Resources.BackgroundMusic.play()
+    Resources.BackgroundMusic.play()
 
     this.reset()
   }
@@ -218,7 +218,7 @@ export class Level extends Scene {
     this.oneUpTimer.start()
     this.bonusTimer.start()
     this.drumOffTimer.start()
-    // this.drumFactory.start()
+    this.drumFactory.start()
     this.player.start()
   }
 

@@ -266,7 +266,7 @@ export class Player extends Actor {
   startClimbing() {
     this.climbing = true
     this.body.useGravity = false
-    this.body.collisionType = CollisionType.PreventCollision
+    this.body.collisionType = CollisionType.Passive
   }
 
   stopClimbing() {

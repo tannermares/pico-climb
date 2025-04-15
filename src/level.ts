@@ -26,6 +26,8 @@ import { Guitarist } from './guitarist'
 import { Singer } from './singer'
 import { DrumSet } from './drumSet'
 import { DrumThrower } from './drumThrower'
+import { WinTrigger } from './winTrigger'
+import { Score } from './score'
 
 export class Level extends Scene {
   rand = new Random()
@@ -105,9 +107,11 @@ export class Level extends Scene {
   guitarist = new Guitarist(vec(80, 40))
   drumSet = new DrumSet(vec(100, 44))
   singer = new Singer(vec(120, 40))
+  winTrigger = new WinTrigger(this)
 
   override onInitialize(engine: Engine): void {
     this.add(this.player)
+    this.add(this.winTrigger)
 
     Config.walls.forEach((pos) => this.add(new Wall(pos)))
 
@@ -198,8 +202,6 @@ export class Level extends Scene {
       this.add(new PlayerLife(vec(8 * i + 12, 24)))
     })
 
-    this.score = 0
-    this.scoreCard.text = `000000`
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
 
@@ -235,13 +237,11 @@ export class Level extends Scene {
     this.scoreCard.text = String(this.score).padStart(6, '0')
     this.setHighScore(this.score)
 
-    const scoreLabel = new Label({
-      pos: vec(this.player.pos.x - 10, this.player.pos.y + 3),
-      text: `${score}`,
-      color: Color.White,
-    })
+    const scoreLabel = new Score(
+      vec(this.player.pos.x, this.player.pos.y + 8),
+      score
+    )
     this.add(scoreLabel)
-    this.engine.clock.schedule(() => scoreLabel.kill(), 1000)
   }
 
   setHighScore(score: number) {
@@ -271,5 +271,17 @@ export class Level extends Scene {
         this.engine.goToScene('intro')
       }
     }, 5000)
+  }
+
+  triggerWin() {
+    this.stop()
+    this.player.stop()
+    Resources.BackgroundMusic.stop()
+    Resources.Win.play()
+
+    // Add Bonus
+    this.score += this.bonus
+    this.scoreCard.text = String(this.score).padStart(6, '0')
+    this.setHighScore(this.score)
   }
 }

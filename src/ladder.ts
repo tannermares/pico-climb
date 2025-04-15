@@ -1,13 +1,12 @@
 import {
   Actor,
   CollisionType,
-  Color,
   Engine,
   ImageWrapping,
   SpriteSheet,
   Vector,
 } from 'excalibur'
-import { colors } from './colors'
+
 import { Resources } from './resources'
 import { LadderFloorSensor } from './ladderFloorSensor'
 import { LadderWallSensor } from './ladderWallSensor'
@@ -44,7 +43,6 @@ export class Ladder extends Actor {
       pos,
       width: 8,
       height,
-      color: Color.fromHex(colors.blue2),
       collisionType: CollisionType.PreventCollision,
     })
   }

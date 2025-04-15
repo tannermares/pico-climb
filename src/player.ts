@@ -95,7 +95,7 @@ export class Player extends Actor {
       pos: Player.startingPoint,
       width: 5,
       height: 2,
-      // color: Color.Cyan, // DEBUG
+      color: Color.Cyan, // DEBUG
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
     })
@@ -109,10 +109,12 @@ export class Player extends Actor {
       pos: vec(0, -7),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.PlayerGroup,
-      color: Color.White, // DEBUG
     })
     this._bodySensor.on('collisionstart', ({ other }) => {
       if (other.owner instanceof Drum) {
+        other.owner.acc = Vector.Zero
+        other.owner.vel = Vector.Zero
+        other.owner.body.useGravity = false
         this.level.triggerDeath()
       }
     })
@@ -124,7 +126,7 @@ export class Player extends Actor {
       height: 2,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LadderSensorGroup,
-      color: Color.Yellow, // DEBUG
+      // color: Color.Yellow, // DEBUG
     })
     this.addChild(this._ladderSensor)
 
@@ -209,7 +211,7 @@ export class Player extends Actor {
     }
 
     // Jump
-    if (this.vel.y === 0 && keys.wasPressed(Keys.X)) {
+    if (this.vel.y === 0 && keys.wasPressed(Keys.Space)) {
       Resources.Jump.play()
       this.vel.y = -jumpStrength
       this.jumping = true
@@ -252,10 +254,12 @@ export class Player extends Actor {
 
   stop() {
     this.playing = false
+    this.body.useGravity = false
     this.vel = Vector.Zero
     this.acc = Vector.Zero
     const anim = this._bodySensor.graphics.current
-    if (anim instanceof Animation) anim.pause()
+    if (anim instanceof Animation && anim.strategy === AnimationStrategy.Loop)
+      anim.pause()
   }
 
   reset() {

@@ -1,10 +1,21 @@
-import { Actor, Color, Engine, Font, Keys, Label, Scene, vec } from 'excalibur'
+import {
+  Actor,
+  Color,
+  Engine,
+  Font,
+  Keys,
+  Label,
+  Scene,
+  SceneActivationContext,
+  vec,
+} from 'excalibur'
 
 import { Girder } from './girder'
 import { Config } from './config'
 import { Wall } from './wall'
 import { Ladder } from './ladder'
 import { colors } from './colors'
+import { Level } from './level'
 
 export class GameOver extends Scene {
   override onInitialize(engine: Engine): void {
@@ -96,7 +107,11 @@ export class GameOver extends Scene {
     )
   }
 
-  override onActivate(): void {
+  override onActivate(context: SceneActivationContext): void {
+    if (context.previousScene instanceof Level) {
+      // this.scoreCard.text = String(context.previousScene.score).padStart(6, '0')
+    }
+
     this.engine.input.keyboard.on('press', ({ key }) => {
       if (key === Keys.Enter) {
         this.engine.goToScene('intro')

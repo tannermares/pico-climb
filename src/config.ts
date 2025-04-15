@@ -1,25 +1,23 @@
 import { CollisionGroup, CollisionGroupManager, vec } from 'excalibur'
 
-const DrumGroup = CollisionGroupManager.create('drum')
 const DrumSensorGroup = CollisionGroupManager.create('drumSensorGroup')
-const FootGroup = CollisionGroupManager.create('foot')
 const GirderGroup = CollisionGroupManager.create('girder')
-const LadderGroup = CollisionGroupManager.create('ladder')
 const LadderSensorGroup = CollisionGroupManager.create('ladderSensorGroup')
 const PlayerGroup = CollisionGroupManager.create('player')
 const WallGroup = CollisionGroupManager.create('wall')
+const WinGroup = CollisionGroupManager.create('win')
 
 const DrumsCanCollideWith = CollisionGroup.collidesWith([
   DrumSensorGroup,
-  LadderGroup,
   GirderGroup,
   PlayerGroup,
 ])
-const FeetCanCollideWith = CollisionGroup.collidesWith([GirderGroup, WallGroup])
+const FeetCanCollideWith = CollisionGroup.collidesWith([
+  GirderGroup,
+  WallGroup,
+  WinGroup,
+])
 const LaddersCanCollideWith = CollisionGroup.collidesWith([LadderSensorGroup])
-const LaddersSensorCanCollideWith = CollisionGroup.collidesWith([LadderGroup])
-const PlayerCanCollideWith = CollisionGroup.collidesWith([DrumGroup])
-const WallsCollideWith = CollisionGroup.collidesWith([FootGroup])
 
 export const Config = {
   girders: [
@@ -168,19 +166,14 @@ export const Config = {
     vec(100, 213),
   ],
   colliders: {
-    DrumGroup,
     DrumsCanCollideWith,
     DrumSensorGroup,
     FeetCanCollideWith,
-    FootGroup,
     GirderGroup,
-    LadderGroup,
     LaddersCanCollideWith,
     LadderSensorGroup,
-    LaddersSensorCanCollideWith,
     PlayerGroup,
-    PlayerCanCollideWith,
     WallGroup,
-    WallsCollideWith,
+    WinGroup,
   },
 } as const

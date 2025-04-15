@@ -9,11 +9,11 @@ import {
   vec,
 } from 'excalibur'
 import { Resources } from './resources'
-import { Level } from './level'
 import { colors } from './colors'
 import { Guitarist } from './guitarist'
 import { DrumSet } from './drumSet'
 import { Singer } from './singer'
+import { Level } from './level'
 
 export class Intro extends Scene {
   font = new Font({ family: 'Galaxian', size: 8 })
@@ -81,7 +81,11 @@ export class Intro extends Scene {
     this.add(this.loadTimer)
   }
 
-  override onActivate(_context: SceneActivationContext): void {
+  override onActivate(context: SceneActivationContext): void {
+    if (context.previousScene instanceof Level) {
+      this.scoreCard.text = String(context.previousScene.score).padStart(6, '0')
+    }
+
     const highScore = localStorage.getItem('highScore')
     if (highScore) {
       this.highScore = +highScore

@@ -13,7 +13,7 @@ export class LadderFloorSensor extends Actor {
       pos: vec(0, ladder.height / 2 - 1),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      color: Color.Yellow, // DEBUG
+      // color: Color.Yellow, // DEBUG
     })
   }
 

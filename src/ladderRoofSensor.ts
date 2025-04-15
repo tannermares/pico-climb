@@ -13,7 +13,7 @@ export class LadderRoofSensor extends Actor {
       pos: vec(0, -ladder.height / 2 - 10),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      color: Color.Yellow, // DEBUG
+      // color: Color.Yellow, // DEBUG
     })
   }
 

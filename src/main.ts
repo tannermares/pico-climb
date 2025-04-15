@@ -18,4 +18,4 @@ const game = new Engine({
   physics: { gravity: vec(0, 100) },
 })
 
-game.start('start', { loader })
+game.start('level', { loader })

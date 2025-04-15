@@ -174,10 +174,10 @@ export class Level extends Scene {
         }
       }
     })
+    Resources.BackgroundMusic.loop = true
   }
 
   override onActivate(): void {
-    Resources.BackgroundMusic.loop = true
     Resources.BackgroundMusic.play()
 
     this.reset()
@@ -197,12 +197,15 @@ export class Level extends Scene {
       this.add(new PlayerLife(vec(8 * i + 12, 24)))
     })
 
+    this.score = 0
+    this.scoreCard.text = `000000`
     this.bonus = 5000
     this.bonusScore.text = `${5000}`
 
     this.bonusTimer.reset()
     this.drumOffTimer.reset()
     this.drumFactory.reset()
+    this.player.reset()
 
     this.start()
   }
@@ -212,7 +215,6 @@ export class Level extends Scene {
     this.bonusTimer.start()
     this.drumOffTimer.start()
     this.drumFactory.start()
-
     this.player.start()
   }
 

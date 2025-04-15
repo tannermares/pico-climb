@@ -195,6 +195,8 @@ export class Player extends Actor {
       this._bodySensor.graphics.use('start')
     } else {
       this._bodySensor.graphics.use('run')
+      const anim = this._bodySensor.graphics.current
+      if (anim instanceof Animation) anim.play()
       this._bodySensor.graphics.flipHorizontal = this.vel.x > 0
     }
 
@@ -207,7 +209,7 @@ export class Player extends Actor {
     }
 
     // Jump
-    if (!this.jumping && this.vel.y === 0 && keys.wasPressed(Keys.X)) {
+    if (this.vel.y === 0 && keys.wasPressed(Keys.X)) {
       Resources.Jump.play()
       this.vel.y = -jumpStrength
       this.jumping = true
@@ -215,7 +217,6 @@ export class Player extends Actor {
 
     // Try to climb up
     if (
-      !this.jumping &&
       this.canClimbUp &&
       keys.wasPressed(Keys.Up) &&
       !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
@@ -224,7 +225,6 @@ export class Player extends Actor {
     }
 
     if (
-      !this.jumping &&
       this.canClimbDown &&
       keys.wasPressed(Keys.Down) &&
       !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
@@ -248,14 +248,14 @@ export class Player extends Actor {
 
   start() {
     this.playing = true
-    this.graphics.flipHorizontal = true
-    this.pos = Player.startingPoint
   }
 
   stop() {
     this.playing = false
     this.vel = Vector.Zero
     this.acc = Vector.Zero
+    const anim = this._bodySensor.graphics.current
+    if (anim instanceof Animation) anim.pause()
   }
 
   reset() {
@@ -265,10 +265,12 @@ export class Player extends Actor {
     this.jumping = false
     this.stopClimbing()
     this.pos = Player.startingPoint
-    this.graphics.flipHorizontal = true
+    this._bodySensor.graphics.flipHorizontal = true
   }
 
   triggerDeath() {
     this._bodySensor.graphics.use('death')
+    const anim = this._bodySensor.graphics.current
+    if (anim instanceof Animation) anim.reset()
   }
 }

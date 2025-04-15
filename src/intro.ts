@@ -60,7 +60,7 @@ export class Intro extends Scene {
     },
   })
   loadTimer = new Timer({
-    interval: 3000,
+    interval: 4000,
     repeats: false,
     action: () => this.engine.goToScene('level'),
   })
@@ -81,12 +81,7 @@ export class Intro extends Scene {
     this.add(this.loadTimer)
   }
 
-  override onActivate(context: SceneActivationContext): void {
-    if (context.previousScene instanceof Level) {
-      context.previousScene.reset()
-      context.previousScene.player.reset()
-    }
-
+  override onActivate(_context: SceneActivationContext): void {
     const highScore = localStorage.getItem('highScore')
     if (highScore) {
       this.highScore = +highScore

@@ -3,9 +3,11 @@ import {
   Animation,
   AnimationStrategy,
   CollisionType,
+  Color,
   Engine,
   Keys,
   SpriteSheet,
+  Timer,
   vec,
   Vector,
 } from 'excalibur'
@@ -80,8 +82,8 @@ export class Player extends Actor {
   static climbSprite1 = Player.spriteSheet.getSprite(4, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(5, 0)
   // static startingPoint = vec(16, 248)
-  static startingPoint = vec(130, 80) // Score testing
-  // static startingPoint = vec(130, 40) // Barrel testing
+  // static startingPoint = vec(130, 80) // Score testing
+  static startingPoint = vec(130, 200) // Barrel testing
 
   playing = false
   canClimbUp = false
@@ -89,9 +91,17 @@ export class Player extends Actor {
   climbing = false
   climbingWall = false
   jumping = false
+  falling = true
   _bodySensor!: Actor
   _ladderSensor!: Actor
   startSprite!: ex.Sprite
+  fallTimer = new Timer({
+    interval: 300,
+    repeats: false,
+    action: () => {
+      this.falling = true
+    },
+  })
 
   constructor(private level: Level) {
     super({
@@ -124,12 +134,12 @@ export class Player extends Actor {
     this.addChild(this._bodySensor)
 
     this._ladderSensor = new Actor({
-      name: 'LadderSensor',
+      name: 'PlayerLadderSensor',
       width: 3,
       height: 2,
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LadderSensorGroup,
-      // color: Color.Yellow, // DEBUG
+      color: Color.Yellow, // DEBUG
     })
     this.addChild(this._ladderSensor)
 
@@ -144,6 +154,8 @@ export class Player extends Actor {
 
     this._bodySensor.graphics.use('start')
     this._bodySensor.graphics.flipHorizontal = true
+
+    this.level.add(this.fallTimer)
   }
 
   override onPostUpdate(engine: Engine): void {
@@ -185,6 +197,18 @@ export class Player extends Actor {
         this.vel.y = 0
       }
       return
+    }
+
+    if (this.vel.y > 0) {
+      if (!this.falling && !this.fallTimer.isRunning) {
+        this.fallTimer.start()
+      } else {
+        if (this.falling) {
+          this.vel.x = 0
+          this._bodySensor.graphics.use('jump')
+          return
+        }
+      }
     }
 
     // Normal Movement

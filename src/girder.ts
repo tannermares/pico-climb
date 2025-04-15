@@ -103,6 +103,8 @@ export class Girder extends Actor {
       side === Side.Top
     ) {
       other.owner.jumping = false
+      other.owner.falling = false
+      other.owner.fallTimer.stop()
     }
   }
 }

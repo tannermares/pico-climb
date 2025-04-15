@@ -1,4 +1,4 @@
-import { Actor, Collider, CollisionType, Color, vec } from 'excalibur'
+import { Actor, Collider, CollisionType, vec } from 'excalibur'
 
 import { Config } from './config'
 import { Ladder } from './ladder'
@@ -13,7 +13,6 @@ export class LadderRoofSensor extends Actor {
       pos: vec(0, -ladder.height / 2 - 10),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
-      color: Color.Yellow, // DEBUG
     })
   }
 

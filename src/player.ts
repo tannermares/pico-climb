@@ -3,7 +3,6 @@ import {
   Animation,
   AnimationStrategy,
   CollisionType,
-  Color,
   Engine,
   Keys,
   SpriteSheet,
@@ -43,11 +42,16 @@ export class Player extends Actor {
   })
   static startSprite = Player.spriteSheet.getSprite(0, 0)
   static jumpSprite = Player.spriteSheet.getSprite(3, 0)
-  static runAnimation = Animation.fromSpriteSheet(
-    Player.spriteSheet,
-    [0, 1, 0, 2],
-    80
-  )
+  static runAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Player.spriteSheet,
+    frameCoordinates: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+    ],
+    durationPerFrame: 80,
+  })
   static walkAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
     [0, 1, 0, 2],
@@ -81,9 +85,9 @@ export class Player extends Actor {
 
   static climbSprite1 = Player.spriteSheet.getSprite(4, 0)
   static climbSprite2 = Player.spriteSheet.getSprite(5, 0)
-  // static startingPoint = vec(16, 248)
+  static startingPoint = vec(16, 248)
   // static startingPoint = vec(130, 80) // Score testing
-  static startingPoint = vec(130, 200) // Barrel testing
+  // static startingPoint = vec(130, 200) // Barrel testing
 
   playing = false
   canClimbUp = false
@@ -217,7 +221,7 @@ export class Player extends Actor {
       } else {
         if (this.falling) {
           this.vel.x = 0
-          this._bodySensor.graphics.use('jump')
+          // this._bodySensor.graphics.use('jump')
           return
         }
       }
@@ -237,9 +241,9 @@ export class Player extends Actor {
       this._bodySensor.graphics.use('start')
     } else {
       this._bodySensor.graphics.use('run')
+      this._bodySensor.graphics.flipHorizontal = this.vel.x > 0
       const anim = this._bodySensor.graphics.current
       if (anim instanceof Animation) anim.play()
-      this._bodySensor.graphics.flipHorizontal = this.vel.x > 0
     }
 
     // Sounds

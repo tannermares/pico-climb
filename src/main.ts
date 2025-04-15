@@ -5,6 +5,7 @@ import { Level } from './level'
 import { loader } from './resources'
 import { colors } from './colors'
 import { Start } from './start'
+import CrtPostProcessor from './crtPostProcessor'
 
 const game = new Engine({
   width: 224,
@@ -16,6 +17,9 @@ const game = new Engine({
   scenes: { start: Start, level: Level, intro: Intro },
   physics: { gravity: vec(0, 100) },
 })
+
+const crtPostProcessor = new CrtPostProcessor()
+game.graphicsContext.addPostProcessor(crtPostProcessor)
 
 game.input.keyboard.on('press', ({ key }) => {
   if (key === Keys.P) {

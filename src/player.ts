@@ -3,6 +3,7 @@ import {
   Animation,
   AnimationStrategy,
   CollisionType,
+  Color,
   Engine,
   Keys,
   SpriteSheet,
@@ -11,9 +12,9 @@ import {
   Vector,
 } from 'excalibur'
 import { Config } from './config'
-import { Drum } from './drum'
 import { Resources } from './resources'
 import { Level } from './level'
+import { PlayerBodySensor } from './playerBodySensor'
 
 export class Player extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -52,15 +53,32 @@ export class Player extends Actor {
     ],
     durationPerFrame: 80,
   })
-  static walkAnimation = Animation.fromSpriteSheet(
-    Player.spriteSheet,
-    [0, 1, 0, 2],
-    300
-  )
+  static walkAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Player.spriteSheet,
+    frameCoordinates: [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 0, y: 0 },
+      { x: 2, y: 0 },
+    ],
+    durationPerFrame: 300,
+  })
   static climbAnimation = Animation.fromSpriteSheet(
     Player.spriteSheet,
     [4, 5],
     300
+  )
+  static endClimbUpAnimation = Animation.fromSpriteSheet(
+    Player.spriteSheet,
+    [6, 7, 8, 9, 10],
+    100,
+    AnimationStrategy.Freeze
+  )
+  static startClimbDownAnimation = Animation.fromSpriteSheet(
+    Player.spriteSheet,
+    [10, 9, 8, 7, 6],
+    100,
+    AnimationStrategy.Freeze
   )
   static deathAnimation = Animation.fromSpriteSheetCoordinates({
     spriteSheet: Player.deathSpriteSheet,
@@ -83,11 +101,6 @@ export class Player extends Actor {
     strategy: AnimationStrategy.Freeze,
   })
 
-  static climbSprite1 = Player.spriteSheet.getSprite(4, 0)
-  static climbSprite2 = Player.spriteSheet.getSprite(5, 0)
-  // static startingPoint = vec(16, 248)
-  static startingPoint = vec(130, 80) // Score testing
-
   playing = false
   canClimbUp = false
   canClimbDown = false
@@ -95,10 +108,25 @@ export class Player extends Actor {
   climbingWall = false
   jumping = false
   falling = true
-  _bodySensor!: Actor
-  _ladderSensor!: Actor
-  _fallingSensor!: Actor
-  startSprite!: ex.Sprite
+  level: Level
+  bodySensor = new PlayerBodySensor()
+  climbingEndSensor = new Actor({
+    name: 'PlayerClimbingEndSensor',
+    width: 3,
+    height: 2,
+    pos: vec(0, -7),
+    collisionType: CollisionType.Passive,
+    collisionGroup: Config.colliders.LadderSensorGroup,
+    color: Color.Yellow,
+  })
+  ladderSensor = new Actor({
+    name: 'PlayerLadderSensor',
+    width: 3,
+    height: 2,
+    collisionType: CollisionType.Passive,
+    collisionGroup: Config.colliders.LadderSensorGroup,
+  })
+  fallingSensor!: Actor
   fallTimer = new Timer({
     interval: 300,
     repeats: false,
@@ -107,7 +135,11 @@ export class Player extends Actor {
     },
   })
 
-  constructor(private level: Level) {
+  static startingPoint = vec(36, 248)
+  // static startingPoint = vec(200, 243) // Ladder testing
+  // static startingPoint = vec(200, 80) // Score testing
+
+  constructor(level: Level) {
     super({
       name: 'PlayerFeet',
       pos: Player.startingPoint,
@@ -116,38 +148,16 @@ export class Player extends Actor {
       collisionType: CollisionType.Active,
       collisionGroup: Config.colliders.FeetCanCollideWith,
     })
+
+    this.level = level
   }
 
   override onInitialize(_engine: Engine): void {
-    this._bodySensor = new Actor({
-      name: 'BodySensor',
-      width: 8,
-      height: 8,
-      pos: vec(0, -7),
-      collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.PlayerGroup,
-    })
-    this._bodySensor.on('collisionstart', ({ other }) => {
-      if (other.owner instanceof Drum) {
-        other.owner.acc = Vector.Zero
-        other.owner.vel = Vector.Zero
-        other.owner.body.useGravity = false
-        this.level.triggerDeath()
-      }
-    })
-    this.addChild(this._bodySensor)
+    this.addChild(this.bodySensor)
+    // this.addChild(this.climbingEndSensor)
+    this.addChild(this.ladderSensor)
 
-    this._ladderSensor = new Actor({
-      name: 'PlayerLadderSensor',
-      width: 3,
-      height: 2,
-      collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.LadderSensorGroup,
-      // color: Color.Yellow, // DEBUG
-    })
-    this.addChild(this._ladderSensor)
-
-    // this._fallingSensor = new Actor({
+    // this.fallingSensor = new Actor({
     //   name: 'PlayerFallingSensor',
     //   width: 3,
     //   height: 2,
@@ -156,21 +166,9 @@ export class Player extends Actor {
     //   collisionGroup: Config.colliders.FeetCanCollideWith,
     //   color: Color.Yellow, // DEBUG
     // })
-    // this.addChild(this._fallingSensor)
+    // this.addChild(this.fallingSensor)
 
-    this._bodySensor.graphics.add('start', Player.startSprite)
-    this._bodySensor.graphics.add('run', Player.runAnimation)
-    this._bodySensor.graphics.add('walk', Player.walkAnimation)
-    this._bodySensor.graphics.add('jump', Player.jumpSprite)
-    this._bodySensor.graphics.add('climb', Player.climbAnimation)
-    this._bodySensor.graphics.add('climb1', Player.climbSprite1)
-    this._bodySensor.graphics.add('climb2', Player.climbSprite2)
-    this._bodySensor.graphics.add('death', Player.deathAnimation)
-
-    this._bodySensor.graphics.use('start')
-    this._bodySensor.graphics.flipHorizontal = true
-
-    this.level.add(this.fallTimer)
+    // this.level.add(this.fallTimer)
   }
 
   override onPostUpdate(engine: Engine): void {
@@ -181,23 +179,31 @@ export class Player extends Actor {
     const jumpStrength = 50
 
     if (this.jumping) {
-      this._bodySensor.graphics.use('jump')
+      this.bodySensor.graphics.use('jump')
       return
     }
 
     if (this.climbing) {
       this.vel.x = 0
+      this.bodySensor.graphics.use('climb')
+
+      if (keys.wasPressed(Keys.Up) || keys.wasPressed(Keys.Down)) {
+        const nextFrame =
+          (Player.climbAnimation.currentFrameIndex + 1) %
+          Player.climbAnimation.frames.length
+        Player.climbAnimation.goToFrame(nextFrame)
+      }
 
       if (keys.isHeld(Keys.Up)) {
         if (this.climbingWall) {
-          this._bodySensor.graphics.use('climb1')
+          Player.climbAnimation.pause()
           this.vel.y = 0
         } else {
           if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
             this.level.rand.bool(0.75)
               ? Resources.Walk1.play()
               : Resources.Walk2.play()
-          this._bodySensor.graphics.use('climb')
+          Player.climbAnimation.play()
           this.vel.y = -speed
         }
       } else if (keys.isHeld(Keys.Down)) {
@@ -205,44 +211,47 @@ export class Player extends Actor {
           this.level.rand.bool(0.75)
             ? Resources.Walk1.play()
             : Resources.Walk2.play()
-        this._bodySensor.graphics.use('climb')
+        Player.climbAnimation.play()
         this.vel.y = speed
       } else {
-        this._bodySensor.graphics.use('climb1')
+        Player.climbAnimation.pause()
         this.vel.y = 0
       }
       return
     }
 
-    if (this.vel.y > 0) {
-      if (!this.falling && !this.fallTimer.isRunning) {
-        this.fallTimer.start()
-      } else {
-        if (this.falling) {
-          this.vel.x = 0
-          // this._bodySensor.graphics.use('jump')
-          return
-        }
-      }
+    // if (this.vel.y > 0) {
+    //   if (!this.falling && !this.fallTimer.isRunning) {
+    //     this.fallTimer.start()
+    //   } else {
+    //     if (this.falling) {
+    //       this.vel.x = 0
+    //       // this.bodySensor.graphics.use('jump')
+    //       return
+    //     }
+    //   }
+    // }
+
+    this.bodySensor.graphics.use('run')
+    if (keys.wasPressed(Keys.Right) || keys.wasPressed(Keys.Left)) {
+      const nextFrame =
+        (Player.runAnimation.currentFrameIndex + 1) %
+        Player.runAnimation.frames.length
+      Player.runAnimation.goToFrame(nextFrame)
     }
 
     // Normal Movement
     if (keys.isHeld(Keys.Right)) {
       this.vel.x = speed
+      Player.runAnimation.play()
+      this.bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
       this.vel.x = -speed
+      Player.runAnimation.play()
+      this.bodySensor.graphics.flipHorizontal = false
     } else {
       this.vel.x = 0
-    }
-
-    // Animations
-    if (this.vel.x === 0) {
-      this._bodySensor.graphics.use('start')
-    } else {
-      this._bodySensor.graphics.use('run')
-      this._bodySensor.graphics.flipHorizontal = this.vel.x > 0
-      const anim = this._bodySensor.graphics.current
-      if (anim instanceof Animation) anim.play()
+      Player.runAnimation.pause()
     }
 
     // Sounds
@@ -274,6 +283,7 @@ export class Player extends Actor {
       keys.wasPressed(Keys.Down) &&
       !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
     ) {
+      this.bodySensor.graphics.use('startClimbDown')
       this.startClimbing()
     }
   }
@@ -289,6 +299,7 @@ export class Player extends Actor {
     this.vel = Vector.Zero
     this.body.useGravity = true
     this.body.collisionType = CollisionType.Active
+    Player.runAnimation.reset()
   }
 
   start() {
@@ -300,7 +311,7 @@ export class Player extends Actor {
     this.body.useGravity = false
     this.vel = Vector.Zero
     this.acc = Vector.Zero
-    const anim = this._bodySensor.graphics.current
+    const anim = this.bodySensor.graphics.current
     if (anim instanceof Animation && anim.strategy === AnimationStrategy.Loop)
       anim.pause()
   }
@@ -312,12 +323,12 @@ export class Player extends Actor {
     this.jumping = false
     this.stopClimbing()
     this.pos = Player.startingPoint
-    this._bodySensor.graphics.flipHorizontal = true
+    this.bodySensor.graphics.flipHorizontal = true
   }
 
   triggerDeath() {
-    this._bodySensor.graphics.use('death')
-    const anim = this._bodySensor.graphics.current
+    this.bodySensor.graphics.use('death')
+    const anim = this.bodySensor.graphics.current
     if (anim instanceof Animation) anim.reset()
   }
 }

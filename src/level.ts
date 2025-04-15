@@ -32,7 +32,7 @@ import { Score } from './score'
 export class Level extends Scene {
   rand = new Random()
   win = false
-  lives = 2
+  lives = 3
   score = 0
   highScore = 0
   bonus = 5000
@@ -293,8 +293,8 @@ export class Level extends Scene {
     Resources.BackgroundMusic.stop()
     Resources.Win.play()
 
-    this.player._bodySensor.graphics.use('walk')
-    this.player._bodySensor.graphics.flipHorizontal = false
+    this.player.bodySensor.graphics.use('walk')
+    this.player.bodySensor.graphics.flipHorizontal = false
     this.player.actions.moveBy(vec(-30, 0), 12)
 
     this.engine.clock.schedule(() => this.triggerGameOver(), 8000)
@@ -302,12 +302,13 @@ export class Level extends Scene {
 
   triggerGameOver() {
     this.stop()
-    // this.player.stop()
     this.drumFactory.reset()
     Resources.BackgroundMusic.stop()
 
     this.engine.clock.schedule(() => {
       this.engine.goToScene('start')
+      this.win = false
+      this.lives = 3
       this.score = 0
       this.gameOverOverlay.graphics.isVisible = false
       this.gameOverLabel.graphics.isVisible = false

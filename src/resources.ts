@@ -1,10 +1,5 @@
-import {
-  // DefaultLoader,
-  FontSource,
-  ImageSource,
-  Loader,
-  Sound,
-} from 'excalibur'
+import { FontSource, ImageSource, Sound } from 'excalibur'
+import { PicosArcadeLoader } from './picosArcadeLoader'
 
 export const Resources = {
   Font: new FontSource('./fonts/Galaxian1979.ttf', 'Galaxian'),
@@ -24,7 +19,7 @@ export const Resources = {
   BackgroundMusic: new Sound('./sounds/bg-music.mp3'),
 } as const
 
-export const loader = new Loader()
+export const loader = new PicosArcadeLoader()
 for (const res of Object.values(Resources)) {
   loader.addResource(res)
 }

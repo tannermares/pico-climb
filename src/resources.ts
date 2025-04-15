@@ -11,17 +11,17 @@ export const Resources = {
   SpriteSheet: new ImageSource('./images/spritesheet.png'),
 
   // Sounds
-  Death: new Sound('./sounds/death.ogg'),
+  Death: new Sound('./sounds/death.mp3'),
   Hit: new Sound('./sounds/hit.wav'),
-  Intro: new Sound('./sounds/intro.ogg'),
+  Intro: new Sound('./sounds/intro.mp3'),
   Jump: new Sound('./sounds/jump.wav'),
   Score: new Sound('./sounds/score.wav'),
   Walk1: new Sound('./sounds/walk1.wav'),
   Walk2: new Sound('./sounds/walk2.wav'),
-  Win: new Sound('./sounds/win.ogg'),
+  Win: new Sound('./sounds/win.mp3'),
 
   // Music
-  BackgroundMusic: new Sound('./sounds/bg-music.ogg'),
+  BackgroundMusic: new Sound('./sounds/bg-music.mp3'),
 } as const
 
 export const loader = new Loader()

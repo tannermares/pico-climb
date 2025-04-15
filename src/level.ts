@@ -68,6 +68,7 @@ export class Level extends Scene {
     pos: vec(172, 44),
     color: Color.fromHex(colors.blue3),
   })
+  staticDrum = new StaticDrum(vec(16, 78))
   throwingDrum = new StaticDrum(vec(16, 66))
   drumThrower = new DrumThrower(vec(30, 72))
   drumOffTimer = new Timer({
@@ -142,7 +143,7 @@ export class Level extends Scene {
     this.add(this.drumCloset)
     this.add(this.throwingDrum)
     this.add(this.drumThrower)
-    this.add(new StaticDrum(vec(16, 78)))
+    this.add(this.staticDrum)
 
     // Labels
     this.add(this.oneUpLabel)

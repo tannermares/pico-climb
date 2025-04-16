@@ -8,8 +8,8 @@ export class PlayerBodySensor extends Actor {
   constructor() {
     super({
       name: 'BodySensor',
-      width: 8,
-      height: 8,
+      width: 6,
+      height: 6,
       pos: vec(0, -7),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.PlayerGroup,

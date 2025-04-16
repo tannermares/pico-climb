@@ -8,19 +8,12 @@ import {
   vec,
   Vector,
 } from 'excalibur'
-import { Config } from './config'
 
+import { Config } from './config'
 import { Resources } from './resources'
-import { Player } from './player'
-import { Level } from './level'
+import { DrumScoreSensor } from './drumScoreSensor'
 
 export class Drum extends Actor {
-  static couldMultiply = false
-  static startMultiplier = false
-  static scoreMultiplier = 1
-  static maxMultiplier = 1
-  static baseScore = 100
-
   static spriteSheet = SpriteSheet.fromImageSource({
     image: Resources.SpriteSheet,
     grid: {
@@ -42,14 +35,15 @@ export class Drum extends Actor {
     [0, 1, 2, 3],
     200
   )
-
   static rollDownAnimation = Animation.fromSpriteSheet(
     Drum.spriteSheet,
     [4, 5],
     200
   )
 
-  constructor(private level: Level) {
+  scoreSensor = new DrumScoreSensor(this)
+
+  constructor() {
     super({
       name: 'Drum',
       pos: vec(40, 79),
@@ -59,7 +53,6 @@ export class Drum extends Actor {
       collisionGroup: Config.colliders.DrumsCanCollideWith,
       vel: vec(65, 0),
     })
-
     this.on('exitviewport', () => this.kill())
   }
 
@@ -69,50 +62,7 @@ export class Drum extends Actor {
     this.graphics.add('rollDown', Drum.rollDownAnimation)
     this.graphics.use('roll')
 
-    const scoreSensor = new Actor({
-      name: 'ScoreSensor',
-      width: 2,
-      height: 8,
-      pos: vec(0, -this.height + 2),
-      collisionType: CollisionType.Passive,
-      collisionGroup: Config.colliders.DrumsCanCollideWith,
-    })
-    scoreSensor.on('collisionstart', ({ other }) => {
-      if (
-        other.owner.parent instanceof Player &&
-        other.owner.parent.jumping &&
-        other.owner.name === 'BodySensor'
-      ) {
-        if (Drum.couldMultiply) {
-          Drum.scoreMultiplier += 2
-          Drum.maxMultiplier += 2
-
-          clamp(Drum.scoreMultiplier, 1, 5)
-          clamp(Drum.maxMultiplier, 1, 5)
-        } else {
-          Drum.couldMultiply = true
-        }
-      }
-    })
-    scoreSensor.on('collisionend', ({ other }) => {
-      if (
-        other.owner.parent instanceof Player &&
-        other.owner.parent.jumping &&
-        other.owner.name === 'BodySensor'
-      ) {
-        if (Drum.couldMultiply && Drum.scoreMultiplier > 1) {
-          Drum.scoreMultiplier -= 2
-
-          clamp(Drum.scoreMultiplier, 1, 5)
-        } else {
-          this.level.incrementScore(Drum.baseScore * Drum.maxMultiplier)
-          Drum.couldMultiply = false
-          Drum.maxMultiplier = 1
-        }
-      }
-    })
-
-    this.addChild(scoreSensor)
+    this.addChild(this.scoreSensor)
   }
 
   override onPostUpdate(_engine: Engine): void {

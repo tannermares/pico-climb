@@ -108,6 +108,9 @@ export class Player extends Actor {
   climbingWall = false
   jumping = false
   falling = true
+  baseScore = 100
+  scoreMultiplier = 1
+  maxMultiplier = 1
   level: Level
   bodySensor = new PlayerBodySensor()
   climbingEndSensor = new Actor({
@@ -134,10 +137,15 @@ export class Player extends Actor {
       this.falling = true
     },
   })
+  multiplyTimer = new Timer({
+    interval: 300,
+    action: () =>
+      this.level.incrementScore(this.baseScore * this.maxMultiplier),
+  })
 
-  static startingPoint = vec(36, 248)
-  // static startingPoint = vec(200, 243) // Ladder testing
-  // static startingPoint = vec(200, 80) // Score testing
+  // static startingPoint = vec(36, 248)
+  static startingPoint = vec(200, 243) // Ladder testing
+  // static startingPoint = vec(130, 80) // Score testing
 
   constructor(level: Level) {
     super({
@@ -169,6 +177,7 @@ export class Player extends Actor {
     // this.addChild(this.fallingSensor)
 
     // this.level.add(this.fallTimer)
+    this.level.add(this.multiplyTimer)
   }
 
   override onPostUpdate(engine: Engine): void {

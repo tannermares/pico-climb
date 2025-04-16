@@ -104,7 +104,13 @@ export class Girder extends Actor {
     ) {
       other.owner.jumping = false
       other.owner.falling = false
-      other.owner.fallTimer.stop()
+
+      // Reset Jump Multipliers
+      other.owner.scoreMultiplier = 1
+      other.owner.maxMultiplier = 1
+      other.owner.multiplyTimer.stop()
+
+      // other.owner.fallTimer.stop()
     }
   }
 }

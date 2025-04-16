@@ -108,6 +108,6 @@ export class Start extends Scene {
   }
 
   goToIntro({ key }: KeyEvent) {
-    if (key === Keys.Enter) this.engine.goToScene('intro')
+    if (key === Keys.Enter || key === Keys.Space) this.engine.goToScene('intro')
   }
 }

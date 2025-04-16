@@ -31,4 +31,6 @@ game.input.keyboard.on('press', ({ key }) => {
   }
 })
 
-game.start('start', { loader })
+game.start(loader).then(() => {
+  game.goToScene('start')
+})

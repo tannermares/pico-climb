@@ -11,6 +11,7 @@ import { Resources } from './resources'
 import { LadderFloorSensor } from './ladderFloorSensor'
 import { LadderWallSensor } from './ladderWallSensor'
 import { LadderRoofSensor } from './ladderRoofSensor'
+import { LadderEndClimbingSensor } from './ladderEndClimbingSensor'
 
 export class Ladder extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -58,6 +59,7 @@ export class Ladder extends Actor {
     if (this.broken) {
       this.addChild(new LadderWallSensor(this))
     } else {
+      this.addChild(new LadderEndClimbingSensor(this))
       this.addChild(new LadderRoofSensor(this))
     }
   }

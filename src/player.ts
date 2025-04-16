@@ -17,11 +17,14 @@ import { Level } from './level'
 import { PlayerBodySensor } from './playerBodySensor'
 
 export class Player extends Actor {
+  static speed = 30
+  static jumpStrength = 50
+  static baseScore = 100
   static spriteSheet = SpriteSheet.fromImageSource({
     image: Resources.SpriteSheet,
     grid: {
       rows: 1,
-      columns: 9,
+      columns: 11,
       spriteWidth: 16,
       spriteHeight: 16,
     },
@@ -68,18 +71,28 @@ export class Player extends Actor {
     [4, 5],
     300
   )
-  static endClimbUpAnimation = Animation.fromSpriteSheet(
-    Player.spriteSheet,
-    [6, 7, 8, 9, 10],
-    100,
-    AnimationStrategy.Freeze
-  )
-  static startClimbDownAnimation = Animation.fromSpriteSheet(
-    Player.spriteSheet,
-    [10, 9, 8, 7, 6],
-    100,
-    AnimationStrategy.Freeze
-  )
+  static endClimbUpAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Player.spriteSheet,
+    frameCoordinates: [
+      { x: 6, y: 0 },
+      { x: 7, y: 0 },
+      { x: 8, y: 0 },
+      { x: 9, y: 0 },
+      { x: 10, y: 0 },
+    ],
+    durationPerFrame: 80,
+  })
+  static startClimbDownAnimation = Animation.fromSpriteSheetCoordinates({
+    spriteSheet: Player.spriteSheet,
+    frameCoordinates: [
+      { x: 10, y: 0 },
+      { x: 9, y: 0 },
+      { x: 8, y: 0 },
+      { x: 7, y: 0 },
+      { x: 6, y: 0 },
+    ],
+    durationPerFrame: 80,
+  })
   static deathAnimation = Animation.fromSpriteSheetCoordinates({
     spriteSheet: Player.deathSpriteSheet,
     frameCoordinates: [
@@ -105,10 +118,11 @@ export class Player extends Actor {
   canClimbUp = false
   canClimbDown = false
   climbing = false
+  climbingUp = false
+  climbingDown = false
   climbingWall = false
   jumping = false
   falling = false
-  baseScore = 100
   scoreMultiplier = 1
   maxMultiplier = 1
   level: Level
@@ -132,13 +146,12 @@ export class Player extends Actor {
   multiplyTimer = new Timer({
     interval: 300,
     action: () =>
-      this.level.incrementScore(this.baseScore * this.maxMultiplier),
+      this.level.incrementScore(Player.baseScore * this.maxMultiplier),
   })
   girdersTouching = 0
 
   // static startingPoint = vec(36, 248)
-  // static startingPoint = vec(200, 243) // Ladder testing
-  static startingPoint = vec(200, 80) // Score testing
+  static startingPoint = vec(117, 210) // Score testing
 
   constructor(level: Level) {
     super({
@@ -156,7 +169,6 @@ export class Player extends Actor {
   override onInitialize(_engine: Engine): void {
     this.addChild(this.bodySensor)
     this.addChild(this.ladderSensor)
-    // this.addChild(this.climbingEndSensor)
 
     this.level.add(this.multiplyTimer)
   }
@@ -165,8 +177,6 @@ export class Player extends Actor {
     if (!this.playing) return
 
     const keys = engine.input.keyboard
-    const speed = 30
-    const jumpStrength = 50
 
     if (this.jumping) {
       this.bodySensor.graphics.use('jump')
@@ -176,6 +186,89 @@ export class Player extends Actor {
     if (this.falling) {
       this.vel.x = 0
       this.bodySensor.graphics.use('jump')
+      return
+    }
+
+    // Special Climbing Down Animation
+    if (
+      this.climbingDown &&
+      !(
+        Player.startClimbDownAnimation.currentFrameIndex ===
+        Player.startClimbDownAnimation.frames.length - 1
+      )
+    ) {
+      this.vel.x = 0
+      this.bodySensor.graphics.use('startClimbDown')
+
+      if (keys.wasPressed(Keys.Up)) {
+        const nextFrame =
+          (Player.startClimbDownAnimation.currentFrameIndex - 1) %
+          Player.startClimbDownAnimation.frames.length
+        Player.startClimbDownAnimation.goToFrame(nextFrame)
+      }
+
+      if (keys.wasPressed(Keys.Down)) {
+        const nextFrame =
+          (Player.startClimbDownAnimation.currentFrameIndex + 1) %
+          Player.startClimbDownAnimation.frames.length
+        Player.startClimbDownAnimation.goToFrame(nextFrame)
+      }
+
+      if (keys.isHeld(Keys.Up)) {
+        this.bodySensor.graphics.use('climb')
+        Player.climbAnimation.play()
+        this.playClimbSound()
+        this.vel.y = -Player.speed
+      } else if (keys.isHeld(Keys.Down)) {
+        Player.startClimbDownAnimation.play()
+        this.playClimbSound()
+        this.vel.y = Player.speed
+      } else {
+        Player.startClimbDownAnimation.pause()
+        this.vel.y = 0
+      }
+
+      return
+    }
+
+    if (
+      this.climbingUp &&
+      !(
+        Player.endClimbUpAnimation.currentFrameIndex ===
+        Player.endClimbUpAnimation.frames.length
+      )
+    ) {
+      this.vel.x = 0
+      this.bodySensor.graphics.use('endClimbUp')
+
+      if (keys.wasPressed(Keys.Up)) {
+        const nextFrame =
+          (Player.endClimbUpAnimation.currentFrameIndex + 1) %
+          Player.endClimbUpAnimation.frames.length
+        Player.endClimbUpAnimation.goToFrame(nextFrame)
+      }
+
+      if (keys.wasPressed(Keys.Down)) {
+        const nextFrame =
+          (Player.endClimbUpAnimation.currentFrameIndex - 1) %
+          Player.endClimbUpAnimation.frames.length
+        Player.endClimbUpAnimation.goToFrame(nextFrame)
+      }
+
+      if (keys.isHeld(Keys.Up)) {
+        Player.endClimbUpAnimation.play()
+        this.playClimbSound()
+        this.vel.y = -Player.speed
+      } else if (keys.isHeld(Keys.Down)) {
+        this.bodySensor.graphics.use('climb')
+        Player.climbAnimation.play()
+        this.playClimbSound()
+        this.vel.y = Player.speed
+      } else {
+        Player.endClimbUpAnimation.pause()
+        this.vel.y = 0
+      }
+
       return
     }
 
@@ -197,12 +290,12 @@ export class Player extends Actor {
         } else {
           Player.climbAnimation.play()
           this.playClimbSound()
-          this.vel.y = -speed
+          this.vel.y = -Player.speed
         }
       } else if (keys.isHeld(Keys.Down)) {
         Player.climbAnimation.play()
         this.playClimbSound()
-        this.vel.y = speed
+        this.vel.y = Player.speed
       } else {
         Player.climbAnimation.pause()
         this.vel.y = 0
@@ -220,11 +313,11 @@ export class Player extends Actor {
 
     // Normal Movement
     if (keys.isHeld(Keys.Right)) {
-      this.vel.x = speed
+      this.vel.x = Player.speed
       Player.runAnimation.play()
       this.bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
-      this.vel.x = -speed
+      this.vel.x = -Player.speed
       Player.runAnimation.play()
       this.bodySensor.graphics.flipHorizontal = false
     } else {
@@ -240,11 +333,11 @@ export class Player extends Actor {
     // Jump
     if (this.vel.y === 0 && keys.wasPressed(Keys.Space)) {
       Resources.Jump.play()
-      this.vel.y = -jumpStrength
+      this.vel.y = -Player.jumpStrength
       this.jumping = true
     }
 
-    // Try to climb up
+    // Climbing Up
     if (
       this.canClimbUp &&
       keys.wasPressed(Keys.Up) &&
@@ -253,12 +346,16 @@ export class Player extends Actor {
       this.startClimbing()
     }
 
+    // Climbing Down
     if (
       this.canClimbDown &&
       keys.wasPressed(Keys.Down) &&
       !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
     ) {
+      this.climbingDown = true
       this.bodySensor.graphics.use('startClimbDown')
+      Player.startClimbDownAnimation.reset()
+
       this.startClimbing()
     }
   }
@@ -271,6 +368,8 @@ export class Player extends Actor {
 
   stopClimbing() {
     this.climbing = false
+    this.climbingUp = false
+    this.climbingDown = false
     this.vel = Vector.Zero
     this.body.useGravity = true
     this.body.collisionType = CollisionType.Active

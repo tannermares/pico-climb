@@ -20,7 +20,7 @@ export class DrumTrigger extends Actor {
         const sign = Math.sign(other.owner.vel.x)
         other.owner.acc.x = 60 * sign * -1
       } else if (this.type === 'down') {
-        if (this.random.bool(0)) {
+        if (this.random.bool(0.25)) {
           other.owner.rollDown()
 
           this.scene?.engine.clock.schedule(() => {

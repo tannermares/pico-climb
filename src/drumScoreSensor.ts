@@ -1,4 +1,4 @@
-import { Actor, clamp, Collider, CollisionType, Color, vec } from 'excalibur'
+import { Actor, clamp, Collider, CollisionType, vec } from 'excalibur'
 
 import { Config } from './config'
 import { Drum } from './drum'
@@ -13,7 +13,6 @@ export class DrumScoreSensor extends Actor {
       pos: vec(0, -drum.height + 2),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.DrumsCanCollideWith,
-      color: Color.Yellow,
     })
   }
 

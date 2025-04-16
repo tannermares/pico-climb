@@ -10,7 +10,7 @@ export class LadderEndClimbingSensor extends Actor {
       name: 'LadderEndClimbingSensor',
       width: 8,
       height: 1,
-      pos: vec(0, -ladder.height / 2),
+      pos: vec(0, -ladder.height / 2 - 2),
       collisionType: CollisionType.Passive,
       collisionGroup: Config.colliders.LaddersCanCollideWith,
     })

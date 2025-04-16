@@ -15,6 +15,8 @@ import { Config } from './config'
 import { Resources } from './resources'
 import { Level } from './level'
 import { PlayerBodySensor } from './playerBodySensor'
+import { Girder } from './girder'
+import { PlayerFallingSensor } from './playerFallingSensor'
 
 export class Player extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -107,12 +109,13 @@ export class Player extends Actor {
   climbing = false
   climbingWall = false
   jumping = false
-  falling = true
+  falling = false
   baseScore = 100
   scoreMultiplier = 1
   maxMultiplier = 1
   level: Level
   bodySensor = new PlayerBodySensor()
+  fallingSensor = new PlayerFallingSensor()
   climbingEndSensor = new Actor({
     name: 'PlayerClimbingEndSensor',
     width: 3,
@@ -129,23 +132,16 @@ export class Player extends Actor {
     collisionType: CollisionType.Passive,
     collisionGroup: Config.colliders.LadderSensorGroup,
   })
-  fallingSensor!: Actor
-  fallTimer = new Timer({
-    interval: 300,
-    repeats: false,
-    action: () => {
-      this.falling = true
-    },
-  })
   multiplyTimer = new Timer({
     interval: 300,
     action: () =>
       this.level.incrementScore(this.baseScore * this.maxMultiplier),
   })
+  girdersTouching = 0
 
   // static startingPoint = vec(36, 248)
-  static startingPoint = vec(200, 243) // Ladder testing
-  // static startingPoint = vec(130, 80) // Score testing
+  // static startingPoint = vec(200, 243) // Ladder testing
+  static startingPoint = vec(200, 80) // Score testing
 
   constructor(level: Level) {
     super({
@@ -164,19 +160,8 @@ export class Player extends Actor {
     this.addChild(this.bodySensor)
     // this.addChild(this.climbingEndSensor)
     this.addChild(this.ladderSensor)
+    this.addChild(this.fallingSensor)
 
-    // this.fallingSensor = new Actor({
-    //   name: 'PlayerFallingSensor',
-    //   width: 3,
-    //   height: 2,
-    //   pos: vec(0, 4),
-    //   collisionType: CollisionType.Passive,
-    //   collisionGroup: Config.colliders.FeetCanCollideWith,
-    //   color: Color.Yellow, // DEBUG
-    // })
-    // this.addChild(this.fallingSensor)
-
-    // this.level.add(this.fallTimer)
     this.level.add(this.multiplyTimer)
   }
 
@@ -188,6 +173,12 @@ export class Player extends Actor {
     const jumpStrength = 50
 
     if (this.jumping) {
+      this.bodySensor.graphics.use('jump')
+      return
+    }
+
+    if (this.falling) {
+      this.vel.x = 0
       this.bodySensor.graphics.use('jump')
       return
     }
@@ -223,18 +214,6 @@ export class Player extends Actor {
       return
     }
 
-    // if (this.vel.y > 0) {
-    //   if (!this.falling && !this.fallTimer.isRunning) {
-    //     this.fallTimer.start()
-    //   } else {
-    //     if (this.falling) {
-    //       this.vel.x = 0
-    //       // this.bodySensor.graphics.use('jump')
-    //       return
-    //     }
-    //   }
-    // }
-
     this.bodySensor.graphics.use('run')
     if (keys.wasPressed(Keys.Right) || keys.wasPressed(Keys.Left)) {
       const nextFrame =
@@ -247,10 +226,12 @@ export class Player extends Actor {
     if (keys.isHeld(Keys.Right)) {
       this.vel.x = speed
       Player.runAnimation.play()
+      this.fallingSensor.pos.x = -2
       this.bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
       this.vel.x = -speed
       Player.runAnimation.play()
+      this.fallingSensor.pos.x = 2
       this.bodySensor.graphics.flipHorizontal = false
     } else {
       this.vel.x = 0

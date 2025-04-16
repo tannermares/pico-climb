@@ -13,7 +13,7 @@ export class DrumFactory {
       action: () => this.spawnDrums(),
     })
 
-    this.level.add(this.timer)
+    // this.level.add(this.timer)
   }
 
   spawnDrums() {

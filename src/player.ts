@@ -150,8 +150,8 @@ export class Player extends Actor {
   })
   girdersTouching = 0
 
-  // static startingPoint = vec(36, 248)
-  static startingPoint = vec(117, 210) // Score testing
+  static startingPoint = vec(36, 248)
+  // static startingPoint = vec(117, 210) // Score testing
 
   constructor(level: Level) {
     super({

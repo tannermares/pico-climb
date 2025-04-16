@@ -19,7 +19,7 @@ const game = new Engine({
 })
 
 const crtPostProcessor = new CrtPostProcessor()
-// game.graphicsContext.addPostProcessor(crtPostProcessor)
+game.graphicsContext.addPostProcessor(crtPostProcessor)
 
 game.input.keyboard.on('press', ({ key }) => {
   if (key === Keys.P) {
@@ -31,4 +31,4 @@ game.input.keyboard.on('press', ({ key }) => {
   }
 })
 
-game.start('level', { loader })
+game.start('start', { loader })

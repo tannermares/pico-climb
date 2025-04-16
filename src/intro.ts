@@ -75,14 +75,6 @@ export class Intro extends Scene {
     pos: vec(4, 112),
     color: Color.White,
   })
-
-  oneUpTimer = new Timer({
-    interval: 300,
-    repeats: true,
-    action: () => {
-      this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
-    },
-  })
   loadTimer = new Timer({
     interval: 4000,
     repeats: false,
@@ -91,6 +83,7 @@ export class Intro extends Scene {
 
   override onInitialize(_engine: Engine): void {
     this.add(this.oneUpLabel)
+    this.oneUpLabel.actions.blink(300, 300, Infinity)
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
@@ -102,9 +95,6 @@ export class Intro extends Scene {
     this.add(this.drumSet)
     this.add(this.singer)
     this.add(this.canYouMakeItLabel)
-
-    this.add(this.oneUpTimer)
-    this.oneUpTimer.start()
 
     this.add(this.loadTimer)
   }

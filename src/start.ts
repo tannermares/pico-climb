@@ -6,7 +6,6 @@ import {
   Keys,
   Label,
   Scene,
-  Timer,
   vec,
 } from 'excalibur'
 
@@ -65,32 +64,22 @@ export class Start extends Scene {
     pos: vec(30, 232),
     color: Color.White,
   })
-
-  oneUpTimer = new Timer({
-    interval: 300,
-    repeats: true,
-    action: () => {
-      this.pressEnter.graphics.isVisible = !this.pressEnter.graphics.isVisible
-      this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
-    },
-  })
   boundGoToIntro = this.goToIntro.bind(this)
 
   override onInitialize(engine: Engine): void {
     this.add(this.oneUpLabel)
+    this.oneUpLabel.actions.blink(300, 300, Infinity)
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
     this.add(this.logo)
     this.add(this.pressEnter)
+    this.pressEnter.actions.blink(300, 300, Infinity)
     this.add(this.guitarist)
     this.add(this.drumSet)
     this.add(this.singer)
     this.add(this.copyRightLabel)
     this.add(this.companyLabel)
-
-    this.add(this.oneUpTimer)
-    this.oneUpTimer.start()
   }
 
   override onActivate(): void {

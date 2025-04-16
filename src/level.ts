@@ -29,6 +29,7 @@ import { DrumThrower } from './drumThrower'
 import { WinTrigger } from './winTrigger'
 import { Score } from './score'
 import { FallTrigger } from './fallTrigger'
+import { MusicStand } from './musicStand'
 
 export class Level extends Scene {
   rand = new Random()
@@ -38,6 +39,7 @@ export class Level extends Scene {
   highScore = 0
   bonus = 5000
   drumFactory = new DrumFactory(this)
+  musicStand = new MusicStand(this)
   player = new Player(this)
   font = new Font({ family: 'Galaxian', size: 8 })
   oneUpLabel = new Label({
@@ -87,13 +89,6 @@ export class Level extends Scene {
       }, 1500)
     },
   })
-  oneUpTimer = new Timer({
-    interval: 300,
-    repeats: true,
-    action: () => {
-      this.oneUpLabel.graphics.isVisible = !this.oneUpLabel.graphics.isVisible
-    },
-  })
   bonusTimer = new Timer({
     interval: 3000,
     repeats: true,
@@ -128,6 +123,7 @@ export class Level extends Scene {
   override onInitialize(engine: Engine): void {
     this.add(this.player)
     this.add(this.winTrigger)
+    this.add(this.musicStand)
 
     Config.walls.forEach((pos) => this.add(new Wall(pos)))
     Config.fallTriggers.forEach((pos) => this.add(new FallTrigger(pos)))
@@ -168,6 +164,7 @@ export class Level extends Scene {
 
     // Labels
     this.add(this.oneUpLabel)
+    this.oneUpLabel.actions.blink(300, 300, Infinity)
     this.add(this.highScoreLabel)
     this.add(this.scoreCard)
     this.add(this.highScoreCard)
@@ -187,7 +184,6 @@ export class Level extends Scene {
 
     this.add(this.drumOffTimer)
     this.add(this.bonusTimer)
-    this.add(this.oneUpTimer)
 
     Resources.BackgroundMusic.loop = true
   }
@@ -217,6 +213,7 @@ export class Level extends Scene {
 
     this.bonusTimer.reset()
     this.drumOffTimer.reset()
+    this.musicStand.reset()
     this.drumFactory.reset()
     this.player.reset()
 
@@ -224,9 +221,9 @@ export class Level extends Scene {
   }
 
   start() {
-    this.oneUpTimer.start()
     this.bonusTimer.start()
     this.drumOffTimer.start()
+    this.musicStand.start()
     this.drumFactory.start()
     this.player.start()
   }
@@ -236,6 +233,7 @@ export class Level extends Scene {
 
     this.bonusTimer.stop()
     this.drumOffTimer.stop()
+    this.musicStand.stop()
     this.drumFactory.stop()
     this.player.stop()
   }
@@ -269,6 +267,7 @@ export class Level extends Scene {
 
     this.engine.clock.schedule(() => {
       this.drumFactory.reset()
+      this.musicStand.reset()
       Resources.Death.play()
       this.player.triggerDeath()
     }, 1000)
@@ -289,6 +288,7 @@ export class Level extends Scene {
     this.win = true
     this.stop()
     this.player.stop()
+    this.musicStand.reset()
     this.drumFactory.reset()
     Resources.BackgroundMusic.stop()
     Resources.Win.play()
@@ -302,6 +302,7 @@ export class Level extends Scene {
 
   triggerGameOver() {
     this.stop()
+    this.musicStand.reset()
     this.drumFactory.reset()
     Resources.BackgroundMusic.stop()
 

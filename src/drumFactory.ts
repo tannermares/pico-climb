@@ -13,7 +13,7 @@ export class DrumFactory {
       action: () => this.spawnDrums(),
     })
 
-    this.level.add(this.timer)
+    // this.level.add(this.timer)
   }
 
   spawnDrums() {
@@ -25,6 +25,8 @@ export class DrumFactory {
   }
 
   reset() {
+    this.timer.stop()
+
     for (const actor of this.level.actors) {
       if (actor instanceof Drum) actor.kill()
     }

@@ -6,6 +6,8 @@ export const Resources = {
   SpriteSheet: new ImageSource('./images/spritesheet.png'),
 
   // Sounds
+  Climb1: new Sound('./sounds/climb1.wav'),
+  Climb2: new Sound('./sounds/climb2.wav'),
   Death: new Sound('./sounds/death.mp3'),
   Hit: new Sound('./sounds/hit.wav'),
   Intro: new Sound('./sounds/intro.mp3'),

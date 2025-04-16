@@ -199,19 +199,13 @@ export class Player extends Actor {
           Player.climbAnimation.pause()
           this.vel.y = 0
         } else {
-          if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
-            this.level.rand.bool(0.75)
-              ? Resources.Walk1.play()
-              : Resources.Walk2.play()
           Player.climbAnimation.play()
+          this.playClimbSound()
           this.vel.y = -speed
         }
       } else if (keys.isHeld(Keys.Down)) {
-        if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
-          this.level.rand.bool(0.75)
-            ? Resources.Walk1.play()
-            : Resources.Walk2.play()
         Player.climbAnimation.play()
+        this.playClimbSound()
         this.vel.y = speed
       } else {
         Player.climbAnimation.pause()
@@ -256,10 +250,7 @@ export class Player extends Actor {
 
     // Sounds
     if (this.vel.x !== 0) {
-      if (!(Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()))
-        this.level.rand.bool(0.75)
-          ? Resources.Walk1.play()
-          : Resources.Walk2.play()
+      this.playRunSound()
     }
 
     // Jump
@@ -330,5 +321,25 @@ export class Player extends Actor {
     this.bodySensor.graphics.use('death')
     const anim = this.bodySensor.graphics.current
     if (anim instanceof Animation) anim.reset()
+  }
+
+  playRunSound() {
+    if (Resources.Walk1.isPlaying() || Resources.Walk2.isPlaying()) return
+
+    if (this.level.rand.bool(0.75)) {
+      Resources.Walk1.play()
+    } else {
+      Resources.Walk2.play()
+    }
+  }
+
+  playClimbSound() {
+    if (Resources.Climb1.isPlaying() || Resources.Climb2.isPlaying()) return
+
+    if (this.level.rand.bool(0.75)) {
+      Resources.Climb1.play()
+    } else {
+      Resources.Climb2.play()
+    }
   }
 }

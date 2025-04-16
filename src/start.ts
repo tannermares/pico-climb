@@ -91,16 +91,16 @@ export class Start extends Scene {
 
     this.add(this.oneUpTimer)
     this.oneUpTimer.start()
+  }
+
+  override onActivate(): void {
+    this.engine.input.keyboard.on('press', this.boundGoToIntro)
 
     const highScore = localStorage.getItem('highScore')
     if (highScore) {
       this.highScore = +highScore
       this.highScoreCard.text = String(this.highScore).padStart(6, '0')
     }
-  }
-
-  override onActivate(): void {
-    this.engine.input.keyboard.on('press', this.boundGoToIntro)
   }
 
   override onDeactivate(): void {

@@ -295,7 +295,7 @@ export class Level extends Scene {
 
     this.player.bodySensor.graphics.use('walk')
     this.player.bodySensor.graphics.flipHorizontal = false
-    this.player.actions.moveBy(vec(-30, 0), 12)
+    this.player.actions.moveTo(vec(101, 50), 12)
 
     this.engine.clock.schedule(() => this.triggerGameOver(), 8000)
   }

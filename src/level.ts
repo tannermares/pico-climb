@@ -28,6 +28,7 @@ import { DrumSet } from './drumSet'
 import { DrumThrower } from './drumThrower'
 import { WinTrigger } from './winTrigger'
 import { Score } from './score'
+import { FallTrigger } from './fallTrigger'
 
 export class Level extends Scene {
   rand = new Random()
@@ -100,9 +101,7 @@ export class Level extends Scene {
       this.bonus -= 100
       this.bonusScore.text = `${this.bonus}`
 
-      if (this.bonus === 0) {
-        this.triggerDeath()
-      }
+      if (this.bonus === 0) this.triggerDeath()
     },
   })
   guitarist = new Guitarist(vec(80, 40))
@@ -131,6 +130,7 @@ export class Level extends Scene {
     this.add(this.winTrigger)
 
     Config.walls.forEach((pos) => this.add(new Wall(pos)))
+    Config.fallTriggers.forEach((pos) => this.add(new FallTrigger(pos)))
 
     this.add(new Girder(vec(56, 252), 112))
     Config.girders.forEach((pos) => this.add(new Girder(pos)))

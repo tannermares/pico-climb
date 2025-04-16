@@ -103,14 +103,14 @@ export class Girder extends Actor {
       side === Side.Top
     ) {
       other.owner.jumping = false
-      other.owner.falling = false
 
       // Reset Jump Multipliers
       other.owner.scoreMultiplier = 1
       other.owner.maxMultiplier = 1
       other.owner.multiplyTimer.stop()
 
-      // other.owner.fallTimer.stop()
+      // You can't fall or jump off ledges
+      if (other.owner.falling) other.owner.level.triggerDeath()
     }
   }
 }

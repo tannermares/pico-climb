@@ -15,8 +15,6 @@ import { Config } from './config'
 import { Resources } from './resources'
 import { Level } from './level'
 import { PlayerBodySensor } from './playerBodySensor'
-import { Girder } from './girder'
-import { PlayerFallingSensor } from './playerFallingSensor'
 
 export class Player extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -115,7 +113,6 @@ export class Player extends Actor {
   maxMultiplier = 1
   level: Level
   bodySensor = new PlayerBodySensor()
-  fallingSensor = new PlayerFallingSensor()
   climbingEndSensor = new Actor({
     name: 'PlayerClimbingEndSensor',
     width: 3,
@@ -158,9 +155,8 @@ export class Player extends Actor {
 
   override onInitialize(_engine: Engine): void {
     this.addChild(this.bodySensor)
-    // this.addChild(this.climbingEndSensor)
     this.addChild(this.ladderSensor)
-    this.addChild(this.fallingSensor)
+    // this.addChild(this.climbingEndSensor)
 
     this.level.add(this.multiplyTimer)
   }
@@ -226,12 +222,10 @@ export class Player extends Actor {
     if (keys.isHeld(Keys.Right)) {
       this.vel.x = speed
       Player.runAnimation.play()
-      this.fallingSensor.pos.x = -2
       this.bodySensor.graphics.flipHorizontal = true
     } else if (keys.isHeld(Keys.Left)) {
       this.vel.x = -speed
       Player.runAnimation.play()
-      this.fallingSensor.pos.x = 2
       this.bodySensor.graphics.flipHorizontal = false
     } else {
       this.vel.x = 0
@@ -302,6 +296,7 @@ export class Player extends Actor {
     this.canClimbDown = false
     this.climbingWall = false
     this.jumping = false
+    this.falling = false
     this.stopClimbing()
     this.pos = Player.startingPoint
     this.bodySensor.graphics.flipHorizontal = true

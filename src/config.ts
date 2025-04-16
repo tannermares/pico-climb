@@ -160,6 +160,13 @@ export const Config = {
     vec(36, 209),
     vec(100, 213),
   ],
+  fallTriggers: [
+    vec(216, 221),
+    vec(8, 188),
+    vec(216, 155),
+    vec(8, 122),
+    vec(216, 89),
+  ],
   colliders: {
     DrumsCanCollideWith,
     DrumSensorGroup,

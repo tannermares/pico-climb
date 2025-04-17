@@ -28,14 +28,8 @@ export class DrumScoreSensor extends Actor {
 
         clamp(other.owner.parent.scoreMultiplier, 1, 5)
         clamp(other.owner.parent.maxMultiplier, 1, 5)
-        console.log(
-          'Passed More than one',
-          other.owner.parent.scoreMultiplier,
-          other.owner.parent.maxMultiplier
-        )
         other.owner.parent.multiplyTimer.reset()
       } else {
-        console.log('Start First Timer')
         other.owner.parent.multiplyTimer.start()
       }
     }

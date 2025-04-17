@@ -1,14 +1,15 @@
 import {
   Actor,
-  Animation,
   CollisionType,
   Engine,
   SpriteSheet,
+  Timer,
   vec,
 } from 'excalibur'
 
 import { Resources } from './resources'
 import { Level } from './level'
+import { Drum } from './drum'
 
 export class DrumThrower extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -27,18 +28,17 @@ export class DrumThrower extends Actor {
     },
   })
   static sprite = DrumThrower.spriteSheet.getSprite(2, 0)
-  static animation = Animation.fromSpriteSheetCoordinates({
-    spriteSheet: DrumThrower.spriteSheet,
-    frameCoordinates: [
-      { x: 2, y: 0 },
-      { x: 2, y: 0 },
-      { x: 2, y: 0 },
-      { x: 0, y: 0 },
-      { x: 3, y: 0 },
-      { x: 1, y: 0 },
-    ],
-    durationPerFrame: 500,
+  static grabSprite = DrumThrower.spriteSheet.getSprite(0, 0)
+  static holdSprite = DrumThrower.spriteSheet.getSprite(3, 0)
+  static throwSprite = DrumThrower.spriteSheet.getSprite(1, 0)
+
+  timer = new Timer({
+    interval: 500,
+    repeats: true,
+    action: () => this.updateStuff(),
   })
+  currentFrameIndex = 4
+  frames = ['grab', 'hold', 'throw', 'sprite', 'sprite', 'sprite']
 
   constructor(private level: Level) {
     super({
@@ -53,20 +53,46 @@ export class DrumThrower extends Actor {
 
   override onInitialize(_engine: Engine): void {
     this.graphics.add('sprite', DrumThrower.sprite)
-    this.graphics.add('animation', DrumThrower.animation)
-    this.graphics.use('sprite')
+    this.graphics.add('grab', DrumThrower.grabSprite)
+    this.graphics.add('hold', DrumThrower.holdSprite)
+    this.graphics.add('throw', DrumThrower.throwSprite)
+    this.graphics.use(this.frames[this.currentFrameIndex])
+
+    this.level.add(this.timer)
+  }
+
+  updateStuff() {
+    this.currentFrameIndex = (this.currentFrameIndex + 1) % this.frames.length
+
+    this.graphics.use(this.frames[this.currentFrameIndex])
+
+    if (this.currentFrameIndex === 1) {
+      this.level.throwingDrum.graphics.isVisible = false
+    } else if (this.currentFrameIndex === 2) {
+      this.level.add(new Drum())
+    } else if (this.currentFrameIndex === 4) {
+      this.level.throwingDrum.graphics.isVisible = true
+    }
   }
 
   start() {
-    // this.graphics.use('animation')
-    this.level.engine.clock.schedule(() => this.graphics.use('animation'), 500)
+    this.level.engine.clock.schedule(() => this.timer.start(), 1000)
   }
 
   stop() {
+    this.timer.stop()
     this.graphics.use('sprite')
+
+    this.level.actors.forEach((actor) => {
+      if (actor instanceof Drum) actor.stop()
+    })
   }
 
   reset() {
-    DrumThrower.animation.reset()
+    this.timer.stop()
+
+    this.level.actors.forEach((actor) => {
+      if (actor instanceof Drum) actor.kill()
+    })
   }
 }

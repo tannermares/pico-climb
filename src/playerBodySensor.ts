@@ -1,4 +1,4 @@
-import { Actor, Collider, CollisionType, Engine, vec, Vector } from 'excalibur'
+import { Actor, Collider, CollisionType, Engine, vec } from 'excalibur'
 
 import { Config } from './config'
 import { Drum } from './drum'

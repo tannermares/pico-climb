@@ -59,7 +59,7 @@ export class MusicStand extends Actor {
     this.level = level
   }
 
-  override onInitialize(engine: Engine): void {
+  override onInitialize(_engine: Engine): void {
     this.graphics.add('sprite', MusicStand.sprite)
     this.graphics.add('animation', MusicStand.animation)
     this.graphics.use('sprite')
@@ -77,7 +77,7 @@ export class MusicStand extends Actor {
 
   start() {
     this.timer.start()
-    this.level.engine.clock.schedule(() => this.spawnSheet(), 1500)
+    this.level.engine.clock.schedule(() => this.spawnSheet(), 5000)
   }
 
   stop() {

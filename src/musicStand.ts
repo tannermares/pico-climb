@@ -1,5 +1,7 @@
 import {
   Actor,
+  Animation,
+  AnimationStrategy,
   CollisionType,
   Color,
   Engine,
@@ -17,12 +19,24 @@ export class MusicStand extends Actor {
     image: Resources.SpriteSheet,
     grid: {
       rows: 1,
-      columns: 1,
+      columns: 3,
       spriteWidth: 16,
       spriteHeight: 16,
     },
+    spacing: {
+      originOffset: {
+        x: 128,
+        y: 32,
+      },
+    },
   })
   static sprite = this.spriteSheet.getSprite(0, 0)
+  static animation = Animation.fromSpriteSheet(
+    this.spriteSheet,
+    [0, 1, 2],
+    200,
+    AnimationStrategy.Freeze
+  )
 
   level: Level
   timer = new Timer({
@@ -47,11 +61,18 @@ export class MusicStand extends Actor {
 
   override onInitialize(engine: Engine): void {
     this.graphics.add('sprite', MusicStand.sprite)
+    this.graphics.add('animation', MusicStand.animation)
+    this.graphics.use('sprite')
     this.level.add(this.timer)
   }
 
   spawnSheet() {
-    this.level.add(new SheetMusic(this))
+    this.graphics.use('animation')
+    this.level.engine.clock.schedule(() => {
+      this.graphics.use('sprite')
+      MusicStand.animation.reset()
+      this.level.add(new SheetMusic(this))
+    }, 600)
   }
 
   start() {
@@ -63,10 +84,7 @@ export class MusicStand extends Actor {
     this.timer.stop()
 
     this.level.actors.forEach((actor) => {
-      if (actor instanceof SheetMusic) {
-        actor.actions.clearActions()
-        actor.graphics.use('sprite')
-      }
+      if (actor instanceof SheetMusic) actor.stop()
     })
   }
 

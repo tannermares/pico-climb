@@ -3,6 +3,7 @@ import { Actor, Collider, CollisionType, Engine, vec, Vector } from 'excalibur'
 import { Config } from './config'
 import { Drum } from './drum'
 import { Player } from './player'
+import { SheetMusic } from './sheetMusic'
 
 export class PlayerBodySensor extends Actor {
   constructor() {
@@ -22,6 +23,7 @@ export class PlayerBodySensor extends Actor {
     this.graphics.add('walk', Player.walkAnimation)
     this.graphics.add('jump', Player.jumpSprite)
     this.graphics.add('climb', Player.climbAnimation)
+    this.graphics.add('fall', Player.fallSprite)
     this.graphics.add('endClimbUp', Player.endClimbUpAnimation)
     this.graphics.add('startClimbDown', Player.startClimbDownAnimation)
     this.graphics.add('death', Player.deathAnimation)
@@ -34,10 +36,8 @@ export class PlayerBodySensor extends Actor {
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
-    if (other.owner instanceof Drum) {
-      other.owner.acc = Vector.Zero
-      other.owner.vel = Vector.Zero
-      other.owner.body.useGravity = false
+    if (other.owner instanceof Drum || other.owner instanceof SheetMusic) {
+      other.owner.stop()
       if (this.parent instanceof Player) this.parent.level.triggerDeath()
     }
   }

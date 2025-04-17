@@ -76,15 +76,15 @@ export class Level extends Scene {
   })
   staticDrum = new StaticDrum(vec(16, 78))
   throwingDrum = new StaticDrum(vec(16, 66))
-  drumThrower = new DrumThrower(vec(30, 72))
+  drumThrower = new DrumThrower(this)
   drumOffTimer = new Timer({
-    interval: 3000,
-    repeats: true,
+    interval: 2000,
+    // repeats: true,
     action: () => {
-      this.drumThrower.graphics.use('throw')
+      this.drumThrower.graphics.use('animation')
       this.throwingDrum.graphics.isVisible = false
       this.engine.clock.schedule(() => {
-        this.drumThrower.graphics.use('pickup')
+        // this.drumThrower.graphics.use('pickup')
         this.throwingDrum.graphics.isVisible = true
       }, 1500)
     },
@@ -214,6 +214,7 @@ export class Level extends Scene {
     this.bonusTimer.reset()
     this.drumOffTimer.reset()
     this.musicStand.reset()
+    this.drumThrower.reset()
     this.drumFactory.reset()
     this.player.reset()
 
@@ -224,6 +225,7 @@ export class Level extends Scene {
     this.bonusTimer.start()
     this.drumOffTimer.start()
     this.musicStand.start()
+    this.drumThrower.start()
     this.drumFactory.start()
     this.player.start()
   }
@@ -233,6 +235,7 @@ export class Level extends Scene {
 
     this.bonusTimer.stop()
     this.drumOffTimer.stop()
+    this.drumThrower.stop()
     this.musicStand.stop()
     this.drumFactory.stop()
     this.player.stop()

@@ -110,7 +110,10 @@ export class Girder extends Actor {
       other.owner.multiplyTimer.stop()
 
       // You can't fall or jump off ledges
-      if (other.owner.falling) other.owner.level.triggerDeath()
+      if (other.owner.falling) {
+        other.owner.bodySensor.graphics.use('fall')
+        other.owner.level.triggerDeath()
+      }
     }
   }
 }

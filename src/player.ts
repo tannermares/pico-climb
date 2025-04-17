@@ -33,7 +33,7 @@ export class Player extends Actor {
     image: Resources.SpriteSheet,
     grid: {
       rows: 1,
-      columns: 5,
+      columns: 6,
       spriteWidth: 16,
       spriteHeight: 16,
     },
@@ -46,6 +46,7 @@ export class Player extends Actor {
   })
   static startSprite = Player.spriteSheet.getSprite(0, 0)
   static jumpSprite = Player.spriteSheet.getSprite(3, 0)
+  static fallSprite = Player.deathSpriteSheet.getSprite(5, 0)
   static runAnimation = Animation.fromSpriteSheetCoordinates({
     spriteSheet: Player.spriteSheet,
     frameCoordinates: [

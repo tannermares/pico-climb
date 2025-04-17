@@ -88,4 +88,10 @@ export class Drum extends Actor {
     this.body.useGravity = true
     this.body.collisionType = CollisionType.Active
   }
+
+  stop() {
+    this.acc = Vector.Zero
+    this.vel = Vector.Zero
+    this.body.useGravity = false
+  }
 }

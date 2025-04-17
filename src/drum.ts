@@ -12,6 +12,7 @@ import {
 import { Config } from './config'
 import { Resources } from './resources'
 import { DrumScoreSensor } from './drumScoreSensor'
+import { Level } from './level'
 
 export class Drum extends Actor {
   static spriteSheet = SpriteSheet.fromImageSource({
@@ -43,7 +44,7 @@ export class Drum extends Actor {
 
   scoreSensor = new DrumScoreSensor(this)
 
-  constructor() {
+  constructor(private level: Level) {
     super({
       name: 'Drum',
       pos: vec(40, 79),
@@ -85,6 +86,8 @@ export class Drum extends Actor {
   }
 
   continueRolling() {
+    if (this.level.stopped) return
+
     this.body.useGravity = true
     this.body.collisionType = CollisionType.Active
   }
@@ -93,5 +96,7 @@ export class Drum extends Actor {
     this.acc = Vector.Zero
     this.vel = Vector.Zero
     this.body.useGravity = false
+    Drum.rollAnimation.pause()
+    Drum.rollDownAnimation.pause()
   }
 }

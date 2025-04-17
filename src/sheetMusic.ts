@@ -70,6 +70,6 @@ export class SheetMusic extends Actor {
 
   stop() {
     this.actions.clearActions()
-    this.graphics.use('sprite')
+    SheetMusic.animation.pause()
   }
 }

@@ -69,13 +69,15 @@ export class DrumThrower extends Actor {
     if (this.currentFrameIndex === 1) {
       this.level.throwingDrum.graphics.isVisible = false
     } else if (this.currentFrameIndex === 2) {
-      this.level.add(new Drum())
+      this.level.add(new Drum(this.level))
     } else if (this.currentFrameIndex === 4) {
       this.level.throwingDrum.graphics.isVisible = true
     }
   }
 
   start() {
+    Drum.rollAnimation.play()
+    Drum.rollDownAnimation.play()
     this.level.engine.clock.schedule(() => this.timer.start(), 1000)
   }
 

@@ -76,6 +76,7 @@ export class MusicStand extends Actor {
   }
 
   start() {
+    SheetMusic.animation.play()
     this.timer.start()
     this.level.engine.clock.schedule(() => this.spawnSheet(), 5000)
   }

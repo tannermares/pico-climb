@@ -37,6 +37,7 @@ export class Level extends Scene {
   score = 0
   highScore = 0
   bonus = 5000
+  stopped = true
   musicStand = new MusicStand(this)
   player = new Player(this)
   font = new Font({ family: 'Galaxian', size: 8 })
@@ -186,6 +187,7 @@ export class Level extends Scene {
   }
 
   reset() {
+    this.stopped = true
     this.actors.forEach((actor) => {
       if (actor.name === 'PlayerLife') actor.kill()
     })
@@ -205,6 +207,7 @@ export class Level extends Scene {
   }
 
   start() {
+    this.stopped = false
     this.bonusTimer.start()
     this.musicStand.start()
     this.drumThrower.start()
@@ -212,6 +215,7 @@ export class Level extends Scene {
   }
 
   stop() {
+    this.stopped = true
     Resources.BackgroundMusic.stop()
 
     this.bonusTimer.stop()

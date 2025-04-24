@@ -4,7 +4,11 @@ import { Drum } from './drum'
 import { Config } from './config'
 
 export class DrumTrigger extends Actor {
-  constructor(pos: Vector, private type: string, private random: Random) {
+  constructor(
+    pos: Vector,
+    private type: string,
+    private random: Random,
+  ) {
     super({
       height: type === 'slow' ? 16 : type === 'down' ? 8 : 1,
       width: type === 'slow' || type === 'down' ? 1 : 8,

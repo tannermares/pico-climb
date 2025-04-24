@@ -1,11 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Engine,
-  ImageWrapping,
-  SpriteSheet,
-  Vector,
-} from 'excalibur'
+import { Actor, CollisionType, Engine, ImageWrapping, SpriteSheet, Vector } from 'excalibur'
 
 import { Resources } from './resources'
 import { LadderFloorSensor } from './ladderFloorSensor'
@@ -37,7 +30,7 @@ export class Ladder extends Actor {
     pos: Vector,
     height: number,
     private sensors = true,
-    private broken = false
+    private broken = false,
   ) {
     super({
       name: 'Ladder',

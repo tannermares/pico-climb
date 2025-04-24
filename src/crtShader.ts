@@ -165,4 +165,4 @@ void main(){
 	
 	fragColor.rgb = clr;
 	fragColor.a = 1.0;
-}`;
+}`

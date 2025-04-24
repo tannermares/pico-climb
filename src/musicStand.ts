@@ -1,14 +1,4 @@
-import {
-  Actor,
-  Animation,
-  AnimationStrategy,
-  CollisionType,
-  Color,
-  Engine,
-  SpriteSheet,
-  Timer,
-  vec,
-} from 'excalibur'
+import { Actor, Animation, AnimationStrategy, CollisionType, Color, Engine, SpriteSheet, Timer, vec } from 'excalibur'
 import { Level } from './level'
 import { SheetMusic } from './sheetMusic'
 import { colors } from './colors'
@@ -31,12 +21,7 @@ export class MusicStand extends Actor {
     },
   })
   static sprite = this.spriteSheet.getSprite(0, 0)
-  static animation = Animation.fromSpriteSheet(
-    this.spriteSheet,
-    [0, 1, 2],
-    200,
-    AnimationStrategy.Freeze
-  )
+  static animation = Animation.fromSpriteSheet(this.spriteSheet, [0, 1, 2], 200, AnimationStrategy.Freeze)
 
   level: Level
   timer = new Timer({
@@ -84,7 +69,7 @@ export class MusicStand extends Actor {
   stop() {
     this.timer.stop()
 
-    this.level.actors.forEach((actor) => {
+    this.level.actors.forEach(actor => {
       if (actor instanceof SheetMusic) actor.stop()
     })
   }
@@ -92,7 +77,7 @@ export class MusicStand extends Actor {
   reset() {
     this.timer.stop()
 
-    this.level.actors.forEach((actor) => {
+    this.level.actors.forEach(actor => {
       if (actor instanceof SheetMusic) actor.kill()
     })
   }

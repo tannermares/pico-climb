@@ -15,7 +15,6 @@ export class FallTrigger extends Actor {
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
-    if (other.owner instanceof Player && other.owner.name === 'PlayerFeet')
-      other.owner.falling = true
+    if (other.owner instanceof Player && other.owner.name === 'PlayerFeet') other.owner.falling = true
   }
 }

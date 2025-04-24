@@ -6,11 +6,7 @@ const LadderSensorGroup = CollisionGroupManager.create('ladderSensorGroup')
 const PlayerGroup = CollisionGroupManager.create('player')
 const WallGroup = CollisionGroupManager.create('wall')
 
-const DrumsCanCollideWith = CollisionGroup.collidesWith([
-  DrumSensorGroup,
-  GirderGroup,
-  PlayerGroup,
-])
+const DrumsCanCollideWith = CollisionGroup.collidesWith([DrumSensorGroup, GirderGroup, PlayerGroup])
 const FeetCanCollideWith = CollisionGroup.collidesWith([GirderGroup, WallGroup])
 const LaddersCanCollideWith = CollisionGroup.collidesWith([LadderSensorGroup])
 
@@ -116,13 +112,7 @@ export const Config = {
     { pos: vec(132, 72), height: 24, sensors: true, broken: false },
   ],
   walls: [vec(0, 128), vec(224, 128)],
-  drumSlowTriggers: [
-    vec(192, 212),
-    vec(32, 179),
-    vec(192, 146),
-    vec(32, 113),
-    vec(192, 80),
-  ],
+  drumSlowTriggers: [vec(192, 212), vec(32, 179), vec(192, 146), vec(32, 113), vec(192, 80)],
   drumDownTriggers: [
     vec(98, 80),
     vec(194, 84),
@@ -152,21 +142,8 @@ export const Config = {
     vec(84, 247),
     vec(188, 242),
   ],
-  drumRightTriggers: [
-    vec(36, 143),
-    vec(76, 145),
-    vec(172, 151),
-
-    vec(36, 209),
-    vec(100, 213),
-  ],
-  fallTriggers: [
-    vec(216, 221),
-    vec(8, 188),
-    vec(216, 155),
-    vec(8, 122),
-    vec(216, 89),
-  ],
+  drumRightTriggers: [vec(36, 143), vec(76, 145), vec(172, 151), vec(36, 209), vec(100, 213)],
+  fallTriggers: [vec(216, 221), vec(8, 188), vec(216, 155), vec(8, 122), vec(216, 89)],
   colliders: {
     DrumsCanCollideWith,
     DrumSensorGroup,

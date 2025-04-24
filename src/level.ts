@@ -1,14 +1,4 @@
-import {
-  Actor,
-  Color,
-  Engine,
-  Font,
-  Label,
-  Random,
-  Scene,
-  Timer,
-  vec,
-} from 'excalibur'
+import { Actor, Color, Engine, Font, Label, Random, Scene, Timer, vec } from 'excalibur'
 import { Player } from './player'
 import { Girder } from './girder'
 import { Config } from './config'
@@ -112,33 +102,23 @@ export class Level extends Scene {
     this.add(this.winTrigger)
     this.add(this.musicStand)
 
-    Config.walls.forEach((pos) => this.add(new Wall(pos)))
-    Config.fallTriggers.forEach((pos) => this.add(new FallTrigger(pos)))
+    Config.walls.forEach(pos => this.add(new Wall(pos)))
+    Config.fallTriggers.forEach(pos => this.add(new FallTrigger(pos)))
 
     this.add(new Girder(vec(56, 252), 112))
-    Config.girders.forEach((pos) => this.add(new Girder(pos)))
+    Config.girders.forEach(pos => this.add(new Girder(pos)))
 
     // Brown girders
     this.add(new Girder(vec(72, 88), 144, true))
-    Config.groundGirders.forEach((pos) => this.add(new Girder(pos, 16, true)))
+    Config.groundGirders.forEach(pos => this.add(new Girder(pos, 16, true)))
 
-    Config.ladders.forEach(({ pos, height, sensors, broken }) =>
-      this.add(new Ladder(pos, height, sensors, broken))
-    )
+    Config.ladders.forEach(({ pos, height, sensors, broken }) => this.add(new Ladder(pos, height, sensors, broken)))
 
     // Drums
-    Config.drumDownTriggers.forEach((pos) =>
-      this.add(new DrumTrigger(pos, 'down', this.rand))
-    )
-    Config.drumLeftTriggers.forEach((pos) =>
-      this.add(new DrumTrigger(pos, 'left', this.rand))
-    )
-    Config.drumRightTriggers.forEach((pos) =>
-      this.add(new DrumTrigger(pos, 'right', this.rand))
-    )
-    Config.drumSlowTriggers.forEach((pos) =>
-      this.add(new DrumTrigger(pos, 'slow', this.rand))
-    )
+    Config.drumDownTriggers.forEach(pos => this.add(new DrumTrigger(pos, 'down', this.rand)))
+    Config.drumLeftTriggers.forEach(pos => this.add(new DrumTrigger(pos, 'left', this.rand)))
+    Config.drumRightTriggers.forEach(pos => this.add(new DrumTrigger(pos, 'right', this.rand)))
+    Config.drumSlowTriggers.forEach(pos => this.add(new DrumTrigger(pos, 'slow', this.rand)))
 
     // Decorations
     this.add(this.guitarist)
@@ -188,7 +168,7 @@ export class Level extends Scene {
 
   reset() {
     this.stopped = true
-    this.actors.forEach((actor) => {
+    this.actors.forEach(actor => {
       if (actor.name === 'PlayerLife') actor.kill()
     })
     new Array(this.lives - 1).fill(0).forEach((n, i) => {
@@ -231,10 +211,7 @@ export class Level extends Scene {
     this.scoreCard.text = String(this.score).padStart(6, '0')
     this.setHighScore(this.score)
 
-    const scoreLabel = new Score(
-      vec(this.player.pos.x, this.player.pos.y + 8),
-      score
-    )
+    const scoreLabel = new Score(vec(this.player.pos.x, this.player.pos.y + 8), score)
     this.add(scoreLabel)
   }
 

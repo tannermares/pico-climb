@@ -1,11 +1,4 @@
-import {
-  Actor,
-  Animation,
-  CollisionType,
-  Engine,
-  SpriteSheet,
-  Vector,
-} from 'excalibur'
+import { Actor, Animation, CollisionType, Engine, SpriteSheet, Vector } from 'excalibur'
 
 import { Resources } from './resources'
 
@@ -28,7 +21,10 @@ export class Singer extends Actor {
   static sprite = Singer.spriteSheet.getSprite(0, 0)
   static animation = Animation.fromSpriteSheet(Singer.spriteSheet, [0, 1], 300)
 
-  constructor(pos: Vector, private animated = true) {
+  constructor(
+    pos: Vector,
+    private animated = true,
+  ) {
     super({
       name: 'Singer',
       width: 16,

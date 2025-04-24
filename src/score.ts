@@ -22,7 +22,10 @@ export class Score extends Actor {
   static sprite300 = Score.spriteSheet.getSprite(2, 0)
   static sprite500 = Score.spriteSheet.getSprite(3, 0)
 
-  constructor(pos: Vector, private score: number) {
+  constructor(
+    pos: Vector,
+    private score: number,
+  ) {
     super({
       name: 'Score',
       width: 16,

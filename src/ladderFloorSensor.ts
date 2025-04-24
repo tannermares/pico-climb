@@ -17,10 +17,7 @@ export class LadderFloorSensor extends Actor {
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
-    if (
-      other.owner.parent instanceof Player &&
-      other.owner.name === 'PlayerLadderSensor'
-    ) {
+    if (other.owner.parent instanceof Player && other.owner.name === 'PlayerLadderSensor') {
       if (other.owner.parent.climbing) other.owner.parent.stopClimbing()
 
       other.owner.parent.canClimbDown = false
@@ -29,10 +26,7 @@ export class LadderFloorSensor extends Actor {
   }
 
   override onCollisionEnd(_self: Collider, other: Collider): void {
-    if (
-      other.owner.parent instanceof Player &&
-      other.owner.name === 'PlayerLadderSensor'
-    ) {
+    if (other.owner.parent instanceof Player && other.owner.name === 'PlayerLadderSensor') {
       other.owner.parent.canClimbUp = false
     }
   }

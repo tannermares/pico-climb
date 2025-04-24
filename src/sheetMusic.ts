@@ -1,12 +1,4 @@
-import {
-  Actor,
-  Animation,
-  CollisionType,
-  Color,
-  Engine,
-  SpriteSheet,
-  vec,
-} from 'excalibur'
+import { Actor, Animation, CollisionType, Color, Engine, SpriteSheet, vec } from 'excalibur'
 import { Config } from './config'
 import { Player } from './player'
 import { MusicStand } from './musicStand'
@@ -29,11 +21,7 @@ export class SheetMusic extends Actor {
     },
   })
   static sprite = this.spriteSheet.getSprite(0, 0)
-  static animation = Animation.fromSpriteSheet(
-    this.spriteSheet,
-    [0, 1, 2, 3],
-    80
-  )
+  static animation = Animation.fromSpriteSheet(this.spriteSheet, [0, 1, 2, 3], 80)
 
   constructor(private musicStand: MusicStand) {
     super({
@@ -53,18 +41,11 @@ export class SheetMusic extends Actor {
     this.graphics.add('animation', SheetMusic.animation)
     this.graphics.use('animation')
 
-    this.actions.repeatForever((ctx) => {
-      const player = this.musicStand.level.actors.find(
-        (a) => a instanceof Player
-      )
+    this.actions.repeatForever(ctx => {
+      const player = this.musicStand.level.actors.find(a => a instanceof Player)
       if (!player) return ctx.delay(100)
 
-      return ctx
-        .moveTo(player.pos, 10)
-        .moveBy(20, 0, 10)
-        .moveBy(0, -20, 10)
-        .moveBy(-20, 0, 10)
-        .moveBy(0, 20, 10)
+      return ctx.moveTo(player.pos, 10).moveBy(20, 0, 10).moveBy(0, -20, 10).moveBy(-20, 0, 10).moveBy(0, 20, 10)
     })
   }
 

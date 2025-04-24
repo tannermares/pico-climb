@@ -1,11 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Engine,
-  SpriteSheet,
-  Timer,
-  vec,
-} from 'excalibur'
+import { Actor, CollisionType, Engine, SpriteSheet, Timer, vec } from 'excalibur'
 
 import { Resources } from './resources'
 import { Level } from './level'
@@ -85,7 +78,7 @@ export class DrumThrower extends Actor {
     this.timer.stop()
     this.graphics.use('sprite')
 
-    this.level.actors.forEach((actor) => {
+    this.level.actors.forEach(actor => {
       if (actor instanceof Drum) actor.stop()
     })
   }
@@ -93,7 +86,7 @@ export class DrumThrower extends Actor {
   reset() {
     this.timer.stop()
 
-    this.level.actors.forEach((actor) => {
+    this.level.actors.forEach(actor => {
       if (actor instanceof Drum) actor.kill()
     })
   }

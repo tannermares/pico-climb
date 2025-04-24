@@ -1,13 +1,4 @@
-import {
-  Actor,
-  Animation,
-  clamp,
-  CollisionType,
-  Engine,
-  SpriteSheet,
-  vec,
-  Vector,
-} from 'excalibur'
+import { Actor, Animation, clamp, CollisionType, Engine, SpriteSheet, vec, Vector } from 'excalibur'
 
 import { Config } from './config'
 import { Resources } from './resources'
@@ -31,16 +22,8 @@ export class Drum extends Actor {
     },
   })
   static sprite = this.spriteSheet.getSprite(0, 0)
-  static rollAnimation = Animation.fromSpriteSheet(
-    Drum.spriteSheet,
-    [0, 1, 2, 3],
-    200
-  )
-  static rollDownAnimation = Animation.fromSpriteSheet(
-    Drum.spriteSheet,
-    [4, 5],
-    200
-  )
+  static rollAnimation = Animation.fromSpriteSheet(Drum.spriteSheet, [0, 1, 2, 3], 200)
+  static rollDownAnimation = Animation.fromSpriteSheet(Drum.spriteSheet, [4, 5], 200)
 
   scoreSensor = new DrumScoreSensor(this)
 

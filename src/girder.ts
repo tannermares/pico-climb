@@ -1,14 +1,4 @@
-import {
-  Actor,
-  Collider,
-  CollisionType,
-  Color,
-  Engine,
-  ImageWrapping,
-  Side,
-  SpriteSheet,
-  Vector,
-} from 'excalibur'
+import { Actor, Collider, CollisionType, Color, Engine, ImageWrapping, Side, SpriteSheet, Vector } from 'excalibur'
 import { Player } from './player'
 import { Config } from './config'
 import { colors } from './colors'
@@ -46,7 +36,11 @@ export class Girder extends Actor {
       },
     })
 
-  constructor(pos: Vector, width = 16, private alt = false) {
+  constructor(
+    pos: Vector,
+    width = 16,
+    private alt = false,
+  ) {
     super({
       name: 'Girder',
       pos,
@@ -66,42 +60,25 @@ export class Girder extends Actor {
           ? Girder.altSprite
           : Girder.sprite
         : this.alt
-        ? this.tiledAltSprite(this.width)
-        : this.tiledSprite(this.width)
+          ? this.tiledAltSprite(this.width)
+          : this.tiledSprite(this.width),
     )
     this.graphics.use('sprite')
   }
 
-  override onPreCollisionResolve(
-    self: Collider,
-    other: Collider,
-    side: Side
-  ): void {
+  override onPreCollisionResolve(self: Collider, other: Collider, side: Side): void {
     if (other.owner instanceof Player) {
       const unLevelGround = Math.round(other.bounds.bottom) > self.bounds.top
       const isSideCollision = side === Side.Right || side === Side.Left
 
-      if (
-        unLevelGround &&
-        isSideCollision &&
-        !other.owner.jumping &&
-        !other.owner.climbing
-      ) {
+      if (unLevelGround && isSideCollision && !other.owner.jumping && !other.owner.climbing) {
         other.owner.pos.y -= 1
       }
     }
   }
 
-  override onCollisionStart(
-    _self: Collider,
-    other: Collider,
-    side: Side
-  ): void {
-    if (
-      other.owner instanceof Player &&
-      other.owner.vel.y === 0 &&
-      side === Side.Top
-    ) {
+  override onCollisionStart(_self: Collider, other: Collider, side: Side): void {
+    if (other.owner instanceof Player && other.owner.vel.y === 0 && side === Side.Top) {
       other.owner.jumping = false
 
       // Reset Jump Multipliers

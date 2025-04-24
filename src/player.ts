@@ -67,11 +67,7 @@ export class Player extends Actor {
     ],
     durationPerFrame: 300,
   })
-  static climbAnimation = Animation.fromSpriteSheet(
-    Player.spriteSheet,
-    [4, 5],
-    300
-  )
+  static climbAnimation = Animation.fromSpriteSheet(Player.spriteSheet, [4, 5], 300)
   static endClimbUpAnimation = Animation.fromSpriteSheetCoordinates({
     spriteSheet: Player.spriteSheet,
     frameCoordinates: [
@@ -146,8 +142,7 @@ export class Player extends Actor {
   })
   multiplyTimer = new Timer({
     interval: 300,
-    action: () =>
-      this.level.incrementScore(Player.baseScore * this.maxMultiplier),
+    action: () => this.level.incrementScore(Player.baseScore * this.maxMultiplier),
   })
   girdersTouching = 0
 
@@ -192,25 +187,20 @@ export class Player extends Actor {
     // Special Climbing Down Animation
     if (
       this.climbingDown &&
-      !(
-        Player.startClimbDownAnimation.currentFrameIndex ===
-        Player.startClimbDownAnimation.frames.length - 1
-      )
+      !(Player.startClimbDownAnimation.currentFrameIndex === Player.startClimbDownAnimation.frames.length - 1)
     ) {
       this.vel.x = 0
       this.bodySensor.graphics.use('startClimbDown')
 
       if (keys.wasPressed(Keys.Up)) {
         const nextFrame =
-          (Player.startClimbDownAnimation.currentFrameIndex - 1) %
-          Player.startClimbDownAnimation.frames.length
+          (Player.startClimbDownAnimation.currentFrameIndex - 1) % Player.startClimbDownAnimation.frames.length
         Player.startClimbDownAnimation.goToFrame(nextFrame)
       }
 
       if (keys.wasPressed(Keys.Down)) {
         const nextFrame =
-          (Player.startClimbDownAnimation.currentFrameIndex + 1) %
-          Player.startClimbDownAnimation.frames.length
+          (Player.startClimbDownAnimation.currentFrameIndex + 1) % Player.startClimbDownAnimation.frames.length
         Player.startClimbDownAnimation.goToFrame(nextFrame)
       }
 
@@ -233,25 +223,18 @@ export class Player extends Actor {
 
     if (
       this.climbingUp &&
-      !(
-        Player.endClimbUpAnimation.currentFrameIndex ===
-        Player.endClimbUpAnimation.frames.length
-      )
+      !(Player.endClimbUpAnimation.currentFrameIndex === Player.endClimbUpAnimation.frames.length)
     ) {
       this.vel.x = 0
       this.bodySensor.graphics.use('endClimbUp')
 
       if (keys.wasPressed(Keys.Up)) {
-        const nextFrame =
-          (Player.endClimbUpAnimation.currentFrameIndex + 1) %
-          Player.endClimbUpAnimation.frames.length
+        const nextFrame = (Player.endClimbUpAnimation.currentFrameIndex + 1) % Player.endClimbUpAnimation.frames.length
         Player.endClimbUpAnimation.goToFrame(nextFrame)
       }
 
       if (keys.wasPressed(Keys.Down)) {
-        const nextFrame =
-          (Player.endClimbUpAnimation.currentFrameIndex - 1) %
-          Player.endClimbUpAnimation.frames.length
+        const nextFrame = (Player.endClimbUpAnimation.currentFrameIndex - 1) % Player.endClimbUpAnimation.frames.length
         Player.endClimbUpAnimation.goToFrame(nextFrame)
       }
 
@@ -277,9 +260,7 @@ export class Player extends Actor {
       this.bodySensor.graphics.use('climb')
 
       if (keys.wasPressed(Keys.Up) || keys.wasPressed(Keys.Down)) {
-        const nextFrame =
-          (Player.climbAnimation.currentFrameIndex + 1) %
-          Player.climbAnimation.frames.length
+        const nextFrame = (Player.climbAnimation.currentFrameIndex + 1) % Player.climbAnimation.frames.length
         Player.climbAnimation.goToFrame(nextFrame)
       }
 
@@ -305,9 +286,7 @@ export class Player extends Actor {
 
     this.bodySensor.graphics.use('run')
     if (keys.wasPressed(Keys.Right) || keys.wasPressed(Keys.Left)) {
-      const nextFrame =
-        (Player.runAnimation.currentFrameIndex + 1) %
-        Player.runAnimation.frames.length
+      const nextFrame = (Player.runAnimation.currentFrameIndex + 1) % Player.runAnimation.frames.length
       Player.runAnimation.goToFrame(nextFrame)
     }
 
@@ -338,20 +317,12 @@ export class Player extends Actor {
     }
 
     // Climbing Up
-    if (
-      this.canClimbUp &&
-      keys.wasPressed(Keys.Up) &&
-      !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
-    ) {
+    if (this.canClimbUp && keys.wasPressed(Keys.Up) && !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))) {
       this.startClimbing()
     }
 
     // Climbing Down
-    if (
-      this.canClimbDown &&
-      keys.wasPressed(Keys.Down) &&
-      !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))
-    ) {
+    if (this.canClimbDown && keys.wasPressed(Keys.Down) && !(keys.isHeld(Keys.Left) || keys.isHeld(Keys.Right))) {
       this.climbingDown = true
       this.bodySensor.graphics.use('startClimbDown')
       Player.startClimbDownAnimation.reset()
@@ -386,8 +357,7 @@ export class Player extends Actor {
     this.vel = Vector.Zero
     this.acc = Vector.Zero
     const anim = this.bodySensor.graphics.current
-    if (anim instanceof Animation && anim.strategy === AnimationStrategy.Loop)
-      anim.pause()
+    if (anim instanceof Animation && anim.strategy === AnimationStrategy.Loop) anim.pause()
   }
 
   reset() {

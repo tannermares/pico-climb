@@ -1,13 +1,4 @@
-import {
-  Color,
-  Engine,
-  Font,
-  KeyEvent,
-  Keys,
-  Label,
-  Scene,
-  vec,
-} from 'excalibur'
+import { Color, Engine, Font, KeyEvent, Keys, Label, Scene, vec } from 'excalibur'
 
 import { colors } from './colors'
 import { Guitarist } from './guitarist'

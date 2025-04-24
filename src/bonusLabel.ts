@@ -1,11 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  Engine,
-  SpriteSheet,
-  vec,
-} from 'excalibur'
+import { Actor, CollisionType, Color, Engine, SpriteSheet, vec } from 'excalibur'
 
 import { colors } from './colors'
 import { Resources } from './resources'

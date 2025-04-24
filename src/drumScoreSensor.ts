@@ -17,11 +17,7 @@ export class DrumScoreSensor extends Actor {
   }
 
   override onCollisionStart(_self: Collider, other: Collider): void {
-    if (
-      other.owner.parent instanceof Player &&
-      other.owner.parent.jumping &&
-      other.owner.name === 'BodySensor'
-    ) {
+    if (other.owner.parent instanceof Player && other.owner.parent.jumping && other.owner.name === 'BodySensor') {
       if (other.owner.parent.multiplyTimer.isRunning) {
         other.owner.parent.scoreMultiplier += 2
         other.owner.parent.maxMultiplier += 2

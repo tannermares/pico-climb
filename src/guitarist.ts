@@ -1,11 +1,4 @@
-import {
-  Actor,
-  Animation,
-  CollisionType,
-  Engine,
-  SpriteSheet,
-  Vector,
-} from 'excalibur'
+import { Actor, Animation, CollisionType, Engine, SpriteSheet, Vector } from 'excalibur'
 
 import { Resources } from './resources'
 
@@ -26,13 +19,12 @@ export class Guitarist extends Actor {
     },
   })
   static sprite = Guitarist.spriteSheet.getSprite(0, 0)
-  static animation = Animation.fromSpriteSheet(
-    Guitarist.spriteSheet,
-    [0, 1],
-    300
-  )
+  static animation = Animation.fromSpriteSheet(Guitarist.spriteSheet, [0, 1], 300)
 
-  constructor(pos: Vector, private animated = true) {
+  constructor(
+    pos: Vector,
+    private animated = true,
+  ) {
     super({
       name: 'Guitarist',
       width: 16,

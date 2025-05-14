@@ -5,6 +5,7 @@
   "main": "src/main.ts",
   "scripts": {
     "dev": "vite",
+    "dev:arcade": "vite build -w --outDir ~/Code/picos-arcade/public/games/pico-climb --emptyOutDir",
     "start": "vite",
     "build": "tsc && vite build",
     "stage": "rm -rf ../picos-arcade/public/games/pico-climb/*  && cp -r dist/* ../picos-arcade/public/games/pico-climb",

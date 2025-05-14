@@ -6,6 +6,7 @@ import { loader } from './resources'
 import { colors } from './colors'
 import { Start } from './start'
 import CrtPostProcessor from './crtPostProcessor'
+import { enableVirtualGamepad } from './virtualGamepad'
 
 const game = new Engine({
   width: 224,
@@ -16,6 +17,15 @@ const game = new Engine({
   antialiasing: false,
   scenes: { start: Start, level: Level, intro: Intro },
   physics: { gravity: vec(0, 100) },
+})
+
+enableVirtualGamepad(game, {
+  up: Keys.Up,
+  down: Keys.Down,
+  left: Keys.Left,
+  right: Keys.Right,
+  a: Keys.Space,
+  b: Keys.Space,
 })
 
 const crtPostProcessor = new CrtPostProcessor()
